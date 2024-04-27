@@ -1,24 +1,43 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import useCreateuser from "../hooks/useCreateuser";
 
 const SigninPage = () => {
   const [userInput, setUserInput] = useState({
     name: "",
     email: "",
     password: "",
-    phoneNumber: "",
+    phonenumber: "",
   });
+  const [createthesuer] = useCreateuser();
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
+    console.log(id, value);
     setUserInput((prevUserInput) => ({
       ...prevUserInput,
       [id]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(userInput);
+    if (
+      userInput.email === "" ||
+      userInput.password === "" ||
+      userInput.phonenumber == "" ||
+      userInput.name == ""
+    ) {
+      alert("please fill up each and everything");
+    } else {
+      let res = await createthesuer(userInput);
+      console.log(res);
+      setUserInput({
+        name: "",
+        password: "",
+        phonenumber: "",
+        email: "",
+      });
+    }
   };
 
   return (
@@ -80,10 +99,10 @@ const SigninPage = () => {
               Phone Number:
             </label>
             <input
-              id="phoneNumber"
+              id="phonenumber"
               className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500"
               placeholder="Please put your phone number here"
-              value={userInput.phoneNumber}
+              value={userInput.phonenumber}
               onChange={handleInputChange}
             />
           </div>
