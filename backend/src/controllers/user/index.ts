@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import usermodel from "../../models/user";
+import { createjwttokens, verifytokens } from "../../middlewares";
 import bcrypt from "bcrypt";
 export const CreateTheUser = async (req: Request, res: Response) => {
   try {
@@ -17,7 +18,6 @@ export const CreateTheUser = async (req: Request, res: Response) => {
         email: email,
       },
     });
-    console.log(exsitinguser);
     if (exsitinguser)
       return res.status(StatusCodes.BAD_REQUEST).json({
         sucess: false,
@@ -25,6 +25,11 @@ export const CreateTheUser = async (req: Request, res: Response) => {
       });
 
     const haspassword = await bcrypt.hash(password, 10);
+
+    let idtoken = createjwttokens({
+      email: email,
+      password: haspassword,
+    });
 
     let NewUser = await usermodel.create({
       name: name,
@@ -36,6 +41,7 @@ export const CreateTheUser = async (req: Request, res: Response) => {
     return res.status(StatusCodes.CREATED).json({
       sucess: true,
       message: "sucessfully create the user",
+      token: idtoken,
     });
   } catch (errors) {
     console.log(errors);
@@ -67,7 +73,6 @@ export const loginTheuser = async (req: Request, res: Response) => {
         message: "User not found. Please sign up first.",
       });
     }
-    console.log(user.password);
     const isPasswordValid = await bcrypt.compare(password, user.password);
     console.log(isPasswordValid);
 
@@ -78,9 +83,15 @@ export const loginTheuser = async (req: Request, res: Response) => {
       });
     }
 
+    let idtoken = createjwttokens({
+      email: email,
+      password: password,
+    });
+
     return res.status(StatusCodes.OK).json({
       success: true,
       message: "Login successful",
+      token: idtoken,
     });
   } catch (error) {
     console.error(error);

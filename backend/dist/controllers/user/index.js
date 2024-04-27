@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginTheuser = exports.CreateTheUser = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const user_1 = __importDefault(require("../../models/user"));
+const middlewares_1 = require("../../middlewares");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const CreateTheUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -30,13 +31,16 @@ const CreateTheUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 email: email,
             },
         });
-        console.log(exsitinguser);
         if (exsitinguser)
             return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({
                 sucess: false,
                 message: "user already exsit",
             });
         const haspassword = yield bcrypt_1.default.hash(password, 10);
+        let idtoken = (0, middlewares_1.createjwttokens)({
+            email: email,
+            password: haspassword,
+        });
         let NewUser = yield user_1.default.create({
             name: name,
             password: haspassword,
@@ -46,6 +50,7 @@ const CreateTheUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.status(http_status_codes_1.StatusCodes.CREATED).json({
             sucess: true,
             message: "sucessfully create the user",
+            token: idtoken,
         });
     }
     catch (errors) {
@@ -86,9 +91,14 @@ const loginTheuser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 message: "Invalid password",
             });
         }
+        let idtoken = (0, middlewares_1.createjwttokens)({
+            email: email,
+            password: password,
+        });
         return res.status(http_status_codes_1.StatusCodes.OK).json({
             success: true,
             message: "Login successful",
+            token: idtoken,
         });
     }
     catch (error) {

@@ -3,6 +3,7 @@ import { useState } from "react";
 
 const useCreateUser = () => {
   const [errors, setErrors] = useState("");
+  const dispatch = useDispatch();
 
   const createUser = async (obj) => {
     try {
@@ -10,7 +11,6 @@ const useCreateUser = () => {
         "http://localhost:3000/users/Singup",
         obj
       );
-      console.log(response);
       return true;
     } catch (error) {
       console.error(error);
