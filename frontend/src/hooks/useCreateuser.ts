@@ -1,20 +1,33 @@
 import axios from "axios";
-const useCreateuser = () => {
-  const createthesuer = async (obj: object) => {
+import { useState } from "react";
+
+const useCreateUser = () => {
+  const [errors, setErrors] = useState("");
+
+  const createUser = async (obj) => {
     try {
-      let Response = await axios.post(
+      let response = await axios.post(
         "http://localhost:3000/users/Singup",
         obj
       );
-      console.log(Response);
+      console.log(response);
       return true;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setErrors(error.response.data.message);
+      } else {
+        setErrors("An unexpected error occurred.");
+      }
       return false;
     }
   };
 
-  return [createthesuer];
+  return [createUser, errors];
 };
 
-export default useCreateuser;
+export default useCreateUser;

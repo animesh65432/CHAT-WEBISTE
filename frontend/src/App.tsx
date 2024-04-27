@@ -1,10 +1,15 @@
 import React from "react";
 import SigninPage from "./compoments/SigninPage";
+import { Route, Routes } from "react-router-dom";
+import LoginPage from "./compoments/Login";
 
 const App: React.FC = () => {
   return (
     <>
-      <SigninPage />
+      <Routes>
+        <Route path="/" element={<SigninPage />}></Route>
+        <Route path="/login" element={<LoginPage />}></Route>
+      </Routes>
     </>
   );
 };
