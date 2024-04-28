@@ -18,12 +18,24 @@ const useGetMessages = () => {
       let res = Messagse?.data?.data;
       console.log(res);
       dispatch(Getthemessages(res));
+      updateLocalStorage(res);
     } catch (error) {
       console.log(error);
     }
   };
 
   return [GetTheMessagesfunc];
+};
+
+const updateLocalStorage = (newMessages) => {
+  let storedMessages = JSON.parse(localStorage.getItem("messages")) || [];
+  storedMessages.push(...newMessages);
+
+  if (storedMessages.length > 10) {
+    storedMessages = storedMessages.slice(-10);
+  }
+
+  localStorage.setItem("messages", JSON.stringify(storedMessages));
 };
 
 export default useGetMessages;

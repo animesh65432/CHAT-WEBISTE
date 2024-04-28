@@ -1,9 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const loadMessagesFromLocalStorage = () => {
+  const storedMessages = JSON.parse(localStorage.getItem("messages")) || [];
+  return storedMessages;
+};
+
 const Messages = createSlice({
   name: "Messages",
   initialState: {
-    messagesarray: [],
+    messagesarray: loadMessagesFromLocalStorage(),
   },
   reducers: {
     Getthemessages: (state, action) => {
