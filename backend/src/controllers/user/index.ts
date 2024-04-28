@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import usermodel from "../../models/user";
-import { createjwttokens, verifytokens } from "../../middlewares";
+import { createJWTtokens } from "../../middlewares";
 import bcrypt from "bcrypt";
 export const CreateTheUser = async (req: Request, res: Response) => {
   try {
@@ -26,7 +26,7 @@ export const CreateTheUser = async (req: Request, res: Response) => {
 
     const haspassword = await bcrypt.hash(password, 10);
 
-    let idtoken = createjwttokens({
+    let idtoken = createJWTtokens({
       email: email,
       password: haspassword,
     });
@@ -83,7 +83,7 @@ export const loginTheuser = async (req: Request, res: Response) => {
       });
     }
 
-    let idtoken = createjwttokens({
+    let idtoken = createJWTtokens({
       email: email,
       password: password,
     });

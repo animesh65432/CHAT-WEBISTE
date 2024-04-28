@@ -37,7 +37,7 @@ const CreateTheUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 message: "user already exsit",
             });
         const haspassword = yield bcrypt_1.default.hash(password, 10);
-        let idtoken = (0, middlewares_1.createjwttokens)({
+        let idtoken = (0, middlewares_1.createJWTtokens)({
             email: email,
             password: haspassword,
         });
@@ -82,7 +82,6 @@ const loginTheuser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 message: "User not found. Please sign up first.",
             });
         }
-        console.log(user.password);
         const isPasswordValid = yield bcrypt_1.default.compare(password, user.password);
         console.log(isPasswordValid);
         if (!isPasswordValid) {
@@ -91,7 +90,7 @@ const loginTheuser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 message: "Invalid password",
             });
         }
-        let idtoken = (0, middlewares_1.createjwttokens)({
+        let idtoken = (0, middlewares_1.createJWTtokens)({
             email: email,
             password: password,
         });

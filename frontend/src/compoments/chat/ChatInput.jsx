@@ -1,15 +1,28 @@
 import React, { useState } from "react";
-
+import usesentMessages from "../../hooks/useSentMessage";
+import { ToastContainer, toast } from "react-toastify";
 const ChatInput = () => {
   const [inputText, setInputText] = useState("");
-
+  const [SentTheMessage] = usesentMessages();
   const handleInputChange = (event) => {
     setInputText(event.target.value);
   };
 
-  const handleSendMessage = () => {
-    console.log("Message sent:", inputText);
-    setInputText("");
+  const handleSendMessage = async () => {
+    try {
+      let res = await SentTheMessage({
+        message: inputText,
+      });
+      if (res) {
+        toast.success("Sucessfully Sent it");
+      } else {
+        setInputText("");
+        toast.error("please try again");
+      }
+    } catch (errors) {
+      console.log(errors);
+      toast.error("please try again");
+    }
   };
 
   return (
@@ -29,6 +42,7 @@ const ChatInput = () => {
           Send
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 };

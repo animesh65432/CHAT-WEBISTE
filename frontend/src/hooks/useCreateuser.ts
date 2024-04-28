@@ -3,7 +3,6 @@ import { useState } from "react";
 
 const useCreateUser = () => {
   const [errors, setErrors] = useState("");
-  const dispatch = useDispatch();
 
   const createUser = async (obj) => {
     try {
