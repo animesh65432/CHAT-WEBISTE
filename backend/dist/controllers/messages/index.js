@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.posthemessage = void 0;
+exports.GettheMesaage = exports.posthemessage = void 0;
 const msg_1 = __importDefault(require("../../models/msg"));
 const http_status_codes_1 = require("http-status-codes");
 const posthemessage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -41,3 +41,19 @@ const posthemessage = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.posthemessage = posthemessage;
+const GettheMesaage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let Messages = yield msg_1.default.findAll({});
+        return res.status(http_status_codes_1.StatusCodes.OK).json({
+            sucesss: true,
+            data: Messages,
+        });
+    }
+    catch (error) {
+        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
+            sucess: false,
+            errors: error,
+        });
+    }
+});
+exports.GettheMesaage = GettheMesaage;

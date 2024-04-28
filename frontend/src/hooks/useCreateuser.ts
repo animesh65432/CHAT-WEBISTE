@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-
 const useCreateUser = () => {
   const [errors, setErrors] = useState("");
 
@@ -10,7 +9,6 @@ const useCreateUser = () => {
         "http://localhost:3000/users/Singup",
         obj
       );
-      return true;
     } catch (error) {
       console.error(error);
       if (

@@ -30,3 +30,18 @@ export const posthemessage = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const GettheMesaage = async (req: Request, res: Response) => {
+  try {
+    let Messages = await MessageModel.findAll({});
+    return res.status(StatusCodes.OK).json({
+      sucesss: true,
+      data: Messages,
+    });
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      sucess: false,
+      errors: error,
+    });
+  }
+};
