@@ -16,7 +16,7 @@ export const Authentication = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.token as string; // Extract token from request headers
+    const token = req.headers.token as string;
 
     if (!token) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -36,7 +36,7 @@ export const Authentication = async (
       });
     }
 
-    req.user = user; // Attach user object to request
+    req.user = user; 
     next();
   } catch (error) {
     console.error(error);
