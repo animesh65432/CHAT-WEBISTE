@@ -10,6 +10,10 @@ const userGroup = database.define("userGroup", {
   isAdmin: {
     type: DataTypes.BOOLEAN,
   },
+  isstrictGroup: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 export default userGroup;
