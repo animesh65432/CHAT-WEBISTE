@@ -18,6 +18,7 @@ export const CreateTheUser = async (req: Request, res: Response) => {
         email: email,
       },
     });
+    console.log(exsitinguser);
     if (exsitinguser)
       return res.status(StatusCodes.BAD_REQUEST).json({
         sucess: false,

@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import userGroup from "../../models/userGroup";
 import Groups from "../../models/Groups";
-import users from "../../models/user";
 import database from "../../database";
 export const CreateTheGroup = async (req: Request, res: Response) => {
   const t = await database.transaction();
   try {
-    let { nameofthegroup } = req.body;
+    let { nameofthegroup, isstrictGroup } = req.body;
+    console.log(nameofthegroup, isstrictGroup);
     if (!nameofthegroup)
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
@@ -28,6 +28,7 @@ export const CreateTheGroup = async (req: Request, res: Response) => {
         isAdmin: true,
         userGroupId: req.user.id,
         GroupId: NewGroup.id,
+        isstrictGroup: isstrictGroup,
       },
       {
         transaction: t,
@@ -97,9 +98,9 @@ export const JoinTheGroup = async (req: Request, res: Response) => {
   }
 };
 
-export const removeuser = (req: Request, res: Response) => {
-  const t = await database.transaction();
+export const removeuser = async (req: Request, res: Response) => {
   try {
+    const t = await database.transaction();
     let userid = req.query.userid;
     let Groupid = req.query.Groupid;
     let CurrentUser = req.user.id;
@@ -138,11 +139,11 @@ export const removeuser = (req: Request, res: Response) => {
   }
 };
 
-export const jointhroughadmin = (req: Request, res: Response) => {
-  const t = await database.transaction();
+export const jointhroughadmin = async (req: Request, res: Response) => {
   try {
+    const t = await database.transaction();
     let CurrentUserid = req.user.id;
-    let { GroupId, newuserid } = req.body;
+    let { GroupId, newuserid } = req.query;
     let CheckAdmin = await userGroup.findOne({
       where: {
         userGroupId: CurrentUserid,
@@ -185,7 +186,7 @@ export const jointhroughadmin = (req: Request, res: Response) => {
 
 export const GetAllTheGroups = async (req: Request, res: Response) => {
   try {
-    let AllGroup = await Groups.findAll({ attributes: [" nameofthegroup"] });
+    let AllGroup = await Groups.findAll({ attributes: ["nameofthegroup"] });
     return res.status(StatusCodes.OK).json({
       sucess: true,
       data: AllGroup,
