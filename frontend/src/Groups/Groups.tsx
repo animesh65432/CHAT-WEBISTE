@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useGroups from "../hooks/useGroups";
 import Groupitems from "./Groupitems";
 import GroupBottomFrom from "./GruopsFrom/GroupBottomFrom";
+import { useSelector } from "react-redux";
 
 const Groups = () => {
   const [fecthdata] = useGroups();
-  const [Groups, setGroups] = useState([]);
-  console.log(GroupBottomFrom);
+  const Groups = useSelector((state) => state.group.value);
   const GetAllTheFGroups = async () => {
     try {
       let response = await fecthdata();

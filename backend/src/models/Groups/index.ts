@@ -10,6 +10,7 @@ const Groups = database.define("Group", {
   nameofthegroup: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
 });
 
