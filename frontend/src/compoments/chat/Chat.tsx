@@ -9,7 +9,7 @@ const Chat = () => {
     GetTheMessagesfunc();
   }, []);
   return (
-    <div className="flex flex-col h-screen justify-between">
+    <div className="flex flex-col  justify-between h-[46rem]">
       <ChatMessage />
       <ChatInput />
     </div>

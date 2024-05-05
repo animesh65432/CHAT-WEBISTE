@@ -23,7 +23,7 @@ Message.belongsTo(user);
 Groups.hasMany(Message);
 Message.belongsTo(Groups);
 userGroup.belongsToMany(Groups, { through: "userGroup" });
-userGroup.belongsToMany(Groups, { through: "userGroup" });
+userGroup.belongsToMany(user, { through: "userGroup" });
 
 database
   .sync()

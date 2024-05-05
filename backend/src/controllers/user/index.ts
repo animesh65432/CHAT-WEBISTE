@@ -102,3 +102,38 @@ export const loginTheuser = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const GetalltheUsers = async (req: Request, res: Response) => {
+  try {
+    let users = await usermodel.findAll({});
+    return res.status(StatusCodes.OK).json({
+      sucesss: true,
+      data: users,
+    });
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      sucesss: false,
+      errors: error,
+    });
+  }
+};
+
+export const GetTheCurrentUser = async (req: Request, res: Response) => {
+  try {
+    let user = await usermodel.findOne({
+      where: {
+        email: req.user.email,
+      },
+    });
+
+    return res.status(StatusCodes.OK).json({
+      sucess: true,
+      data: user,
+    });
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      sucesss: false,
+      errors: error,
+    });
+  }
+};

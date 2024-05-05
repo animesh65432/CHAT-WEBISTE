@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import userGroup from "../../models/userGroup";
 import Groups from "../../models/Groups";
 import database from "../../database";
+import Message from "../../models/msg";
 export const CreateTheGroup = async (req: Request, res: Response) => {
   const t = await database.transaction();
   try {
@@ -186,10 +187,45 @@ export const jointhroughadmin = async (req: Request, res: Response) => {
 
 export const GetAllTheGroups = async (req: Request, res: Response) => {
   try {
-    let AllGroup = await Groups.findAll({ attributes: ["nameofthegroup"] });
+    let AllGroup = await Groups.findAll({});
     return res.status(StatusCodes.OK).json({
       sucess: true,
       data: AllGroup,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      sucess: false,
+      errors: error,
+    });
+  }
+};
+
+export const GetTheOnlyOneGroup = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    console.log(req.url);
+
+    const Group = await Groups.findOne({
+      id: id,
+    });
+
+    if (!Group)
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        sucess: false,
+        errors: "group does not exsit",
+      });
+
+    const messages = await Message.findAll({
+      where: {
+        GroupId: id,
+      },
+    });
+    console.log(messages);
+
+    return res.status(StatusCodes.OK).json({
+      sucess: true,
+      data: messages,
     });
   } catch (error) {
     console.log(error);

@@ -28,7 +28,6 @@ export const Authentication = async (
     const { email } = jwt.verify(token, secret) as { email: string };
 
     const user = await UserModel.findOne({ email });
-
     if (!user) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
@@ -36,7 +35,7 @@ export const Authentication = async (
       });
     }
 
-    req.user = user; 
+    req.user = user;
     next();
   } catch (error) {
     console.error(error);

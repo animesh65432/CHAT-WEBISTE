@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Chat from "./compoments/chat/Chat";
 import Groups from "./Groups/Groups";
 import Headers from "./compoments/Headers";
+import GrouOne from "./Groups/GrouOne";
 
 const App: React.FC = () => {
   const token = useSelector((state) => state.auth.idtoken);
@@ -26,6 +27,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Chat />}></Route>
             <Route path="/Groups" element={<Groups />}></Route>
+            <Route path="/GroupOne/:id" element={<GrouOne />}></Route>
           </Routes>
         </>
       )}

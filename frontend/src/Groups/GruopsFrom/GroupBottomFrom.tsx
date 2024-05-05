@@ -2,14 +2,20 @@ import { useState } from "react";
 import GroupForm from "./GroupFrom";
 
 const GroupBottomFrom = () => {
-  const [show, setshow] = useState(false);
+  const [show, setShow] = useState(false);
 
-  const Onchangethebottom = () => {
-    setshow((prev) => !prev);
+  const onChangeTheBottom = () => {
+    setShow((prev) => !prev);
   };
+
   return (
     <div>
-      <button onClick={Onchangethebottom}>Create</button>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={onChangeTheBottom}
+      >
+        Create
+      </button>
       {show && <GroupForm />}
     </div>
   );
