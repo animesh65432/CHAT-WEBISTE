@@ -125,6 +125,7 @@ export const GetTheCurrentUser = async (req: Request, res: Response) => {
         email: req.user.email,
       },
     });
+    
 
     return res.status(StatusCodes.OK).json({
       sucess: true,

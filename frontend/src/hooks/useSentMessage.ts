@@ -1,14 +1,13 @@
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { createnewmessages } from "../reduex/Messages";
-
+import { useSelector } from "react-redux";
 const useSentMessage = () => {
   const token = useSelector((state) => state.auth.idtoken);
-  const dispatch = useDispatch();
+
   const SentTheMessage = async (obj: object) => {
+    console.log(obj);
     try {
       let res = await axios.post(
-        "http://localhost:3000/message/Postmessage",
+        "http://localhost:3000/message/sendMessages",
         obj,
         {
           headers: {
@@ -18,14 +17,6 @@ const useSentMessage = () => {
       );
 
       console.log(res);
-      dispatch(
-        createnewmessages([
-          {
-            id: Date.now(),
-            ...obj,
-          },
-        ])
-      );
 
       return true;
     } catch (error) {

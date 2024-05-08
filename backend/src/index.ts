@@ -25,7 +25,7 @@ Message.belongsTo(Groups);
 user.belongsToMany(Groups, { through: userGroup });
 Groups.belongsToMany(user, { through: userGroup });
 database
-  .sync({ force: true })
+  .sync()
   .then(() => {
     app.listen(process.env.PORT, () => {
       console.log(`server at the ${process.env.PORT}`);

@@ -1,22 +1,41 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import User from "../../users/User";
+import io from "socket.io-client";
 
 const ChatMessage = () => {
-  const messages = useSelector((state) => state.msg.messagesarray);
   const selectedGroups = useSelector((state) => state.group.selectedGroups);
   const messagesEndRef = useRef(null);
-  const [showusers, Setshowusers] = useState(false);
+  const [showUsers, setShowUsers] = useState(false);
+  const [messages, setMessages] = useState([]);
+
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (!selectedGroups) {
+      return; // Don't do anything if selectedGroups is not available
+    }
+
+    const socket = io("http://localhost:4000", {
+      withCredentials: true,
+    });
+
+    socket.emit("getMessages", selectedGroups.id);
+
+    socket.on("messages", (newMessages) => {
+      setMessages(newMessages);
+      scrollToBottom();
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [selectedGroups]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  if (selectedGroups === undefined) {
-    return <div className="text-center mt-4">Not Yet Select The Group</div>;
+  if (!selectedGroups) {
+    return <div className="text-center mt-4">Please select a group</div>;
   }
 
   return (
@@ -27,13 +46,21 @@ const ChatMessage = () => {
         </h3>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => Setshowusers((prev) => !prev)}
+          onClick={() => setShowUsers((prev) => !prev)}
         >
-          users
+          {showUsers ? "Hide Users" : "Show Users"}
         </button>
-        {showusers && <User />}
+        {showUsers && <User />}
       </div>
-      <div className="scroll-to-bottom" ref={messagesEndRef}></div>
+      <div className="messages-container">
+        {messages.map((messageObj, index) => (
+          <div key={index} className="message bg-gray-200 rounded p-2 mb-2">
+            {messageObj.message}
+          </div>
+        ))}
+
+        <div ref={messagesEndRef}></div>
+      </div>
     </div>
   );
 };

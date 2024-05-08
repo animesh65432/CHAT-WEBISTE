@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import usesentMessages from "../../hooks/useSentMessage";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 const ChatInput = () => {
   const [inputText, setInputText] = useState("");
+  const Group = useSelector((state) => state.group.selectedGroups);
   const [SentTheMessage] = usesentMessages();
   const handleInputChange = (event) => {
     setInputText(event.target.value);
@@ -12,7 +14,9 @@ const ChatInput = () => {
     try {
       let res = await SentTheMessage({
         message: inputText,
+        GroupId: Group.id,
       });
+
       if (res) {
         toast.success("Sucessfully Sent it");
       } else {
