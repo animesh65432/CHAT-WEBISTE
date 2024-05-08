@@ -3,17 +3,22 @@ import { StatusCodes } from "http-status-codes";
 import userGroup from "../../models/userGroup";
 import Groups from "../../models/Groups";
 import database from "../../database";
-import Message from "../../models/msg";
+import users from "../../models/user";
+import { where } from "sequelize";
+
 export const CreateTheGroup = async (req: Request, res: Response) => {
   const t = await database.transaction();
   try {
     let { nameofthegroup, isstrictGroup } = req.body;
-    console.log(nameofthegroup, isstrictGroup);
-    if (!nameofthegroup)
+    let id = req.user.id;
+
+    if (!nameofthegroup) {
+      await t.rollback();
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
-        message: "Group should have name",
+        message: "Group should have a name",
       });
+    }
 
     let NewGroup = await Groups.create(
       {
@@ -27,7 +32,7 @@ export const CreateTheGroup = async (req: Request, res: Response) => {
     let UserGroup = await userGroup.create(
       {
         isAdmin: true,
-        userGroupId: req.user.id,
+        userId: id,
         GroupId: NewGroup.id,
         isstrictGroup: isstrictGroup,
       },
@@ -39,7 +44,7 @@ export const CreateTheGroup = async (req: Request, res: Response) => {
     await t.commit();
     return res.status(StatusCodes.CREATED).json({
       success: true,
-      data: "successfully created The Group",
+      data: "Successfully created the group",
     });
   } catch (error) {
     console.log(error);
@@ -53,65 +58,20 @@ export const CreateTheGroup = async (req: Request, res: Response) => {
   }
 };
 
-export const JoinTheGroup = async (req: Request, res: Response) => {
-  const t = await database.transaction();
-  try {
-    let GroupId = req.params.id;
-
-    let Group = await userGroup.findOne({
-      where: {
-        GroupId: GroupId,
-      },
-      transaction: t,
-    });
-
-    if (!Group.isstrictGroup) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        sucess: false,
-        message: "you need admin permsission",
-      });
-    }
-
-    let result = await userGroup.create(
-      {
-        GroupId: GroupId,
-        userGroupId: req.user.id,
-        isAdmin: false,
-      },
-      {
-        transaction: t,
-      }
-    );
-
-    await t.commit();
-
-    return res.status(StatusCodes.OK).json({
-      sucess: true,
-      data: "sucessfully join the group",
-    });
-  } catch (error) {
-    await t.rollback();
-    console.log(error);
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      sucess: false,
-      errors: error,
-    });
-  }
-};
-
 export const removeuser = async (req: Request, res: Response) => {
+  let t;
   try {
-    const t = await database.transaction();
-    let userid = req.query.userid;
-    let Groupid = req.query.Groupid;
-    let CurrentUser = req.user.id;
+    t = await database.transaction();
+    let currentuserid = req.user.id;
+    let { GroupId, UserId } = req.body;
 
     let CheckAdmin = await userGroup.findOne({
-      where: { userGroupId: CurrentUser, GroupId: Groupid },
+      where: { userId: currentuserid, GroupId: GroupId },
       transaction: t,
     });
 
     if (!CheckAdmin.isAdmin) {
+      await t.rollback();
       return res.status(StatusCodes.BAD_REQUEST).json({
         sucess: false,
         message: "you are not admin",
@@ -120,7 +80,8 @@ export const removeuser = async (req: Request, res: Response) => {
 
     let user = await userGroup.destroy({
       where: {
-        userGroupId: userid,
+        userId: UserId,
+        GroupId: GroupId,
       },
       transaction: t,
     });
@@ -141,45 +102,50 @@ export const removeuser = async (req: Request, res: Response) => {
 };
 
 export const jointhroughadmin = async (req: Request, res: Response) => {
+  let t;
   try {
-    const t = await database.transaction();
-    let CurrentUserid = req.user.id;
-    let { GroupId, newuserid } = req.query;
+    t = await database.transaction();
+    let { GroupId, UserId } = req.body;
+    let id = req.user.id;
     let CheckAdmin = await userGroup.findOne({
       where: {
-        userGroupId: CurrentUserid,
+        userId: id,
         GroupId: GroupId,
       },
       transaction: t,
     });
 
-    if (!CheckAdmin.isAdmin) {
-      return res.status(StatusCodes.Ok).json({
-        sucesss: false,
-        message: "user is not admin",
+    if (!CheckAdmin || !CheckAdmin.isAdmin) {
+      await t.rollback();
+      return res.status(StatusCodes.OK).json({
+        success: false,
+        message: "User is not an admin",
       });
     }
 
-    let Newuser = await userGroup.create(
+    let newUserGroup = await userGroup.create(
       {
-        userGroupId: newuserid,
+        userId: UserId,
         GroupId: GroupId,
+        isAdmin: false,
       },
       {
         transaction: t,
       }
     );
+    console.log(newUserGroup);
 
     await t.commit();
     return res.status(StatusCodes.CREATED).json({
-      sucess: true,
-      data: "sucessfully join the group",
+      success: true,
+      data: "Successfully joined the group",
+      userGroup: newUserGroup,
     });
   } catch (error) {
     await t.rollback();
     console.log(error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      sucess: false,
+      success: false,
       errors: error,
     });
   }
@@ -201,37 +167,108 @@ export const GetAllTheGroups = async (req: Request, res: Response) => {
   }
 };
 
-export const GetTheOnlyOneGroup = async (req: Request, res: Response) => {
+export const isAdminOrNot = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
-    console.log(req.url);
+    let UserId = req.user.id;
+    let GroupId = req.params.GroupId;
 
-    const Group = await Groups.findOne({
-      id: id,
-    });
-
-    if (!Group)
+    if (!GroupId)
       return res.status(StatusCodes.BAD_REQUEST).json({
-        sucess: false,
-        errors: "group does not exsit",
+        success: false,
+        message: "Group ID is required",
       });
 
-    const messages = await Message.findAll({
+    let GroupAndUser = await userGroup.findOne({
       where: {
-        GroupId: id,
+        userId: UserId,
+        GroupId: GroupId,
       },
     });
-    console.log(messages);
+
+    if (!GroupAndUser) {
+      return res.status(StatusCodes.OK).json({
+        success: false,
+        message: "User is not joined in this group",
+      });
+    }
 
     return res.status(StatusCodes.OK).json({
-      sucess: true,
-      data: messages,
+      success: true,
+      data: GroupAndUser,
     });
   } catch (error) {
     console.log(error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      errors: "Internal server error",
+    });
+  }
+};
+
+export const makeadmin = async (req: Request, res: Response) => {
+  let t;
+  try {
+    t = await database.transaction();
+    let { UserId, GroupId } = req.body;
+    let id = req.user.id;
+
+    let CheckAdmin = await userGroup.findOne({
+      where: {
+        userId: id,
+        GroupId: GroupId,
+      },
+    });
+
+    if (!CheckAdmin && !CheckAdmin.isAdmin) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        Sucess: false,
+        errors: "user is not admin",
+      });
+    }
+
+    let userWithGroup = await userGroup.findOne({
+      where: {
+        userId: UserId,
+        GroupId: GroupId,
+      },
+    });
+
+    if (userWithGroup) {
+      let update = await userWithGroup.update(
+        {
+          isAdmin: true,
+        },
+        {
+          where: {
+            userId: UserId,
+            GroupId: GroupId,
+          },
+        }
+      );
+
+      return res.status(StatusCodes.OK).json({
+        sucess: true,
+        data: update,
+      });
+    } else {
+      let user = await userGroup.create({
+        where: {
+          userId: UserId,
+          GroupId: GroupId,
+          isAdmin: true,
+        },
+      });
+
+      return res.status(StatusCodes.OK).json({
+        sucess: true,
+        data: user,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       sucess: false,
-      errors: error,
+      error: "internal server errors",
     });
   }
 };

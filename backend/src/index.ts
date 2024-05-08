@@ -22,11 +22,10 @@ user.hasMany(Message);
 Message.belongsTo(user);
 Groups.hasMany(Message);
 Message.belongsTo(Groups);
-userGroup.belongsToMany(Groups, { through: "userGroup" });
-userGroup.belongsToMany(user, { through: "userGroup" });
-
+user.belongsToMany(Groups, { through: userGroup });
+Groups.belongsToMany(user, { through: userGroup });
 database
-  .sync()
+  .sync({ force: true })
   .then(() => {
     app.listen(process.env.PORT, () => {
       console.log(`server at the ${process.env.PORT}`);

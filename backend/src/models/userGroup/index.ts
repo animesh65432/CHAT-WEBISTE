@@ -9,6 +9,7 @@ const userGroup = database.define("userGroup", {
   },
   isAdmin: {
     type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   isstrictGroup: {
     type: DataTypes.BOOLEAN,

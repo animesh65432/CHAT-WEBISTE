@@ -1,21 +1,13 @@
-import { Link } from "react-router-dom";
+import { chaticon } from "../assets/images";
 
 const Headers = () => {
   return (
-    <div className="bg-gray-900 py-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link
-          to="/"
-          className="text-white text-lg font-semibold hover:text-blue-300"
-        >
-          Home
-        </Link>
-        <Link
-          to="/Groups"
-          className="text-white text-lg font-semibold hover:text-blue-300"
-        >
-          Groups
-        </Link>
+    <div className="bg-gray-900 py-4 flex items-center justify-between px-4">
+      <div className="flex items-center">
+        <img src={chaticon} alt="Chat Icon" className="h-8 w-8 mr-2" />
+        <p className="text-white text-lg font-semibold">
+          Welcome To The Chat App
+        </p>
       </div>
     </div>
   );

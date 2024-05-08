@@ -1,17 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { onselectthegroup } from "../reduex/Groups";
+const Groupitems = ({ obj }) => {
+  const dispatch = useDispatch();
 
-const Groupitems = ({ name, id }) => {
-  const navigate = useNavigate();
-
-  const NavigatetoOneGroups = (id) => {
-    navigate(`/GroupOne/:${id}`);
+  const SelectedTheGroup = (obj) => {
+    dispatch(onselectthegroup(obj));
   };
   return (
     <div
       className="border border-gray-200 rounded-md shadow-md p-4 mb-4"
-      onClick={() => NavigatetoOneGroups(id)}
+      onClick={() => SelectedTheGroup(obj)}
     >
-      <div className="text-lg font-medium text-gray-800">{name}</div>
+      <div className="text-lg font-medium text-gray-800">
+        {obj.nameofthegroup.toUpperCase()}
+      </div>
     </div>
   );
 };

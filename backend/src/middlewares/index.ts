@@ -26,8 +26,13 @@ export const Authentication = async (
     }
 
     const { email } = jwt.verify(token, secret) as { email: string };
+    console.log(email);
 
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({
+      where: {
+        email: email,
+      },
+    });
     if (!user) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
