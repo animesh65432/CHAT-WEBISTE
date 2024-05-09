@@ -21,7 +21,7 @@ io.on("connection", (socket) => {
           GroupId: GroupId,
         },
       });
-      socket.emit("messages", messages); // Emitting back to the specific socket that triggered the request
+      socket.emit("messages", messages); 
     } catch (error) {
       console.log(error);
     }

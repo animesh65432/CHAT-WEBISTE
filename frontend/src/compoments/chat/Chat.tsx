@@ -6,7 +6,6 @@ import Error from "./Error";
 const Chat = () => {
   let isuser = useSelector((state) => state.group.isuser);
   let userselectedGrops = useSelector((state) => state.group.selectedGroups);
-  console.log(userselectedGrops);
   if (userselectedGrops) {
     if (!isuser) {
       return <Error />;

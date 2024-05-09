@@ -18,7 +18,6 @@ const useGetalltheusers = () => {
 
       let data = response?.data?.data;
       return data;
-      return true;
     } catch (error) {
       console.log(error);
       return null;

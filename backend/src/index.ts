@@ -9,6 +9,7 @@ import MessageRouter from "./router/messages";
 import Groups from "./models/Groups";
 import userGroup from "./models/userGroup";
 import Groupsrouter from "./router/Groups";
+import job from "./jobs";
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -24,6 +25,7 @@ Groups.hasMany(Message);
 Message.belongsTo(Groups);
 user.belongsToMany(Groups, { through: userGroup });
 Groups.belongsToMany(user, { through: userGroup });
+job.start();
 database
   .sync()
   .then(() => {
