@@ -3,9 +3,6 @@ import { StatusCodes } from "http-status-codes";
 import userGroup from "../../models/userGroup";
 import Groups from "../../models/Groups";
 import database from "../../database";
-import users from "../../models/user";
-import { where } from "sequelize";
-
 export const CreateTheGroup = async (req: Request, res: Response) => {
   const t = await database.transaction();
   try {
@@ -186,7 +183,7 @@ export const isAdminOrNot = async (req: Request, res: Response) => {
     });
 
     if (!GroupAndUser) {
-      return res.status(StatusCodes.OK).json({
+      return res.status(StatusCodes.BAD_GATEWAY).json({
         success: false,
         message: "User is not joined in this group",
       });

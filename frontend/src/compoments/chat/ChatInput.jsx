@@ -12,6 +12,10 @@ const ChatInput = () => {
 
   const handleSendMessage = async () => {
     try {
+      if (!Group) {
+        toast.error("Please Select The Group");
+        return;
+      }
       let res = await SentTheMessage({
         message: inputText,
         GroupId: Group.id,

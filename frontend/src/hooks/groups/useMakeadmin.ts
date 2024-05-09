@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
-
 const useMakeadmin = () => {
   const token = useSelector((state) => state.auth.idtoken);
   const Groups = useSelector((state) => state.group.selectedGroups);
+
   let Groupid = Groups.id;
   const makeadmin = async (id) => {
     try {
@@ -20,8 +20,11 @@ const useMakeadmin = () => {
         }
       );
       console.log(response);
+
+      return true;
     } catch (error) {
       console.log(error);
+      return false;
     }
   };
 

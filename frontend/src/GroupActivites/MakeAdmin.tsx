@@ -1,15 +1,22 @@
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import useMakeadmin from "../hooks/groups/useMakeadmin";
 
 const MakeAdmin = ({ user }) => {
   const isadmin = useSelector((state) => state.group.isuserGroupAdmin);
   const [makeadmin] = useMakeadmin();
-  const OnClickMakeadmin = () => {
-    if (!isadmin) {
-      toast.error("you are not admin");
-    } else {
-      makeadmin(user?.id);
+  const OnClickMakeadmin = async () => {
+    try {
+      if (!isadmin) {
+        toast.error("you are not admin");
+      } else {
+        let res = makeadmin(user?.id);
+        console.log(res);
+        toast.success("Sucessfully make the admin");
+      }
+    } catch (error) {
+      toast.error("try again");
+      console.log(error);
     }
   };
   return (
@@ -20,6 +27,7 @@ const MakeAdmin = ({ user }) => {
       >
         Make Admin
       </button>
+      <ToastContainer />
     </div>
   );
 };

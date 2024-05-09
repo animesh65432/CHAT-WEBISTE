@@ -8,9 +8,11 @@ import useCheckisAdmin from "../hooks/groups/useCheckisAdmin";
 const Groups = () => {
   const [fetchData] = useGroups();
   const selectedgroups = useSelector((state) => state.group.selectedGroups);
-  const groups = useSelector((state) => state.group.value);
+  const groups = useSelector((state) => state.group.GroupArray);
   const [fetchdata] = useCheckisAdmin();
   const [loading, setLoading] = useState(true);
+
+  console.log(groups);
   useEffect(() => {
     const fetchDataAsync = async () => {
       try {

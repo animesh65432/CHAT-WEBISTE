@@ -17,11 +17,11 @@ const useGetalltheusers = () => {
       );
 
       let data = response?.data?.data;
-      dispatch(getalltheusers(data));
+      return data;
       return true;
     } catch (error) {
       console.log(error);
-      return false;
+      return null;
     }
   };
 

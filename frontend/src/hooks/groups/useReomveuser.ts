@@ -21,8 +21,12 @@ const useRemoveUser = () => {
         }
       );
       console.log(response.data);
+
+      return true;
     } catch (error) {
       console.error("Error removing user:", error);
+
+      return false;
     }
   };
 

@@ -17,8 +17,6 @@ const useGroups = () => {
         }
       );
 
-      console.log(response);
-
       dispatch(addtheGrouops(response?.data?.data));
       return response?.data?.data;
     } catch (error) {

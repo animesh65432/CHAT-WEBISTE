@@ -20,8 +20,10 @@ const useJointheuser = () => {
         }
       );
       console.log(response?.data);
+      return true;
     } catch (error) {
       console.log(error);
+      return false;
     }
   };
 

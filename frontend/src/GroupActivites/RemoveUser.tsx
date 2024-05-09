@@ -6,11 +6,17 @@ const RemoveUser = ({ user }) => {
   const isadmin = useSelector((state) => state.group.isuserGroupAdmin);
   const [RemoveTheUser] = useRemoveUser();
 
-  const OnRemoveuser = () => {
-    if (!isadmin) {
-      toast.error("you are not admin");
-    } else {
-      RemoveTheUser(user?.id);
+  const OnRemoveuser = async () => {
+    try {
+      if (!isadmin) {
+        toast.error("you are not admin");
+      } else {
+        let res = RemoveTheUser(user?.id);
+        toast.success("sucessfully remove the user");
+      }
+    } catch (error) {
+      toast.error("try again later");
+      console.log(error);
     }
   };
   return (
@@ -21,6 +27,7 @@ const RemoveUser = ({ user }) => {
       >
         Remove
       </button>
+      <ToastContainer />
     </div>
   );
 };

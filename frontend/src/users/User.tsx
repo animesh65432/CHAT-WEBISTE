@@ -2,26 +2,42 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import GroupActivities from "../GroupActivites/Groupactivites";
 import useGetalltheusers from "../hooks/useGetalltheusers";
+
 const User = () => {
-  const users = useSelector((state) => state.user.value);
+  const [usersArray, setUsersArray] = useState([]);
   const currentUserEmail = useSelector((state) => state.user.currentuseremail);
   const [userInput, setUserInput] = useState("");
   const [fetchtheusers] = useGetalltheusers();
-  const userswithoutcurrentuser = users.filter(
-    (obj) => obj.email !== currentUserEmail
-  );
-  const [usersArray, setUsersArray] = useState(userswithoutcurrentuser);
   const [ShowGroupactivites, SetshowGroupactivites] = useState(false);
+
   const onChangeTheUsersName = (e) => {
     const input = e.target.value;
     setUserInput(input);
-    const suggestedUsers = userswithoutcurrentuser.filter(
-      (user) => user.name.includes(input) && user.email !== currentUserEmail
-    );
-    setUsersArray(suggestedUsers);
+
+    if (input.length > 0) {
+      const suggestedUsers = usersArray.filter(
+        (user) => user.name.includes(input) && user.email !== currentUserEmail
+      );
+      setUsersArray(suggestedUsers);
+    } else {
+      setUsersArray(users);
+    }
   };
+
+  const afterrenderingtheconpoment = async () => {
+    try {
+      let data = await fetchtheusers();
+      const userswithoutcurrentuser = data.filter(
+        (obj) => obj.email !== currentUserEmail
+      );
+      setUsersArray(userswithoutcurrentuser);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    fetchtheusers();
+    afterrenderingtheconpoment();
   }, []);
 
   return (
@@ -37,6 +53,7 @@ const User = () => {
         id="username"
         className="mt-1 block w-full border-2 border-gray-300 bg-white rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         placeholder="Search user name here"
+        value={userInput}
         onChange={onChangeTheUsersName}
       />
       <h4 className="text-lg font-semibold mb-4 mt-6">Users</h4>

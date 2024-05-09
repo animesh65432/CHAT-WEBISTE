@@ -6,11 +6,17 @@ import useJointheuser from "../hooks/groups/useJointheuser";
 const Joinusers = ({ user }) => {
   const isadmin = useSelector((state) => state.group.isuserGroupAdmin);
   const [joinTheGroup] = useJointheuser();
-  const OnclickJoinTheuser = () => {
-    if (!isadmin) {
-      toast.error("You Are not admin");
-    } else {
-      joinTheGroup(user.id);
+  const OnclickJoinTheuser = async () => {
+    try {
+      if (!isadmin) {
+        toast.error("You Are not admin");
+      } else {
+        let res = await joinTheGroup(user.id);
+        toast.success("sucessfully join the group");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("try again later");
     }
   };
   return (
@@ -21,6 +27,7 @@ const Joinusers = ({ user }) => {
       >
         Join
       </button>
+      <ToastContainer />
     </div>
   );
 };

@@ -2,16 +2,18 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import User from "../../users/User";
 import io from "socket.io-client";
+import useSentMessage from "../../hooks/useSentMessage";
 
 const ChatMessage = () => {
   const selectedGroups = useSelector((state) => state.group.selectedGroups);
   const messagesEndRef = useRef(null);
   const [showUsers, setShowUsers] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [SentTheMessage] = useSentMessage();
 
   useEffect(() => {
     if (!selectedGroups) {
-      return; // Don't do anything if selectedGroups is not available
+      return;
     }
 
     const socket = io("http://localhost:4000", {
