@@ -27,7 +27,7 @@ user.belongsToMany(Groups, { through: userGroup });
 Groups.belongsToMany(user, { through: userGroup });
 job.start();
 database
-  .sync()
+  .sync({ force: true })
   .then(() => {
     app.listen(process.env.PORT, () => {
       console.log(`server at the ${process.env.PORT}`);

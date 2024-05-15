@@ -19,7 +19,6 @@ const useCreateGroup = () => {
       );
       console.log(result);
       dispatch(creategroupwithobject(obj));
-
       return true;
     } catch (error) {
       console.log(error);

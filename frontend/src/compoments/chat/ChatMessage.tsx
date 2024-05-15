@@ -23,6 +23,7 @@ const ChatMessage = () => {
     socket.emit("getMessages", selectedGroups.id);
 
     socket.on("messages", (newMessages) => {
+      console.log(newMessages);
       setMessages(newMessages);
       scrollToBottom();
     });
@@ -30,7 +31,7 @@ const ChatMessage = () => {
     return () => {
       socket.disconnect();
     };
-  }, [selectedGroups]);
+  }, [selectedGroups, SentTheMessage]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -58,6 +59,10 @@ const ChatMessage = () => {
         {messages.map((messageObj, index) => (
           <div key={index} className="message bg-gray-200 rounded p-2 mb-2">
             {messageObj.message}
+            <img
+              src={messageObj?.imgandvideourl}
+              className="w-full h-auto rounded-lg"
+            />
           </div>
         ))}
 

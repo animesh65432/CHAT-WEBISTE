@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import usesentMessages from "../../hooks/useSentMessage";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { MdOutlineAttachFile } from "react-icons/md";
+import ImagesandVideossend from "./ImagesandVideos";
 const ChatInput = () => {
   const [inputText, setInputText] = useState("");
   const Group = useSelector((state) => state.group.selectedGroups);
   const [SentTheMessage] = usesentMessages();
+  const [showfile, setthefile] = useState(false);
   const handleInputChange = (event) => {
     setInputText(event.target.value);
   };
@@ -49,6 +52,10 @@ const ChatInput = () => {
         >
           Send
         </button>
+        <button onClick={() => setthefile((prev) => !prev)}>
+          <MdOutlineAttachFile />
+        </button>
+        {showfile && <ImagesandVideossend />}
       </div>
       <ToastContainer />
     </div>

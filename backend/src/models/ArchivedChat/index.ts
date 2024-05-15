@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 
 const ArchivedChat = database.define("ArchivedChat", {
   id: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,

@@ -45,9 +45,9 @@ const SigninPage = () => {
         email: "",
       });
       if (res) {
-        toast.success("Sucessfully create The account");
-      } else {
         toast.error(errors);
+      } else {
+        toast.success("sucessfully create the user");
       }
     }
   };

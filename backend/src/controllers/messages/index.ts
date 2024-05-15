@@ -1,8 +1,8 @@
 import { Server } from "socket.io";
-import { Request, response } from "express";
-import Groups from "../../models/Groups";
+import { Request, Response } from "express";
 import Message from "../../models/msg";
 import { StatusCodes } from "http-status-codes";
+import { gethefile } from "../../services";
 
 const io = new Server(4000, {
   cors: {
@@ -21,7 +21,14 @@ io.on("connection", (socket) => {
           GroupId: GroupId,
         },
       });
-      socket.emit("messages", messages); 
+
+      for (let i = 0; i < messages.length; i++) {
+        if (messages[i].filename) {
+          messages[i].imgandvideourl = await gethefile(messages[i].filename);
+        }
+      }
+
+      socket.emit("messages", messages);
     } catch (error) {
       console.log(error);
     }
