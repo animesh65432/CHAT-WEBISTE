@@ -1,19 +1,25 @@
-import { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import useloginhook from "../hooks/useloginhook";
 
-const LoginPage = () => {
-  const [userinput, setuserinput] = useState({
+interface UserInput {
+  email: string;
+  password: string;
+}
+
+const LoginPage: React.FC = () => {
+  const [userinput, setuserinput] = useState<UserInput>({
     email: "",
     password: "",
   });
-  const [loginuser, errors] = useloginhook();
+
+  const [loginuser, errors] = useloginhook(); // Type inference
 
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     console.log(id, value);
     setuserinput((prevUserInput) => ({
@@ -26,14 +32,14 @@ const LoginPage = () => {
     navigate("/");
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (userinput.email == "" || userinput.password == "") {
-      toast.error("please fill each and every filed");
+    if (userinput.email === "" || userinput.password === "") {
+      toast.error("Please fill each and every field");
     } else {
-      let res = await loginuser(userinput);
+      const res = await loginuser(userinput);
       if (res) {
-        toast.success("Sucessfully login");
+        toast.success("Successfully logged in");
       } else {
         toast.error(errors);
       }
@@ -82,7 +88,7 @@ const LoginPage = () => {
               type="submit"
               className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              login
+              Login
             </button>
           </div>
         </form>

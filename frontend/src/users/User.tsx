@@ -3,14 +3,23 @@ import { useSelector } from "react-redux";
 import GroupActivities from "../GroupActivites/Groupactivites";
 import useGetalltheusers from "../hooks/useGetalltheusers";
 
-const User = () => {
-  const [usersArray, setUsersArray] = useState([]);
-  const currentUserEmail = useSelector((state) => state.user.currentuseremail);
-  const [userInput, setUserInput] = useState("");
-  const [fetchtheusers] = useGetalltheusers();
-  const [ShowGroupactivites, SetshowGroupactivites] = useState(false);
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
-  const onChangeTheUsersName = (e) => {
+const User: React.FC = () => {
+  const [usersArray, setUsersArray] = useState<User[]>([]);
+  const currentUserEmail = useSelector<string>(
+    (state: any) => state.user.currentuseremail
+  );
+  const [userInput, setUserInput] = useState<string>("");
+  const [fetchtheusers] = useGetalltheusers();
+  const [showGroupActivities, setShowGroupActivities] =
+    useState<boolean>(false);
+
+  const onChangeTheUsersName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setUserInput(input);
 
@@ -20,24 +29,24 @@ const User = () => {
       );
       setUsersArray(suggestedUsers);
     } else {
-      setUsersArray(users);
+      setUsersArray(usersArray);
     }
   };
 
-  const afterrenderingtheconpoment = async () => {
+  const afterRenderingComponent = async () => {
     try {
-      let data = await fetchtheusers();
-      const userswithoutcurrentuser = data.filter(
+      const data: User[] = await fetchtheusers();
+      const usersWithoutCurrentUser = data.filter(
         (obj) => obj.email !== currentUserEmail
       );
-      setUsersArray(userswithoutcurrentuser);
+      setUsersArray(usersWithoutCurrentUser);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    afterrenderingtheconpoment();
+    afterRenderingComponent();
   }, []);
 
   return (
@@ -70,12 +79,12 @@ const User = () => {
             >
               <p className="text-gray-800 font-medium">{user.name}</p>
               <button
-                onClick={() => SetshowGroupactivites((prev) => !prev)}
+                onClick={() => setShowGroupActivities((prev) => !prev)}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
               >
                 Edit
               </button>
-              {ShowGroupactivites && <GroupActivities user={user} />}
+              {showGroupActivities && <GroupActivities user={user} />}
             </div>
           ))
         )}

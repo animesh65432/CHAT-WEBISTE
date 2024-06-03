@@ -1,9 +1,13 @@
 import { useDispatch } from "react-redux";
 import { onselectthegroup } from "../reduex/Groups";
-const Groupitems = ({ obj }) => {
+import React from "react";
+interface Props {
+  obj: any;
+}
+const Groupitems: React.FC<Props> = ({ obj }) => {
   const dispatch = useDispatch();
 
-  const SelectedTheGroup = (obj) => {
+  const SelectedTheGroup = (obj: any) => {
     dispatch(onselectthegroup(obj));
   };
   return (

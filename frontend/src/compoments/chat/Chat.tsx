@@ -2,10 +2,13 @@ import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 import { useSelector } from "react-redux";
 import Error from "./Error";
+import React from "react";
 
-const Chat = () => {
-  let isuser = useSelector((state) => state.group.isuser);
-  let userselectedGrops = useSelector((state) => state.group.selectedGroups);
+const Chat: React.FC = () => {
+  let isuser = useSelector((state: any) => state.group.isuser);
+  let userselectedGrops = useSelector(
+    (state: any) => state.group.selectedGroups
+  );
   if (userselectedGrops) {
     if (!isuser) {
       return <Error />;

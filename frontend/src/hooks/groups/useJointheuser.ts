@@ -1,14 +1,15 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { baseurl } from "../../utils";
 
 const useJointheuser = () => {
-  const Group = useSelector((state) => state.group.selectedGroups);
-  const token = useSelector((state) => state.auth.idtoken);
+  const Group = useSelector((state: any) => state.group.selectedGroups);
+  const token = useSelector((state: any) => state.auth.idtoken);
   const GroupId = Group.id;
-  const joinTheGroup = async (id) => {
+  const joinTheGroup = async (id: any) => {
     try {
       let response = await axios.post(
-        `http://localhost:3000/Groups/JoinGroupthroungadmin`,
+        `${baseurl}/Groups/JoinGroupthroungadmin`,
         {
           GroupId: GroupId,
           UserId: id,

@@ -4,11 +4,14 @@ import Groupitems from "./Groupitems";
 import GroupBottomFrom from "./GruopsFrom/GroupBottomFrom";
 import { useSelector } from "react-redux";
 import useCheckisAdmin from "../hooks/groups/useCheckisAdmin";
+import React from "react";
 
-const Groups = () => {
+const Groups: React.FC = () => {
   const [fetchData] = useGroups();
-  const selectedgroups = useSelector((state) => state.group.selectedGroups);
-  const groups = useSelector((state) => state.group.GroupArray);
+  const selectedgroups = useSelector(
+    (state: any) => state.group.selectedGroups
+  );
+  const groups = useSelector((state: any) => state.group.GroupArray);
   const [fetchdata] = useCheckisAdmin();
   const [loading, setLoading] = useState(true);
 
@@ -46,7 +49,7 @@ const Groups = () => {
     <div className="max-w-3xl mx-auto mt-8 bg-white shadow-md rounded-lg p-6">
       <h2 className="text-2xl font-bold mb-4">Groups</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {groups.map((group, index) => (
+        {groups.map((group: any, index: any) => (
           <Groupitems key={index} obj={group} />
         ))}
       </div>

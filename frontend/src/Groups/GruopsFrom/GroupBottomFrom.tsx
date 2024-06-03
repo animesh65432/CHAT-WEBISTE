@@ -1,7 +1,8 @@
 import { useState } from "react";
 import GroupForm from "./GroupFrom";
+import React from "react";
 
-const GroupBottomFrom = () => {
+const GroupBottomFrom: React.FC = () => {
   const [show, setShow] = useState(false);
 
   const onChangeTheBottom = () => {

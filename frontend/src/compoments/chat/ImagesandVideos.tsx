@@ -1,24 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { baseurl } from "../../utils";
 
-const ImagesandVideossend = () => {
-  const [selectedImageandvideos, setSelectedImageandVideos] = useState(null);
-  const token = useSelector((state) => state.auth.idtoken);
-  const Group = useSelector((state) => state.group.selectedGroups);
+interface RootState {
+  auth: {
+    idtoken: string;
+  };
+  group: {
+    selectedGroups: {
+      id: string;
+    } | null;
+  };
+}
 
-  const handleImageChangeandvideos = (event) => {
-    setSelectedImageandVideos(event.target.files[0]);
+const ImagesandVideossend: React.FC = () => {
+  const [selectedImageandvideos, setSelectedImageandVideos] =
+    useState<File | null>(null);
+  const token = useSelector((state: RootState) => state.auth.idtoken);
+  const Group = useSelector((state: RootState) => state.group.selectedGroups);
+
+  const handleImageChangeandvideos = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedImageandVideos(event.target.files[0]);
+    }
   };
 
   const handleSendImageandvideos_sent = async () => {
+    if (!Group || !selectedImageandvideos) {
+      toast.error("Group or image/video not selected.");
+      return;
+    }
+
     try {
-      let response = await axios.post(
-        `http://localhost:3000/message/sendfile`,
+      const response = await axios.post(
+        `${baseurl}/message/sendfile`,
         {
           GroupId: Group.id,
-          ContentType: "jpg",
+          ContentType: selectedImageandvideos.type,
         },
         {
           headers: {
@@ -26,8 +46,9 @@ const ImagesandVideossend = () => {
           },
         }
       );
-      let url = response?.data?.url;
-      let result = await axios.put(url, selectedImageandvideos);
+
+      const url = response?.data?.url;
+      const result = await axios.put(url, selectedImageandvideos);
       console.log(result);
       toast.success("Image sent successfully!");
     } catch (error) {

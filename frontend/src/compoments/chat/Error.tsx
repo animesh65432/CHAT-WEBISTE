@@ -1,4 +1,6 @@
-const Error = () => {
+import React from "react";
+
+const Error: React.FC = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="bg-red-500 text-white font-bold rounded-lg border shadow-lg p-5">

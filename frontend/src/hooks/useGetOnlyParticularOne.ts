@@ -1,18 +1,16 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { baseurl } from "../utils";
 
 const useGetOnlyParticularOne = () => {
-  const token = useSelector((state) => state.auth.idtoken);
-  const fecthdata = async (id) => {
+  const token = useSelector((state: any) => state.auth.idtoken);
+  const fecthdata = async (id: any) => {
     try {
-      let res = await axios.get(
-        `http://localhost:3000/Groups/GetOnlyGroup/:${id}`,
-        {
-          headers: {
-            token: token,
-          },
-        }
-      );
+      let res = await axios.get(`${baseurl}/Groups/GetOnlyGroup/:${id}`, {
+        headers: {
+          token: token,
+        },
+      });
       console.log(res);
       return res?.data?.data;
     } catch (error) {

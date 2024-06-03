@@ -2,7 +2,8 @@ import Chat from "./chat/Chat";
 import { useEffect } from "react";
 import useGetMessages from "../hooks/useGetMessages";
 import Groups from "../Groups/Groups";
-const Home = () => {
+import React from "react";
+const Home: React.FC = () => {
   const [GetTheMessagesfunc] = useGetMessages();
   useEffect(() => {
     GetTheMessagesfunc();

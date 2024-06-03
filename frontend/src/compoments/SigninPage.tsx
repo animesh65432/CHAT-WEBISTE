@@ -1,20 +1,31 @@
-import { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import useCreateuser from "../hooks/useCreateuser";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
-const SigninPage = () => {
-  const [userInput, setUserInput] = useState({
+interface UserInput {
+  name: string;
+  email: string;
+  password: string;
+  phonenumber: string;
+}
+
+const SigninPage: React.FC = () => {
+  const [userInput, setUserInput] = useState<UserInput>({
     name: "",
     email: "",
     password: "",
     phonenumber: "",
   });
-  const [createthesuer, errors] = useCreateuser();
+
+  const [createthesuer, errors]: [
+    (input: UserInput) => Promise<boolean>,
+    string
+  ] = useCreateuser();
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     console.log(id, value);
     setUserInput((prevUserInput) => ({
@@ -26,17 +37,18 @@ const SigninPage = () => {
   const Navigateloginto = () => {
     navigate("/login");
   };
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (
       userInput.email === "" ||
       userInput.password === "" ||
-      userInput.phonenumber == "" ||
-      userInput.name == ""
+      userInput.phonenumber === "" ||
+      userInput.name === ""
     ) {
       toast.error("please fill up each and everything");
     } else {
-      let res = await createthesuer(userInput);
+      const res = await createthesuer(userInput);
 
       setUserInput({
         name: "",
@@ -45,9 +57,9 @@ const SigninPage = () => {
         email: "",
       });
       if (res) {
-        toast.error(errors);
+        toast.success("Successfully created the user");
       } else {
-        toast.success("sucessfully create the user");
+        toast.error(errors);
       }
     }
   };
@@ -61,7 +73,7 @@ const SigninPage = () => {
               htmlFor="name"
               className="block text-sm font-medium text-gray-700"
             >
-              Name :
+              Name:
             </label>
             <input
               id="name"
@@ -92,7 +104,7 @@ const SigninPage = () => {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Password
+              Password:
             </label>
             <input
               id="password"
@@ -105,7 +117,7 @@ const SigninPage = () => {
           </div>
           <div className="mt-4">
             <label
-              htmlFor="phoneNumber"
+              htmlFor="phonenumber"
               className="block text-sm font-medium text-gray-700"
             >
               Phone Number:

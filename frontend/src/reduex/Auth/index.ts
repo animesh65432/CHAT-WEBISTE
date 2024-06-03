@@ -11,6 +11,7 @@ const AuthSlice = createSlice({
       localStorage.setItem("idtoken", action.payload);
     },
     deleteidtoken: (state, action) => {
+      console.log(action.payload);
       state.idtoken = "";
       localStorage.removeItem("idtoken");
     },

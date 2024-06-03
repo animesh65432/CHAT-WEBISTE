@@ -4,12 +4,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { MdOutlineAttachFile } from "react-icons/md";
 import ImagesandVideossend from "./ImagesandVideos";
-const ChatInput = () => {
+const ChatInput: React.FC = () => {
   const [inputText, setInputText] = useState("");
-  const Group = useSelector((state) => state.group.selectedGroups);
+  const Group = useSelector((state: any) => state.group.selectedGroups);
   const [SentTheMessage] = usesentMessages();
   const [showfile, setthefile] = useState(false);
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: any) => {
     setInputText(event.target.value);
   };
 

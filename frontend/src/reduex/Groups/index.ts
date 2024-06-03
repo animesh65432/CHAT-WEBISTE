@@ -1,30 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Group {}
+
+interface GroupsState {
+  GroupArray: Group[];
+  selectedGroups?: Group;
+  isuserGroupAdmin: boolean;
+  isuser: boolean;
+}
+
+const initialState: GroupsState = {
+  GroupArray: [],
+  selectedGroups: undefined,
+  isuserGroupAdmin: false,
+  isuser: false,
+};
 
 const Groups = createSlice({
   name: "Groups",
-  initialState: {
-    GroupArray: [],
-    selectedGroups: undefined,
-    isuserGroupAdmin: false,
-    isuser: false,
-  },
+  initialState,
   reducers: {
-    addtheGrouops: (state, action) => {
+    addtheGrouops: (state, action: PayloadAction<Group[]>) => {
       state.GroupArray = action.payload;
     },
-    creategroupwithobject: (state, action) => {
-      const GropusArray = state.GroupArray;
-      GropusArray.push(action.payload);
-      state.GroupArray = GropusArray;
+    creategroupwithobject: (state, action: PayloadAction<Group>) => {
+      state.GroupArray.push(action.payload);
     },
-    onselectthegroup: (state, action) => {
+    onselectthegroup: (state, action: PayloadAction<Group>) => {
       state.selectedGroups = action.payload;
     },
-    Getuseradmin: (state, action) => {
+    Getuseradmin: (state, action: PayloadAction<boolean>) => {
       state.isuserGroupAdmin = action.payload;
     },
-    isuserinthegroup: (state, acion) => {
-      state.isuser = acion.payload;
+    isuserinthegroup: (state, action: PayloadAction<boolean>) => {
+      state.isuser = action.payload;
     },
   },
 });

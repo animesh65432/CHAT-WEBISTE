@@ -1,14 +1,16 @@
-import { useState } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useCreateGroup from "../../hooks/useCreateGroup";
 
-const GroupForm = () => {
-  const [groupName, setGroupName] = useState("");
-  const [isStrict, setIsStrict] = useState(false);
+interface GroupFormProps {}
+
+const GroupForm: React.FC<GroupFormProps> = () => {
+  const [groupName, setGroupName] = useState<string>("");
+  const [isStrict, setIsStrict] = useState<boolean>(false);
   const [createGroup] = useCreateGroup();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (groupName.length === 0) {
       toast.error("Please fill The name");
@@ -20,7 +22,7 @@ const GroupForm = () => {
         isstrictGroup: isStrict,
       };
 
-      let flag = createGroup(obj);
+      let flag: any = createGroup(obj);
 
       if (flag) {
         toast.success("Successfully create the group");
@@ -30,6 +32,10 @@ const GroupForm = () => {
 
       return;
     }
+  };
+
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setIsStrict(event.target.value === "true");
   };
 
   return (
@@ -57,12 +63,12 @@ const GroupForm = () => {
             Press true to get superpower:
           </label>
           <select
-            onChange={(e) => setIsStrict(e.target.value)}
+            onChange={handleSelectChange}
             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-blue-200"
             id="admin"
           >
-            <option value={true}>true</option>
-            <option value={false}>false</option>
+            <option value="true">true</option>
+            <option value="false">false</option>
           </select>
           <button
             type="submit"

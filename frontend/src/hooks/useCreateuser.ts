@@ -1,16 +1,25 @@
 import axios from "axios";
 import { useState } from "react";
-const useCreateUser = () => {
-  const [errors, setErrors] = useState("");
+import { baseurl } from "../utils";
 
-  const createUser = async (obj) => {
+interface UserInput {
+  name: string;
+  email: string;
+  password: string;
+  phonenumber: string;
+}
+
+type UseCreateUserHook = [(obj: UserInput) => Promise<boolean>, string];
+
+const useCreateUser = (): UseCreateUserHook => {
+  const [errors, setErrors] = useState<string>("");
+
+  const createUser = async (obj: UserInput): Promise<boolean> => {
     try {
-      let response = await axios.post(
-        "http://localhost:3000/users/Singup",
-        obj
-      );
-    } catch (error) {
-      console.error(error);
+      const response = await axios.post(`${baseurl}/users/Singup`, obj);
+      console.log(response);
+      return true;
+    } catch (error: any) {
       if (
         error.response &&
         error.response.data &&

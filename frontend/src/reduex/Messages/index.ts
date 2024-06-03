@@ -1,31 +1,41 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const loadMessagesFromLocalStorage = () => {
-  const storedMessages = JSON.parse(localStorage.getItem("messages")) || [];
+interface Message {}
+
+interface MessagesState {
+  messagesarray: Message[];
+}
+
+const loadMessagesFromLocalStorage = (): Message[] => {
+  const storedMessagesString = localStorage.getItem("messages");
+  if (storedMessagesString === null) {
+    return [];
+  }
+  const storedMessages: Message[] = JSON.parse(storedMessagesString);
   return storedMessages;
+};
+
+const initialState: MessagesState = {
+  messagesarray: loadMessagesFromLocalStorage(),
 };
 
 const Messages = createSlice({
   name: "Messages",
-  initialState: {
-    messagesarray: loadMessagesFromLocalStorage(),
-  },
+  initialState,
   reducers: {
-    Getthemessages: (state, action) => {
+    Getthemessages: (state, action: PayloadAction<Message[]>) => {
       state.messagesarray = action.payload;
     },
-    createnewmessages: (state, action) => {
-      console.log(action.payload);
-      let Messages = state.messagesarray;
-      if (Messages.length == 0) {
-        state.messagesarray = action.payload;
-        console.log(state.messagesarray);
+    createnewmessages: (state, action: PayloadAction<Message[]>) => {
+      const newMessages = action.payload;
+      if (state.messagesarray.length === 0) {
+        state.messagesarray = newMessages;
       } else {
-        const [obj] = action.payload;
-        state.messagesarray.push(obj);
+        state.messagesarray.push(...newMessages);
       }
     },
   },
 });
+
 export const { Getthemessages, createnewmessages } = Messages.actions;
 export default Messages.reducer;

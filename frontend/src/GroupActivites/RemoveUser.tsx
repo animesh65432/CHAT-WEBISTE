@@ -1,9 +1,13 @@
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import useRemoveUser from "../hooks/groups/useReomveuser";
+import React from "react";
+interface Props {
+  user: any;
+}
 
-const RemoveUser = ({ user }) => {
-  const isadmin = useSelector((state) => state.group.isuserGroupAdmin);
+const RemoveUser: React.FC<Props> = ({ user }: any) => {
+  const isadmin = useSelector((state: any) => state.group.isuserGroupAdmin);
   const [RemoveTheUser] = useRemoveUser();
 
   const OnRemoveuser = async () => {
@@ -12,6 +16,7 @@ const RemoveUser = ({ user }) => {
         toast.error("you are not admin");
       } else {
         let res = RemoveTheUser(user?.id);
+        console.log(res);
         toast.success("sucessfully remove the user");
       }
     } catch (error) {

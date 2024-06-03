@@ -1,24 +1,33 @@
 import axios from "axios";
 import { useState } from "react";
-import { addthetoken } from "../reduex/Auth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { addthetoken } from "../reduex/Auth";
 import { getTheCurrentuseremail } from "../reduex/users";
+import { baseurl } from "../utils";
 
-const useloginhook = () => {
-  const [errors, seterrors] = useState("");
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
+type UseLoginHook = [(obj: LoginInput) => Promise<boolean>, string];
+
+const useloginhook = (): UseLoginHook => {
+  const [errors, seterrors] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const loginuser = async (obj) => {
+
+  const loginuser = async (obj: LoginInput): Promise<boolean> => {
     const { email } = obj;
     try {
-      let res = await axios.post(`http://localhost:3000/users/login`, obj);
-      let token = res?.data?.token;
+      const res = await axios.post(`${baseurl}/users/login`, obj);
+      const token = res?.data?.token;
       dispatch(addthetoken(token));
       dispatch(getTheCurrentuseremail(email));
       navigate("/");
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.response.data.message);
       if (
         error.response &&

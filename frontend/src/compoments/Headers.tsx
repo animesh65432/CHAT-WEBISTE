@@ -1,6 +1,7 @@
+import React from "react";
 import { chaticon } from "../assets/images";
 
-const Headers = () => {
+const Headers: React.FC = () => {
   return (
     <div className="bg-gray-900 py-4 flex items-center justify-between px-4">
       <div className="flex items-center">

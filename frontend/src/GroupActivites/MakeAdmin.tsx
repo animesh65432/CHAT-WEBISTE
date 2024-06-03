@@ -1,9 +1,14 @@
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import useMakeadmin from "../hooks/groups/useMakeadmin";
+import React from "react";
 
-const MakeAdmin = ({ user }) => {
-  const isadmin = useSelector((state) => state.group.isuserGroupAdmin);
+interface Props {
+  user: any;
+}
+
+const MakeAdmin: React.FC<Props> = ({ user }) => {
+  const isadmin = useSelector((state: any) => state.group.isuserGroupAdmin);
   const [makeadmin] = useMakeadmin();
   const OnClickMakeadmin = async () => {
     try {

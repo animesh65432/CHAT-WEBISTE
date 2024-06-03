@@ -3,22 +3,29 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import useJointheuser from "../hooks/groups/useJointheuser";
 
-const Joinusers = ({ user }) => {
-  const isadmin = useSelector((state) => state.group.isuserGroupAdmin);
+interface Props {
+  user: any;
+}
+
+const Joinusers: React.FC<Props> = ({ user }) => {
+  const isadmin = useSelector((state: any) => state.group.isuserGroupAdmin);
   const [joinTheGroup] = useJointheuser();
+
   const OnclickJoinTheuser = async () => {
     try {
       if (!isadmin) {
         toast.error("You Are not admin");
       } else {
         let res = await joinTheGroup(user.id);
-        toast.success("sucessfully join the group");
+        console.log(res);
+        toast.success("Successfully joined the group");
       }
     } catch (error) {
       console.log(error);
-      toast.error("try again later");
+      toast.error("Try again later");
     }
   };
+
   return (
     <div className="max-w-md mx-auto bg-white shadow-md rounded-md p-6">
       <button
