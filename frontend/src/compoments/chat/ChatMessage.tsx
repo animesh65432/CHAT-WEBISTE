@@ -1,10 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import User from "../../users/User";
+import { User } from "../../compoments";
 import io from "socket.io-client";
-import useSentMessage from "../../hooks/useSentMessage";
-import { baseurl } from "../../utils";
-
 interface Group {
   id: string;
   nameofthegroup: string;
@@ -28,7 +25,6 @@ const ChatMessage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [showUsers, setShowUsers] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [SentTheMessage] = useSentMessage();
 
   useEffect(() => {
     if (!selectedGroups) {

@@ -1,6 +1,6 @@
 import Chat from "./chat/Chat";
 import { useEffect } from "react";
-import useGetMessages from "../hooks/useGetMessages";
+import { useGetMessages } from "../hooks";
 import Groups from "../Groups/Groups";
 import React from "react";
 const Home: React.FC = () => {

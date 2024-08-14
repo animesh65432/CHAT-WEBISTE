@@ -1,7 +1,5 @@
-import ChatMessage from "./ChatMessage";
-import ChatInput from "./ChatInput";
+import { Error, ChatMessage, ChatInput } from "./index";
 import { useSelector } from "react-redux";
-import Error from "./Error";
 import React from "react";
 
 const Chat: React.FC = () => {

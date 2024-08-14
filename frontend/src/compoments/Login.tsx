@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import useloginhook from "../hooks/useloginhook";
+import { useloginhook } from "../hooks";
 
 interface UserInput {
   email: string;
@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
     password: "",
   });
 
-  const [loginuser, errors] = useloginhook(); // Type inference
+  const [loginuser, errors] = useloginhook();
 
   const navigate = useNavigate();
 

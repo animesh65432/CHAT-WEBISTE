@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import useCreateuser from "../hooks/useCreateuser";
+import { useCreateUser } from "../hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ const SigninPage: React.FC = () => {
   const [createthesuer, errors]: [
     (input: UserInput) => Promise<boolean>,
     string
-  ] = useCreateuser();
+  ] = useCreateUser();
   const navigate = useNavigate();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

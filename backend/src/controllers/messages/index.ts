@@ -3,15 +3,7 @@ import { Request, Response } from "express";
 import Message from "../../models/msg";
 import { StatusCodes } from "http-status-codes";
 import { gethefile } from "../../services";
-
-const io = new Server(4000, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
-  },
-});
+import { io } from "../../index";
 
 io.on("connection", (socket) => {
   socket.on("getMessages", async (GroupId) => {

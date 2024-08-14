@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import GroupActivities from "../GroupActivites/Groupactivites";
-import useGetalltheusers from "../hooks/useGetalltheusers";
-
+import { useGetalltheusers } from "../../hooks";
 interface User {
   id: number;
   name: string;

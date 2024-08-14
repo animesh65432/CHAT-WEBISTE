@@ -8,8 +8,8 @@ console.log(process.env.Secret_access_key, process.env.Access_key);
 
 const s3client = new S3Client({
   credentials: {
-    secretAccessKey: process.env.Secret_access_key,
-    accessKeyId: process.env.Access_key,
+    secretAccessKey: process.env.Secret_access_key as string,
+    accessKeyId: process.env.Access_key as string,
   },
   region: "us-east-1",
 });

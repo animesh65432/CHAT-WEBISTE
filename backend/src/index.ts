@@ -1,14 +1,30 @@
 import "dotenv/config";
+import http from "http";
 import express from "express";
+import { Server } from "socket.io";
 import cors from "cors";
 import database from "./database";
+import cookieparser from "cookie-parser";
 import { userrouter, messageRouter, groupsrouter } from "./router";
 import { Groups, Message, UserGroup, Users } from "./models";
 import job from "./jobs";
 const app = express();
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieparser());
+
+const server = http.createServer(app);
+
+export const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+});
 
 app.use("/users", userrouter);
 app.use("/message", messageRouter);
@@ -24,7 +40,7 @@ job.start();
 database
   .sync()
   .then(() => {
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log(`server at the ${process.env.PORT}`);
     });
   })

@@ -1,26 +1,26 @@
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import useMakeadmin from "../hooks/groups/useMakeadmin";
+import { useRemoveUser } from "../../hooks";
 import React from "react";
-
 interface Props {
   user: any;
 }
 
-const MakeAdmin: React.FC<Props> = ({ user }) => {
+const RemoveUser: React.FC<Props> = ({ user }: any) => {
   const isadmin = useSelector((state: any) => state.group.isuserGroupAdmin);
-  const [makeadmin] = useMakeadmin();
-  const OnClickMakeadmin = async () => {
+  const [RemoveTheUser] = useRemoveUser();
+
+  const OnRemoveuser = async () => {
     try {
       if (!isadmin) {
         toast.error("you are not admin");
       } else {
-        let res = makeadmin(user?.id);
+        let res = RemoveTheUser(user?.id);
         console.log(res);
-        toast.success("Sucessfully make the admin");
+        toast.success("sucessfully remove the user");
       }
     } catch (error) {
-      toast.error("try again");
+      toast.error("try again later");
       console.log(error);
     }
   };
@@ -28,13 +28,13 @@ const MakeAdmin: React.FC<Props> = ({ user }) => {
     <div className="max-w-md mx-auto bg-white shadow-md rounded-md p-6">
       <button
         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-        onClick={OnClickMakeadmin}
+        onClick={OnRemoveuser}
       >
-        Make Admin
+        Remove
       </button>
       <ToastContainer />
     </div>
   );
 };
 
-export default MakeAdmin;
+export default RemoveUser;

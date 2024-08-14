@@ -18,7 +18,7 @@ export const CreateTheUser = async (req: Request, res: Response) => {
         email: email,
       },
     });
-    console.log(exsitinguser);
+
     if (exsitinguser)
       return res.status(StatusCodes.BAD_REQUEST).json({
         sucess: false,
@@ -75,7 +75,6 @@ export const loginTheuser = async (req: Request, res: Response) => {
       });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log(isPasswordValid);
 
     if (!isPasswordValid) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -89,6 +88,7 @@ export const loginTheuser = async (req: Request, res: Response) => {
       password: password,
     });
 
+    res.cookie("token", idtoken, { maxAge: 604800000 });
     return res.status(StatusCodes.OK).json({
       success: true,
       message: "Login successful",
@@ -125,7 +125,6 @@ export const GetTheCurrentUser = async (req: Request, res: Response) => {
         email: req.user.email,
       },
     });
-    
 
     return res.status(StatusCodes.OK).json({
       sucess: true,

@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import useJointheuser from "../hooks/groups/useJointheuser";
+import { useJointheuser } from "../../hooks";
 
 interface Props {
   user: any;

@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import useGroups from "../hooks/useGroups";
-import Groupitems from "./Groupitems";
-import GroupBottomFrom from "./GruopsFrom/GroupBottomFrom";
+import { useGroups, useCheckisAdmin } from "../hooks";
+import { Groupitems, GroupBottomFrom } from "./index";
 import { useSelector } from "react-redux";
-import useCheckisAdmin from "../hooks/groups/useCheckisAdmin";
 import React from "react";
 
 const Groups: React.FC = () => {

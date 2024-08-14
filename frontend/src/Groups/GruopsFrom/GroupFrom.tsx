@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useCreateGroup from "../../hooks/useCreateGroup";
+import { useCreateGroup } from "../../hooks";
 
 interface GroupFormProps {}
 
