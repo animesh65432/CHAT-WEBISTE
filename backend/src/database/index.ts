@@ -4,7 +4,7 @@ const database = new Sequelize({
   database: process.env.DATABASE,
   password: process.env.DATABASEPASSWORD,
   username: process.env.DATABASEUSERNAME,
-  dialect: "mysql",
+  dialect: "postgres",
   host: process.env.dbhost,
 });
 

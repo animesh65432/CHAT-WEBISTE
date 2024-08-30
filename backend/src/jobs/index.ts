@@ -14,7 +14,15 @@ const job = new CronJob("0 0 * * *", async () => {
       },
     });
 
-    await ArchivedChat.bulkCreate(chats);
+    const archivedChats = chats.map((chat) => ({
+      message: chat.message || "",
+      filename: chat.filename || "",
+      imgandvideourl: chat.imgandvideourl || "",
+      createdAt: chat.createdAt,
+      updatedAt: chat.updatedAt,
+    }));
+
+    await ArchivedChat.bulkCreate(archivedChats);
     await Messages.destroy({
       where: {
         createdAt: {

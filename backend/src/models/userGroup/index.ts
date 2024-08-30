@@ -1,7 +1,16 @@
 import database from "../../database";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
-const userGroup = database.define("userGroup", {
+interface UserGroupsTypes {
+  id?: number;
+  isAdmin: boolean;
+  isstrictGroup?: boolean;
+  userId?: number;
+  GroupId?: number;
+}
+
+interface UserGroupInstacne extends Model<UserGroupsTypes>, UserGroupsTypes {}
+const userGroup = database.define<UserGroupInstacne>("userGroup", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

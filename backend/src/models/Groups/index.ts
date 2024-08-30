@@ -1,7 +1,12 @@
 import database from "../../database";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
+interface GroupTypes {
+  id?: number;
+  nameofthegroup: string;
+}
 
-const Groups = database.define("Group", {
+interface GroupIntances extends Model<GroupTypes>, GroupTypes {}
+const Groups = database.define<GroupIntances>("Group", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

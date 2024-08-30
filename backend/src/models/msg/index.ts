@@ -1,7 +1,21 @@
 import database from "../../database";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
-const Message = database.define("message", {
+interface MessageModelTypes {
+  message?: String;
+  filename?: String;
+  imgandvideourl?: String;
+  GroupId?: number;
+  userId?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+interface Messageinterface
+  extends Model<MessageModelTypes>,
+    MessageModelTypes {}
+
+const Message = database.define<Messageinterface>("message", {
   message: {
     type: DataTypes.TEXT,
     allowNull: true,

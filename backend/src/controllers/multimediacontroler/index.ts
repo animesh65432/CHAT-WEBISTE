@@ -1,7 +1,7 @@
 import Message from "../../models/msg";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { putthefile, gethefile } from "../../services";
+import { putthefile } from "../../services";
 
 export const sendthefiles = async (req: Request, res: Response) => {
   try {
@@ -22,6 +22,8 @@ export const sendthefiles = async (req: Request, res: Response) => {
       GroupId: GroupId,
       filename: filename,
     });
+
+    console.log(puturl);
 
     return res.status(StatusCodes.OK).json({
       sucess: true,

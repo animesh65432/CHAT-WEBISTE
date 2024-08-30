@@ -3,10 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import UserModel from "../models/user";
 import { StatusCodes } from "http-status-codes";
 
-const secret = "animeshdutta";
-
 export const createJWTtokens = (obj: object): string => {
-  const token = jwt.sign(obj, secret);
+  const token = jwt.sign(obj, process.env.JSONWEBSECRECT as string);
   return token;
 };
 
@@ -25,8 +23,10 @@ export const Authentication = async (
       });
     }
 
-    const { email } = jwt.verify(token, secret) as { email: string };
-    console.log(email);
+    const { email } = jwt.verify(
+      token,
+      process.env.JSONWEBSECRECT as string
+    ) as { email: string };
 
     const user = await UserModel.findOne({
       where: {

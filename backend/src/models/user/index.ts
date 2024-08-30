@@ -1,7 +1,16 @@
 import database from "../../database";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
-const users = database.define("users", {
+export interface UserTypes {
+  id?: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface UserInstance extends Model<UserTypes>, UserTypes {}
+
+const users = database.define<UserInstance>("users", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -12,10 +21,6 @@ const users = database.define("users", {
     unique: true,
   },
   password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  phonenumber: {
     type: DataTypes.STRING,
     allowNull: false,
   },

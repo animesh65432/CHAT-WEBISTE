@@ -5,9 +5,9 @@ import { createJWTtokens } from "../../middlewares";
 import bcrypt from "bcrypt";
 export const CreateTheUser = async (req: Request, res: Response) => {
   try {
-    let { name, password, email, phonenumber } = req.body;
+    let { name, password, email } = req.body;
     console.log(password);
-    if (!name || !password || !email || !phonenumber)
+    if (!name || !password || !email)
       return res.status(StatusCodes.BAD_REQUEST).json({
         sucess: false,
         message: "invaild creadationals",
@@ -36,7 +36,6 @@ export const CreateTheUser = async (req: Request, res: Response) => {
       name: name,
       password: haspassword,
       email: email,
-      phonenumber: phonenumber,
     });
 
     return res.status(StatusCodes.CREATED).json({

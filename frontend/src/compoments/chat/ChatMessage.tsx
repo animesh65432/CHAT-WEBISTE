@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { User } from "../../compoments";
 import io from "socket.io-client";
+import { baseurl } from "../../utils";
 interface Group {
   id: string;
   nameofthegroup: string;
@@ -31,22 +32,18 @@ const ChatMessage: React.FC = () => {
       return;
     }
 
-    const socket = io("http://localhost:4000", {
+    const socket = io(baseurl, {
       withCredentials: true,
     });
-
-    socket.emit("getMessages", selectedGroups.id);
-
+    console.log(socket.connected);
     socket.on("messages", (newMessages: Message[]) => {
       console.log(newMessages);
       setMessages(newMessages);
       scrollToBottom();
     });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+    console.log(selectedGroups.id);
+    socket.emit("getMessages", { GroupId: selectedGroups.id });
+  }, [selectedGroups]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

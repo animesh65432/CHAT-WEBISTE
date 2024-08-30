@@ -1,31 +1,8 @@
-import { Server } from "socket.io";
 import { Request, Response } from "express";
 import Message from "../../models/msg";
 import { StatusCodes } from "http-status-codes";
 import { gethefile } from "../../services";
-import { io } from "../../index";
-
-io.on("connection", (socket) => {
-  socket.on("getMessages", async (GroupId) => {
-    try {
-      let messages = await Message.findAll({
-        where: {
-          GroupId: GroupId,
-        },
-      });
-
-      for (let i = 0; i < messages.length; i++) {
-        if (messages[i].filename) {
-          messages[i].imgandvideourl = await gethefile(messages[i].filename);
-        }
-      }
-
-      socket.emit("messages", messages);
-    } catch (error) {
-      console.log(error);
-    }
-  });
-});
+import { Socket } from "socket.io";
 
 export const sendMessage = async (req: Request, res: Response) => {
   try {
@@ -51,4 +28,34 @@ export const sendMessage = async (req: Request, res: Response) => {
     console.log(error);
     return res.status(400).json({ message: "Error" });
   }
+};
+
+export const Messagehandler = (socket: Socket) => {
+  const GetMessages = async ({ GroupId }: { GroupId: number }) => {
+    try {
+      let messages = await Message.findAll({
+        where: {
+          GroupId: GroupId,
+        },
+      });
+
+      if (messages.length === 0) {
+        socket.emit("messages", []);
+      } else {
+        for (let i = 0; i < messages.length; i++) {
+          if (messages[i].filename) {
+            messages[i].imgandvideourl = await gethefile(
+              messages[i].filename as string
+            );
+          }
+        }
+        socket.emit("messages", messages);
+      }
+    } catch (error) {
+      console.log(error);
+      socket.emit("messages", []);
+    }
+  };
+
+  socket.on("getMessages", GetMessages);
 };

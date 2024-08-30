@@ -1,7 +1,20 @@
 import database from "../../database";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
-const ArchivedChat = database.define("ArchivedChat", {
+interface ArchivedChatTypes {
+  id?: number;
+  userId?: number;
+  GroupId?: number;
+  message: String;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+interface ArchivedChatInstance
+  extends Model<ArchivedChatTypes>,
+    ArchivedChatTypes {}
+
+const ArchivedChat = database.define<ArchivedChatInstance>("ArchivedChat", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,

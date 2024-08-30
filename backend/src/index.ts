@@ -7,6 +7,7 @@ import database from "./database";
 import cookieparser from "cookie-parser";
 import { userrouter, messageRouter, groupsrouter } from "./router";
 import { Groups, Message, UserGroup, Users } from "./models";
+import { Messagehandler } from "./controllers/messages";
 import job from "./jobs";
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(cookieparser());
 
 const server = http.createServer(app);
 
-export const io = new Server(server, {
+const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
@@ -37,6 +38,13 @@ Message.belongsTo(Groups);
 Users.belongsToMany(Groups, { through: UserGroup });
 Groups.belongsToMany(Users, { through: UserGroup });
 job.start();
+
+io.on("connection", (socket) => {
+  Messagehandler(socket);
+  socket.off("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 database
   .sync()
   .then(() => {

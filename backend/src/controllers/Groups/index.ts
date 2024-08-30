@@ -56,9 +56,8 @@ export const CreateTheGroup = async (req: Request, res: Response) => {
 };
 
 export const removeuser = async (req: Request, res: Response) => {
-  let t;
+  let t = await database.transaction();
   try {
-    t = await database.transaction();
     let currentuserid = req.user.id;
     let { GroupId, UserId } = req.body;
 
@@ -66,6 +65,13 @@ export const removeuser = async (req: Request, res: Response) => {
       where: { userId: currentuserid, GroupId: GroupId },
       transaction: t,
     });
+
+    if (!CheckAdmin) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        sucess: false,
+        message: "you are not admin",
+      });
+    }
 
     if (!CheckAdmin.isAdmin) {
       await t.rollback();
@@ -99,9 +105,8 @@ export const removeuser = async (req: Request, res: Response) => {
 };
 
 export const jointhroughadmin = async (req: Request, res: Response) => {
-  let t;
+  let t = await database.transaction();
   try {
-    t = await database.transaction();
     let { GroupId, UserId } = req.body;
     let id = req.user.id;
     let CheckAdmin = await userGroup.findOne({
@@ -203,27 +208,36 @@ export const isAdminOrNot = async (req: Request, res: Response) => {
 };
 
 export const makeadmin = async (req: Request, res: Response) => {
-  let t;
+  let transaction;
   try {
-    t = await database.transaction();
-    let { UserId, GroupId } = req.body;
-    let id = req.user.id;
+    transaction = await database.transaction();
 
-    let CheckAdmin = await userGroup.findOne({
-      where: {
-        userId: id,
-        GroupId: GroupId,
-      },
-    });
+    const { UserId, GroupId } = req.body;
+    const id = req.user?.id;
 
-    if (!CheckAdmin && !CheckAdmin.isAdmin) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        Sucess: false,
-        errors: "user is not admin",
+    if (!id) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        success: false,
+        errors: "User not authenticated",
       });
     }
 
-    let userWithGroup = await userGroup.findOne({
+    const CheckAdmin = await userGroup.findOne({
+      where: {
+        userId: id,
+        GroupId: GroupId,
+        isAdmin: true,
+      },
+    });
+
+    if (!CheckAdmin) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        success: false,
+        errors: "User is not an admin",
+      });
+    }
+
+    const userWithGroup = await userGroup.findOne({
       where: {
         userId: UserId,
         GroupId: GroupId,
@@ -231,41 +245,37 @@ export const makeadmin = async (req: Request, res: Response) => {
     });
 
     if (userWithGroup) {
-      let update = await userWithGroup.update(
-        {
-          isAdmin: true,
-        },
-        {
-          where: {
-            userId: UserId,
-            GroupId: GroupId,
-          },
-        }
-      );
+      await userWithGroup.update({ isAdmin: true }, { transaction });
+
+      await transaction.commit();
 
       return res.status(StatusCodes.OK).json({
-        sucess: true,
-        data: update,
+        success: true,
+        data: userWithGroup,
       });
     } else {
-      let user = await userGroup.create({
-        where: {
+      const newUserGroup = await userGroup.create(
+        {
           userId: UserId,
           GroupId: GroupId,
           isAdmin: true,
         },
-      });
+        { transaction }
+      );
+
+      await transaction.commit();
 
       return res.status(StatusCodes.OK).json({
-        sucess: true,
-        data: user,
+        success: true,
+        data: newUserGroup,
       });
     }
   } catch (error) {
-    console.log(error);
+    if (transaction) await transaction.rollback();
+    console.error(error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      sucess: false,
-      error: "internal server errors",
+      success: false,
+      error: "Internal server error",
     });
   }
 };
