@@ -3,7 +3,7 @@ import GroupForm from "./GroupFrom";
 import React from "react";
 
 const GroupBottomFrom: React.FC = () => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<boolean>(false);
 
   const onChangeTheBottom = () => {
     setShow((prev) => !prev);

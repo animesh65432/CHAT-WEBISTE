@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import GroupActivities from "../GroupActivites/Groupactivites";
 import { useGetalltheusers } from "../../hooks";
+import { RootState } from "../../reduex/index";
 interface User {
   id: number;
   name: string;
@@ -10,8 +11,8 @@ interface User {
 
 const User: React.FC = () => {
   const [usersArray, setUsersArray] = useState<User[]>([]);
-  const currentUserEmail = useSelector<string>(
-    (state: any) => state.user.currentuseremail
+  const currentUserEmail = useSelector(
+    (state: RootState) => state.user.currentuseremail
   );
   const [userInput, setUserInput] = useState<string>("");
   const [fetchtheusers] = useGetalltheusers();

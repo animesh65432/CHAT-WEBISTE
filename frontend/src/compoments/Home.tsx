@@ -1,13 +1,7 @@
 import Chat from "./chat/Chat";
-import { useEffect } from "react";
-import { useGetMessages } from "../hooks";
 import Groups from "../Groups/Groups";
 import React from "react";
 const Home: React.FC = () => {
-  const [GetTheMessagesfunc] = useGetMessages();
-  useEffect(() => {
-    GetTheMessagesfunc();
-  }, []);
   return (
     <div className="flex h-screen">
       <div className="flex-grow flex-shrink-0 w-1/3">

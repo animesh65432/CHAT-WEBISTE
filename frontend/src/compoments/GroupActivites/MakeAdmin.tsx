@@ -2,13 +2,16 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { useMakeadmin } from "../../hooks";
 import React from "react";
+import { RootState } from "../../reduex";
 
 interface Props {
-  user: any;
+  user: { id: number; email: string };
 }
 
 const MakeAdmin: React.FC<Props> = ({ user }) => {
-  const isadmin = useSelector((state: any) => state.group.isuserGroupAdmin);
+  const isadmin = useSelector(
+    (state: RootState) => state.group.isuserGroupAdmin
+  );
   const [makeadmin] = useMakeadmin();
   const OnClickMakeadmin = async () => {
     try {

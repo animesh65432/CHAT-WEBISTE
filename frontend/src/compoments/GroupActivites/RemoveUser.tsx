@@ -1,13 +1,16 @@
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { useRemoveUser } from "../../hooks";
+import { RootState } from "../../reduex";
 import React from "react";
 interface Props {
-  user: any;
+  user: { id: number; email: string };
 }
 
 const RemoveUser: React.FC<Props> = ({ user }: any) => {
-  const isadmin = useSelector((state: any) => state.group.isuserGroupAdmin);
+  const isadmin = useSelector(
+    (state: RootState) => state.group.isuserGroupAdmin
+  );
   const [RemoveTheUser] = useRemoveUser();
 
   const OnRemoveuser = async () => {

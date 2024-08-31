@@ -2,9 +2,9 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addtheGrouops } from "../reduex/Groups";
 import { baseurl } from "../utils";
-
+import { RootState } from "../reduex";
 const useGroups = () => {
-  let token = useSelector((state: any) => state.auth.idtoken);
+  let token = useSelector((state: RootState) => state.auth.idtoken);
   const dispatch = useDispatch();
   const fecthdata = async () => {
     try {

@@ -1,17 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Group {}
+interface Group {
+  id: number;
+  nameofthegroup: string;
+}
 
 interface GroupsState {
   GroupArray: Group[];
-  selectedGroups?: Group;
+  selectedGroups: Group | null;
   isuserGroupAdmin: boolean;
   isuser: boolean;
 }
 
 const initialState: GroupsState = {
   GroupArray: [],
-  selectedGroups: undefined,
+  selectedGroups: null,
   isuserGroupAdmin: false,
   isuser: false,
 };

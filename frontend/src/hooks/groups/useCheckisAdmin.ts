@@ -2,10 +2,11 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Getuseradmin, isuserinthegroup } from "../../reduex/Groups";
 import { baseurl } from "../../utils";
+import { RootState } from "../../reduex";
 
 const useCheckisAdmin = () => {
-  const token = useSelector((state: any) => state.auth.idtoken);
-  const groups = useSelector((state: any) => state.group.selectedGroups);
+  const token = useSelector((state: RootState) => state.auth.idtoken);
+  const groups = useSelector((state: RootState) => state.group.selectedGroups);
   const groupid = groups?.id;
   const dispatch = useDispatch();
 

@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useGroups, useCheckisAdmin } from "../hooks";
 import { Groupitems, GroupBottomFrom } from "./index";
 import { useSelector } from "react-redux";
+import { RootState } from "../reduex";
 import React from "react";
 
 const Groups: React.FC = () => {
   const [fetchData] = useGroups();
   const selectedgroups = useSelector(
-    (state: any) => state.group.selectedGroups
+    (state: RootState) => state.group.selectedGroups
   );
   const groups = useSelector((state: any) => state.group.GroupArray);
   const [fetchdata] = useCheckisAdmin();

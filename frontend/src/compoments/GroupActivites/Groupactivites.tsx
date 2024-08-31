@@ -1,8 +1,10 @@
 import React from "react";
 import { MakeAdmin, RemoveUser, Joinusers } from "./index";
 
+type Users = { id: number; email: string };
+
 interface Props {
-  user: any;
+  user: Users;
 }
 
 const GroupActivities: React.FC<Props> = ({ user }) => {

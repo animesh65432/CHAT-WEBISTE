@@ -1,7 +1,6 @@
 import useCheckisAdmin from "./groups/useCheckisAdmin";
 import useCreateGroup from "./useCreateGroup";
 import useCreateUser from "./useCreateuser";
-import useGetMessages from "./useGetMessages";
 import useGetOnlyParticularOne from "./useGetOnlyParticularOne";
 import useGetTheCurrentUser from "./useGetTheCurrentUser";
 import useJointheuser from "./groups/useJointheuser";
@@ -15,7 +14,6 @@ export {
   useCheckisAdmin,
   useCreateGroup,
   useCreateUser,
-  useGetMessages,
   useGetOnlyParticularOne,
   useGetTheCurrentUser,
   useJointheuser,

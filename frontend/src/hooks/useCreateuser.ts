@@ -16,8 +16,8 @@ const useCreateUser = (): UseCreateUserHook => {
 
   const createUser = async (obj: UserInput): Promise<boolean> => {
     try {
-      const response = await axios.post(`${baseurl}/users/Singup`, obj);
-      console.log(response);
+      await axios.post(`${baseurl}/users/Singup`, obj);
+
       return true;
     } catch (error: any) {
       if (

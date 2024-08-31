@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { baseurl } from "../utils";
+import { RootState } from "../reduex";
 
 const useGetalltheusers = () => {
-  const token = useSelector((state: any) => state.auth.idtoken);
+  const token = useSelector((state: RootState) => state.auth.idtoken);
   const fetchtheusers = async () => {
     try {
       let response = await axios.get(`${baseurl}/users/AllTheusers`, {

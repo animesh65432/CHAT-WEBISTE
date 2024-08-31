@@ -3,4 +3,4 @@ import Joinusers from "./Joinusers";
 import MakeAdmin from "./MakeAdmin";
 import RemoveUser from "./RemoveUser";
 
-export { GroupActivities, Joinusers, MakeAdmin, RemoveUser };
+export { Joinusers, MakeAdmin, RemoveUser, GroupActivities };

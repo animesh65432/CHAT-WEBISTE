@@ -1,21 +1,22 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { creategroupwithobject } from "../reduex/Groups";
+import { addtheGrouops } from "../reduex/Groups";
 import { baseurl } from "../utils";
+import { RootState } from "../reduex";
 
 const useCreateGroup = () => {
-  const token = useSelector((state: any) => state.auth.idtoken);
+  const token = useSelector((state: RootState) => state.auth.idtoken);
   const dispatch = useDispatch();
   const createGroup = async (obj: object) => {
     console.log(obj);
     try {
-      let result = await axios.post(`${baseurl}/Groups/createGroup`, obj, {
+      await axios.post(`${baseurl}/Groups/createGroup`, obj, {
         headers: {
           token: token,
         },
       });
-      console.log(result);
-      dispatch(creategroupwithobject(obj));
+      let response = await axios.get(`${baseurl}/Groups/Groupusers`);
+      dispatch(addtheGrouops(response?.data?.data));
       return true;
     } catch (error) {
       console.log(error);

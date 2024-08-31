@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { baseurl } from "../../utils";
+import { RootState } from "../../reduex";
 const useMakeadmin = () => {
-  const token = useSelector((state: any) => state.auth.idtoken);
-  const Groups = useSelector((state: any) => state.group.selectedGroups);
+  const token = useSelector((state: RootState) => state.auth.idtoken);
+  const Groups = useSelector((state: RootState) => state.group.selectedGroups);
 
-  let Groupid = Groups.id;
+  let Groupid = Groups?.id;
   const makeadmin = async (id: any) => {
     try {
       let response = await axios.post(

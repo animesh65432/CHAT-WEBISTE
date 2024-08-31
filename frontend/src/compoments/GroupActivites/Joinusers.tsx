@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useJointheuser } from "../../hooks";
 
 interface Props {
-  user: any;
+  user: { id: number; email: string };
 }
 
 const Joinusers: React.FC<Props> = ({ user }) => {

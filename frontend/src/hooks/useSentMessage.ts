@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { baseurl } from "../utils";
+import { RootState } from "../reduex";
 const useSentMessage = () => {
-  const token = useSelector((state: any) => state.auth.idtoken);
+  const token = useSelector((state: RootState) => state.auth.idtoken);
 
   const SentTheMessage = async (obj: object) => {
     console.log(obj);

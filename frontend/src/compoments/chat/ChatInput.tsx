@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useSentMessage } from "../../hooks";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { ImagesandVideossend } from "./index";
+import { RootState } from "../../reduex";
 const ChatInput: React.FC = () => {
-  const [inputText, setInputText] = useState("");
-  const Group = useSelector((state: any) => state.group.selectedGroups);
+  const [inputText, setInputText] = useState<string>("");
+  const Group = useSelector((state: RootState) => state.group.selectedGroups);
   const [SentTheMessage] = useSentMessage();
-  const [showfile, setthefile] = useState(false);
-  const handleInputChange = (event: any) => {
-    setInputText(event.target.value);
+  const [showfile, setthefile] = useState<boolean>(false);
+  const handleInputChange = (event: ChangeEvent<HTMLElement>) => {
+    const target = event.target as HTMLInputElement;
+    setInputText(target.value);
   };
 
   const handleSendMessage = async () => {

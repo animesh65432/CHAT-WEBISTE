@@ -3,9 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCreateGroup } from "../../hooks";
 
-interface GroupFormProps {}
-
-const GroupForm: React.FC<GroupFormProps> = () => {
+const GroupForm: React.FC = () => {
   const [groupName, setGroupName] = useState<string>("");
   const [isStrict, setIsStrict] = useState<boolean>(false);
   const [createGroup] = useCreateGroup();

@@ -1,59 +1,45 @@
 import React, { useState, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import axios from "axios";
 import { useSelector } from "react-redux";
-import { baseurl } from "../../utils";
-
-interface RootState {
-  auth: {
-    idtoken: string;
-  };
-  group: {
-    selectedGroups: {
-      id: string;
-    } | null;
-  };
-}
+import useSentTheImagesandvideo from "../../hooks/useSentTheImagesandvideo";
+import { RootState } from "../../reduex";
 
 const ImagesandVideossend: React.FC = () => {
-  const [selectedImageandvideos, setSelectedImageandVideos] =
-    useState<File | null>(null);
-  const token = useSelector((state: RootState) => state.auth.idtoken);
-  const Group = useSelector((state: RootState) => state.group.selectedGroups);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const group = useSelector((state: RootState) => state.group.selectedGroups);
+  const [sentthefile] = useSentTheImagesandvideo();
 
-  const handleImageChangeandvideos = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setSelectedImageandVideos(event.target.files[0]);
+      const file = event.target.files[0];
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        setSelectedFile(file);
+      } else {
+        toast.error("Please select a valid image or video file.");
+      }
     }
   };
 
-  const handleSendImageandvideos_sent = async () => {
-    if (!Group || !selectedImageandvideos) {
-      toast.error("Group or image/video not selected.");
+  const handleSendFile = async () => {
+    if (!group || !selectedFile) {
+      toast.error("Group or file not selected.");
       return;
     }
 
     try {
-      const response = await axios.post(
-        `${baseurl}/message/sendfile`,
-        {
-          GroupId: Group.id,
-          ContentType: selectedImageandvideos.type,
-        },
-        {
-          headers: {
-            token: token,
-          },
-        }
-      );
+      let result = await sentthefile({
+        id: group.id,
+        selectedFile: selectedFile,
+      });
 
-      const url = response?.data?.url;
-      const result = await axios.put(url, selectedImageandvideos);
-      console.log(result);
-      toast.success("Image sent successfully!");
+      if (result) {
+        toast.success("Sucessfully upload it");
+      } else {
+        toast.error("Please try again later");
+      }
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to send image.");
+      console.error("Error:", error);
+      toast.error("Failed to send file. Please try again.");
     }
   };
 
@@ -62,19 +48,20 @@ const ImagesandVideossend: React.FC = () => {
       <div className="flex items-center">
         <input
           type="file"
-          onChange={handleImageChangeandvideos}
+          onChange={handleFileChange}
           className="hidden"
-          id="imageInput"
+          id="fileInput"
+          accept="image/*,video/*"
         />
         <label
-          htmlFor="imageInput"
+          htmlFor="fileInput"
           className="bg-blue-500 text-white px-4 py-2 rounded-l-lg cursor-pointer hover:bg-blue-600"
         >
-          Choose Image
+          Choose File
         </label>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-r-lg ml-2"
-          onClick={handleSendImageandvideos_sent}
+          onClick={handleSendFile}
         >
           Send
         </button>
