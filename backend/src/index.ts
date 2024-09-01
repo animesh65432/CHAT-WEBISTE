@@ -31,6 +31,12 @@ app.use("/users", userrouter);
 app.use("/message", messageRouter);
 app.use("/Groups", groupsrouter);
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "just start the server",
+  });
+});
+
 Users.hasMany(Message);
 Message.belongsTo(Users);
 Groups.hasMany(Message);
