@@ -1,10 +1,4 @@
-import React, {
-  ReactNode,
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-} from "react";
+import React, { ReactNode, useState, createContext, useContext } from "react";
 import { io, Socket } from "socket.io-client";
 import { baseurl } from "../utils";
 
