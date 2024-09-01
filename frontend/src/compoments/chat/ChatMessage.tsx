@@ -6,6 +6,7 @@ import { useSocket } from "../../Socket/SocketProvider";
 interface MessageArray {
   message?: string;
   imgandvideourl?: string;
+  id: number;
 }
 const ChatMessage: React.FC = () => {
   const selectedGroups = useSelector(
@@ -34,6 +35,24 @@ const ChatMessage: React.FC = () => {
         scrollToBottom();
       });
 
+      socket.on(
+        "UploadNewFileWithMessages",
+        ({ NewFileWithMessages }: { NewFileWithMessages: MessageArray }) => {
+          console.log(
+            "Received new message:",
+            NewFileWithMessages.imgandvideourl
+          );
+
+          setMessages((PrevMessage) => {
+            const updatedMessages = [...PrevMessage, NewFileWithMessages];
+            console.log(updatedMessages);
+            return updatedMessages;
+          });
+
+          scrollToBottom();
+        }
+      );
+
       socket.emit("getMessages", { GroupId: selectedGroups.id });
     }
 
@@ -50,6 +69,7 @@ const ChatMessage: React.FC = () => {
   if (!selectedGroups) {
     return <div className="text-center mt-4">Please select a group</div>;
   }
+  console.log(messages);
 
   return (
     <div className="mt-4 overflow-y-auto border border-gray-300 rounded-lg">

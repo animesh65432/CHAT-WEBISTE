@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addtheGrouops } from "../reduex/Groups";
 import { baseurl } from "../utils";
 import { RootState } from "../reduex";
-
-const useCreateGroup = () => {
+import { useState } from "react";
+type UseCreateGroupReturnTypes = [(obj: object) => Promise<boolean>, string];
+const useCreateGroup = (): UseCreateGroupReturnTypes => {
   const token = useSelector((state: RootState) => state.auth.idtoken);
+  const [errormessage, seterrormessage] = useState<string>("");
   const dispatch = useDispatch();
   const createGroup = async (obj: object) => {
-    console.log(obj);
     try {
       await axios.post(`${baseurl}/Groups/createGroup`, obj, {
         headers: {
@@ -23,13 +24,14 @@ const useCreateGroup = () => {
       console.log(response?.data);
       dispatch(addtheGrouops(response?.data?.data));
       return true;
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.log(error?.response?.data?.message);
+      seterrormessage(error?.response?.data?.message);
       return false;
     }
   };
 
-  return [createGroup];
+  return [createGroup, errormessage];
 };
 
 export default useCreateGroup;

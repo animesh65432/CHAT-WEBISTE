@@ -1,13 +1,15 @@
 import React, { useState, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import useSentTheImagesandvideo from "../../hooks/useSentTheImagesandvideo";
 import { RootState } from "../../reduex";
+import { useSocket } from "../../Socket/SocketProvider";
+import axios from "axios";
 
 const ImagesandVideossend: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const group = useSelector((state: RootState) => state.group.selectedGroups);
-  const [sentthefile] = useSentTheImagesandvideo();
+  const token = useSelector((state: RootState) => state.auth.idtoken);
+  const { connecttosocket, socket } = useSocket();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -27,16 +29,26 @@ const ImagesandVideossend: React.FC = () => {
     }
 
     try {
-      let result = await sentthefile({
-        id: group.id,
-        selectedFile: selectedFile,
+      connecttosocket();
+      if (!socket) return;
+      socket.emit("UploadWithMessage", {
+        GroupId: group.id,
+        token,
+        ContentType: selectedFile.type,
       });
 
-      if (result) {
-        toast.success("Sucessfully upload it");
-      } else {
-        toast.error("Please try again later");
-      }
+      socket.on("UploadUrl", async ({ url }: { url: string }) => {
+        try {
+          await axios.put(url, selectedFile, {
+            headers: {
+              "Content-Type": selectedFile.type,
+            },
+          });
+          toast.success("Sucessfully upload the photo");
+        } catch (error) {
+          toast.error("Failed to upload file. Please try again.");
+        }
+      });
     } catch (error) {
       console.error("Error:", error);
       toast.error("Failed to send file. Please try again.");

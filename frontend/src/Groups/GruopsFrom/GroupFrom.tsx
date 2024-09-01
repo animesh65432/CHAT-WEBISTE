@@ -6,26 +6,25 @@ import { useCreateGroup } from "../../hooks";
 const GroupForm: React.FC = () => {
   const [groupName, setGroupName] = useState<string>("");
   const [isStrict, setIsStrict] = useState<boolean>(false);
-  const [createGroup] = useCreateGroup();
+  const [createGroup, errormessage] = useCreateGroup();
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (groupName.length === 0) {
       toast.error("Please fill The name");
       return;
     } else {
-      toast.success("Okay, we got it");
       let obj = {
         nameofthegroup: groupName,
         isstrictGroup: isStrict,
       };
 
-      let flag: any = createGroup(obj);
+      let flag = await createGroup(obj);
 
       if (flag) {
         toast.success("Successfully create the group");
       } else {
-        toast.error("Something went wrong");
+        toast.error(errormessage);
       }
 
       return;

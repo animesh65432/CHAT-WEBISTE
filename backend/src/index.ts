@@ -10,8 +10,8 @@ import { Groups, Message, UserGroup, Users } from "./models";
 import { Messagehandler } from "./controllers/messages";
 import job from "./jobs";
 const app = express();
-
 app.use(cors({ origin: "https://chat-webiste-bplv.vercel.app" }));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieparser());
@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
   });
 });
 database
-  .sync()
+  .sync({ force: true })
   .then(() => {
     server.listen(process.env.PORT, () => {
       console.log(`server at the ${process.env.PORT}`);

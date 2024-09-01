@@ -58,8 +58,32 @@ const Messagehandler = (socket) => {
             console.log(error);
         }
     });
+    const UploadWithMessages = (_a) => __awaiter(void 0, [_a], void 0, function* ({ GroupId, token, ContentType, }) {
+        try {
+            const jwtwebtokenverify = jsonwebtoken_1.default.verify(token, process.env.JSONWEBSECRECT);
+            const { email } = jwtwebtokenverify;
+            let user = yield models_1.Users.findOne({
+                where: { email },
+            });
+            let filename = `${Date.now()}.${ContentType}`;
+            let puturl = yield (0, services_1.putthefile)(ContentType, filename);
+            let newfile = yield msg_1.default.create({
+                userId: user.id,
+                GroupId: GroupId,
+                filename: filename,
+            });
+            socket.emit("UploadUrl", { url: puturl });
+            let url = yield (0, services_1.gethefile)(newfile.filename);
+            let NewFileWithMessages = Object.assign(Object.assign({}, newfile.dataValues), { imgandvideourl: url });
+            socket.emit("UploadNewFileWithMessages", { NewFileWithMessages });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     socket.on("getMessages", GetMessages);
     socket.on("SentMessages", SentMessage);
+    socket.on("UploadWithMessage", UploadWithMessages);
 };
 exports.Messagehandler = Messagehandler;
 //# sourceMappingURL=index.js.map
