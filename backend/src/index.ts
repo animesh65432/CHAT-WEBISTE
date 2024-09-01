@@ -11,7 +11,7 @@ import { Messagehandler } from "./controllers/messages";
 import job from "./jobs";
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: "https://chat-webiste-bplv.vercel.app" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieparser());
@@ -20,7 +20,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://chat-webiste-bplv.vercel.app",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,

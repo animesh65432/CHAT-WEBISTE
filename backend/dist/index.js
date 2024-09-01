@@ -15,14 +15,14 @@ const models_1 = require("./models");
 const messages_1 = require("./controllers/messages");
 const jobs_1 = __importDefault(require("./jobs"));
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({ origin: "https://chat-webiste-bplv.vercel.app" }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "https://chat-webiste-bplv.vercel.app",
         methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
         credentials: true,
