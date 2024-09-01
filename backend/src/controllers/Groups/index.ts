@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import userGroup from "../../models/userGroup";
 import Groups from "../../models/Groups";
-import database from "../../database";
+import database from "../../database"; //
 export const CreateTheGroup = async (req: Request, res: Response) => {
   const t = await database.transaction();
   try {
