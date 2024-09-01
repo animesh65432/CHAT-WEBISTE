@@ -4,8 +4,11 @@ import { User } from "../../compoments";
 import useSentMessage from "../../hooks/useSentMessage";
 import useSentTheImagesandvideo from "../../hooks/useSentTheImagesandvideo";
 import { RootState } from "../../reduex";
-import { MessageArray } from "../../types";
 import { useSocket } from "../../Socket/SocketProvider";
+interface MessageArray {
+  message?: string;
+  imgandvideourl?: string;
+}
 const ChatMessage: React.FC = () => {
   const selectedGroups = useSelector(
     (state: RootState) => state.group.selectedGroups
