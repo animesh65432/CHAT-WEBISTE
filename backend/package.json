@@ -1,11 +1,12 @@
 {
-  "scripts": {
-    "start": "nodemon src/index.ts",
-    "build": "rimraf dist && tsc",
-    "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+ "scripts": {
+  "start": "node dist/index.js",
+  "build": "rimraf dist && tsc",
+  "ts.check": "tsc --project tsconfig.json",
+  "add-build": "git add dist",
+  "test": "echo \"Error: no test specified\" && exit 1"
+}
+,
   "dependencies": {
     "@aws-sdk/client-s3": "^3.575.0",
     "@aws-sdk/s3-request-presigner": "^3.575.0",
