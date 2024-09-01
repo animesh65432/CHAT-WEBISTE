@@ -23,3 +23,4 @@ const ArchivedChat = database_1.default.define("ArchivedChat", {
     },
 });
 exports.default = ArchivedChat;
+//# sourceMappingURL=index.js.map

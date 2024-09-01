@@ -56,3 +56,4 @@ const putthefile = (ContentType, key) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.putthefile = putthefile;
+//# sourceMappingURL=index.js.map

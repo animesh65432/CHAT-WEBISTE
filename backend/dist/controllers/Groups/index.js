@@ -16,7 +16,7 @@ exports.makeadmin = exports.isAdminOrNot = exports.GetAllTheGroups = exports.joi
 const http_status_codes_1 = require("http-status-codes");
 const userGroup_1 = __importDefault(require("../../models/userGroup"));
 const Groups_1 = __importDefault(require("../../models/Groups"));
-const database_1 = __importDefault(require("../../database"));
+const database_1 = __importDefault(require("../../database")); //
 const CreateTheGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const t = yield database_1.default.transaction();
     try {
@@ -263,3 +263,4 @@ const makeadmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.makeadmin = makeadmin;
+//# sourceMappingURL=index.js.map

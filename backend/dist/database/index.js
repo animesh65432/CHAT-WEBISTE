@@ -14,3 +14,4 @@ const database = new sequelize_1.Sequelize(process.env.DATABASE, process.env.DAT
     },
 });
 exports.default = database;
+//# sourceMappingURL=index.js.map

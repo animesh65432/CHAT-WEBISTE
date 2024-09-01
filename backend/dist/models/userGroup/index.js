@@ -21,3 +21,4 @@ const userGroup = database_1.default.define("userGroup", {
     },
 });
 exports.default = userGroup;
+//# sourceMappingURL=index.js.map

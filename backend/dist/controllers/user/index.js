@@ -144,3 +144,4 @@ const GetTheCurrentUser = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.GetTheCurrentUser = GetTheCurrentUser;
+//# sourceMappingURL=index.js.map

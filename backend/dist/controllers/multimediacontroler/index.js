@@ -47,3 +47,4 @@ const sendthefiles = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.sendthefiles = sendthefiles;
+//# sourceMappingURL=index.js.map

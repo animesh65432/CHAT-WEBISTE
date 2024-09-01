@@ -14,3 +14,4 @@ const userGroup_1 = __importDefault(require("./userGroup"));
 exports.UserGroup = userGroup_1.default;
 const msg_1 = __importDefault(require("./msg"));
 exports.Message = msg_1.default;
+//# sourceMappingURL=index.js.map

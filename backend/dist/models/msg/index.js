@@ -20,3 +20,4 @@ const Message = database_1.default.define("message", {
     },
 });
 exports.default = Message;
+//# sourceMappingURL=index.js.map

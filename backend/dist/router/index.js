@@ -10,3 +10,4 @@ const messages_1 = __importDefault(require("./messages"));
 exports.messageRouter = messages_1.default;
 const user_1 = __importDefault(require("./user"));
 exports.userrouter = user_1.default;
+//# sourceMappingURL=index.js.map

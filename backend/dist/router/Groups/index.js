@@ -11,3 +11,4 @@ Groupsrouter.delete("/removeuser", middlewares_1.Authentication, Groups_1.remove
 Groupsrouter.get("/CheckAdminOrnot/:GroupId", middlewares_1.Authentication, Groups_1.isAdminOrNot);
 Groupsrouter.post("/MakeAdmin", middlewares_1.Authentication, Groups_1.makeadmin);
 exports.default = Groupsrouter;
+//# sourceMappingURL=index.js.map

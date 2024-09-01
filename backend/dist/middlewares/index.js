@@ -54,3 +54,4 @@ const Authentication = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.Authentication = Authentication;
+//# sourceMappingURL=index.js.map

@@ -47,3 +47,4 @@ const job = new cron_1.CronJob("0 0 * * *", () => __awaiter(void 0, void 0, void
     }
 }));
 exports.default = job;
+//# sourceMappingURL=index.js.map

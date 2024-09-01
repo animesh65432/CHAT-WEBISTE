@@ -18,3 +18,4 @@ const Groups = database_1.default.define("Group", {
     },
 });
 exports.default = Groups;
+//# sourceMappingURL=index.js.map

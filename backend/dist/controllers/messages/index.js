@@ -68,3 +68,4 @@ const Messagehandler = (socket) => {
     socket.on("getMessages", GetMessages);
 };
 exports.Messagehandler = Messagehandler;
+//# sourceMappingURL=index.js.map

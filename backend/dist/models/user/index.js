@@ -21,3 +21,4 @@ const users = database_1.default.define("users", {
     },
 });
 exports.default = users;
+//# sourceMappingURL=index.js.map
