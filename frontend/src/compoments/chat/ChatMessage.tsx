@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { User } from "../../compoments";
-import useSentMessage from "../../hooks/useSentMessage";
-import useSentTheImagesandvideo from "../../hooks/useSentTheImagesandvideo";
 import { RootState } from "../../reduex";
 import { useSocket } from "../../Socket/SocketProvider";
 interface MessageArray {
@@ -16,8 +14,6 @@ const ChatMessage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [showUsers, setShowUsers] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageArray[]>([]);
-  const [SentTheMessage] = useSentMessage();
-  const [sentthefile] = useSentTheImagesandvideo();
   const { socket, connecttosocket } = useSocket();
 
   useEffect(() => {
@@ -26,21 +22,26 @@ const ChatMessage: React.FC = () => {
     connecttosocket();
 
     if (socket) {
-      console.log(socket.connected);
       socket.on("messages", (newMessages: MessageArray[]) => {
-        console.log(newMessages);
+        console.log("Received messages:", newMessages);
         setMessages(newMessages);
         scrollToBottom();
       });
 
-      console.log(selectedGroups.id);
+      socket.on("NewMessages", (newMessage: MessageArray) => {
+        console.log("Received new message:", newMessage);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        scrollToBottom();
+      });
+
       socket.emit("getMessages", { GroupId: selectedGroups.id });
     }
 
     return () => {
       socket?.off("messages");
+      socket?.off("NewMessages");
     };
-  }, [selectedGroups, socket, sentthefile, SentTheMessage]);
+  }, [selectedGroups, socket]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

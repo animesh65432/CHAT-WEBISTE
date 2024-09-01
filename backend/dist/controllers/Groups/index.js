@@ -29,6 +29,15 @@ const CreateTheGroup = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 message: "Group should have a name",
             });
         }
+        let checktheGroups = yield Groups_1.default.findOne({
+            where: { nameofthegroup },
+            transaction: t,
+        });
+        if (checktheGroups) {
+            return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({
+                message: "Group name must me unique",
+            });
+        }
         let NewGroup = yield Groups_1.default.create({
             nameofthegroup: nameofthegroup,
         }, {

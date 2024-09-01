@@ -15,7 +15,12 @@ const useCreateGroup = () => {
           token: token,
         },
       });
-      let response = await axios.get(`${baseurl}/Groups/Groupusers`);
+      let response = await axios.get(`${baseurl}/Groups/Groupusers`, {
+        headers: {
+          token,
+        },
+      });
+      console.log(response?.data);
       dispatch(addtheGrouops(response?.data?.data));
       return true;
     } catch (error) {

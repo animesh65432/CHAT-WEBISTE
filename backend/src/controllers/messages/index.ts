@@ -1,42 +1,18 @@
-import { Request, Response } from "express";
 import Message from "../../models/msg";
-import { StatusCodes } from "http-status-codes";
 import { gethefile } from "../../services";
 import { Socket } from "socket.io";
+import jsonwebtoken from "jsonwebtoken";
+import { Users } from "../../models";
 
-export const sendMessage = async (req: Request, res: Response) => {
-  try {
-    const { GroupId, message } = req.body;
-
-    if (!GroupId && !message)
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        sucess: false,
-        message: "groupid and messages nedded",
-      });
-
-    await Message.create({
-      message: message,
-      GroupId: GroupId,
-      userId: req.user.id,
-    });
-
-    return res.status(StatusCodes.CREATED).json({
-      sucess: true,
-      message: "sucessfully created it",
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({ message: "Error" });
-  }
+type jsonPayload = {
+  email: string;
 };
 
 export const Messagehandler = (socket: Socket) => {
   const GetMessages = async ({ GroupId }: { GroupId: number }) => {
     try {
       let messages = await Message.findAll({
-        where: {
-          GroupId: GroupId,
-        },
+        where: { GroupId },
       });
 
       if (messages.length === 0) {
@@ -49,6 +25,7 @@ export const Messagehandler = (socket: Socket) => {
             );
           }
         }
+
         socket.emit("messages", messages);
       }
     } catch (error) {
@@ -57,5 +34,39 @@ export const Messagehandler = (socket: Socket) => {
     }
   };
 
+  const SentMessage = async ({
+    GroupId,
+    message,
+    token,
+  }: {
+    GroupId: number;
+    message: string;
+    token: string;
+  }) => {
+    try {
+      const jwtwebtokenverify = jsonwebtoken.verify(
+        token,
+        process.env.JSONWEBSECRECT as string
+      ) as jsonPayload;
+
+      const { email } = jwtwebtokenverify;
+
+      let user = await Users.findOne({
+        where: { email },
+      });
+
+      let newMessage = await Message.create({
+        message: message,
+        GroupId: GroupId,
+        userId: user.id,
+      });
+
+      socket.emit("NewMessages", newMessage);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   socket.on("getMessages", GetMessages);
+  socket.on("SentMessages", SentMessage);
 };

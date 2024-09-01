@@ -17,6 +17,16 @@ export const CreateTheGroup = async (req: Request, res: Response) => {
       });
     }
 
+    let checktheGroups = await Groups.findOne({
+      where: { nameofthegroup },
+      transaction: t,
+    });
+
+    if (checktheGroups) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: "Group name must me unique",
+      });
+    }
     let NewGroup = await Groups.create(
       {
         nameofthegroup: nameofthegroup,
