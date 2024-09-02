@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieparser());
 
 const server = http.createServer(app);
-
+// https://chat-webiste-bplv.vercel.app
 const io = new Server(server, {
   cors: {
     origin: "https://chat-webiste-bplv.vercel.app",
@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
   });
 });
 database
-  .sync({ force: true })
+  .sync()
   .then(() => {
     server.listen(process.env.PORT, () => {
       console.log(`server at the ${process.env.PORT}`);

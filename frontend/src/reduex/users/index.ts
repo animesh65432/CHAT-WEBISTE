@@ -21,6 +21,7 @@ const Users = createSlice({
       state.currentuseremail = action.payload;
       localStorage.setItem("curemail", action.payload);
     },
+    
   },
 });
 
