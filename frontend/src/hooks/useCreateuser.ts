@@ -20,15 +20,7 @@ const useCreateUser = (): UseCreateUserHook => {
 
       return true;
     } catch (error: any) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
         setErrors(error.response.data.message);
-      } else {
-        setErrors("An unexpected error occurred.");
-      }
       return false;
     }
   };
