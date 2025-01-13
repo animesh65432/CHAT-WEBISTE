@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import GroupActivities from "../GroupActivites/Groupactivites";
 import { useGetalltheusers } from "../../hooks";
-import { RootState } from "../../reduex/index";
 interface User {
   id: number;
   name: string;
@@ -11,9 +9,6 @@ interface User {
 
 const User: React.FC = () => {
   const [usersArray, setUsersArray] = useState<User[]>([]);
-  const currentUserEmail = useSelector(
-    (state: RootState) => state.user.currentuseremail
-  );
   const [userInput, setUserInput] = useState<string>("");
   const [fetchtheusers] = useGetalltheusers();
   const [showGroupActivities, setShowGroupActivities] =
@@ -25,7 +20,7 @@ const User: React.FC = () => {
 
     if (input.length > 0) {
       const suggestedUsers = usersArray.filter(
-        (user) => user.name.includes(input) && user.email !== currentUserEmail
+        (user) => user.name.includes(input)
       );
       setUsersArray(suggestedUsers);
     } else {
@@ -36,10 +31,7 @@ const User: React.FC = () => {
   const afterRenderingComponent = async () => {
     try {
       const data: User[] = await fetchtheusers();
-      const usersWithoutCurrentUser = data.filter(
-        (obj) => obj.email !== currentUserEmail
-      );
-      setUsersArray(usersWithoutCurrentUser);
+      setUsersArray(data);
     } catch (error) {
       console.log(error);
     }
@@ -75,7 +67,7 @@ const User: React.FC = () => {
           usersArray.map((user) => (
             <div
               key={user.id}
-              className="bg-white shadow rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+              className="bg-white shadow rounded-lg p-4 cursor-pointer hover:bg-gray-50 overflow-auto"
             >
               <p className="text-gray-800 font-medium">{user.name}</p>
               <button

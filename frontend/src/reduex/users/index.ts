@@ -1,10 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type usersTypes = { id?: number; name: string; email: string };
+import { usersTypes } from "@/types/type"
 
 interface UserSlicesTypes {
   value: usersTypes[];
-  currentuseremail: string;
 }
 
 const Users = createSlice({
@@ -15,16 +13,13 @@ const Users = createSlice({
   } as UserSlicesTypes,
   reducers: {
     getalltheusers: (state, action) => {
+      console.log(action.payload, "from the slices actions")
       state.value = action.payload;
-    },
-    getTheCurrentuseremail: (state, action) => {
-      state.currentuseremail = action.payload;
-      localStorage.setItem("curemail", action.payload);
-    },
-    
+    }
+
   },
 });
 
-export const { getalltheusers, getTheCurrentuseremail } = Users.actions;
+export const { getalltheusers } = Users.actions;
 
 export default Users.reducer;

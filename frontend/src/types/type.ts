@@ -1,0 +1,1 @@
+export type usersTypes = { id?: number; name: string; };

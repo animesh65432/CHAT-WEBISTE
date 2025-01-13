@@ -1,9 +1,9 @@
-import { Error, ChatMessage, ChatInput } from "./index";
+import { Error, GroupGroupChatMessage, GroupGroupChatInput } from "../index";
 import { useSelector } from "react-redux";
-import { RootState } from "../../reduex";
+import { RootState } from "@/reduex";
 import React from "react";
 
-const Chat: React.FC = () => {
+const GroupChat: React.FC = () => {
   let isuser = useSelector((state: RootState) => state.group.isuser);
   let userselectedGrops = useSelector(
     (state: RootState) => state.group.selectedGroups
@@ -15,11 +15,15 @@ const Chat: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between h-[46rem]">
-      <ChatMessage />
-      <ChatInput />
+    <div className=" h-dvh flex flex-col gap-0  ">
+      <div>
+        <GroupGroupChatMessage />
+      </div>
+      <div >
+        <GroupGroupChatInput />
+      </div>
     </div>
   );
 };
 
-export default Chat;
+export default GroupChat;

@@ -15,15 +15,14 @@ const models_1 = require("./models");
 const messages_1 = require("./controllers/messages");
 const jobs_1 = __importDefault(require("./jobs"));
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)({ origin: "https://chat-webiste-bplv.vercel.app" }));
+app.use((0, cors_1.default)({ origin: "http://localhost:5173" }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 const server = http_1.default.createServer(app);
-// https://chat-webiste-bplv.vercel.app
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "https://chat-webiste-bplv.vercel.app",
+        origin: "http://localhost:5173",
         methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
         credentials: true,
@@ -32,11 +31,6 @@ const io = new socket_io_1.Server(server, {
 app.use("/users", router_1.userrouter);
 app.use("/message", router_1.messageRouter);
 app.use("/Groups", router_1.groupsrouter);
-app.get("/", (req, res) => {
-    res.status(200).json({
-        message: "just start the server",
-    });
-});
 models_1.Users.hasMany(models_1.Message);
 models_1.Message.belongsTo(models_1.Users);
 models_1.Groups.hasMany(models_1.Message);

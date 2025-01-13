@@ -1,20 +1,13 @@
 import { Sequelize } from "sequelize";
 
+
 const database = new Sequelize(
-  process.env.DATABASE as string,
-  process.env.DATABASEUSERNAME as string,
-  process.env.DATABASEPASSWORD as string,
+  "chatbackend",
+  "postgres",
+  "new_password",
   {
-    host: process.env.dbhost as string,
-    port: 15391,
+    host: "localhost",
     dialect: "postgres",
-    logging: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
   }
 );
 

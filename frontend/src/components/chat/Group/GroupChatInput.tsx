@@ -2,10 +2,10 @@ import React, { ChangeEvent, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { MdOutlineAttachFile } from "react-icons/md";
-import { ImagesandVideossend } from "./index";
-import { RootState } from "../../reduex";
-import { useSocket } from "../../Socket/SocketProvider";
-const ChatInput: React.FC = () => {
+import { ImagesandVideossend } from "../index";
+import { RootState } from "@/reduex";
+import { useSocket } from "@/Socket/SocketProvider"
+const GroupGroupChatInput: React.FC = () => {
   const [inputText, setInputText] = useState<string>("");
   const Group = useSelector((state: RootState) => state.group.selectedGroups);
   const [showfile, setthefile] = useState<boolean>(false);
@@ -67,4 +67,4 @@ const ChatInput: React.FC = () => {
   );
 };
 
-export default ChatInput;
+export default GroupGroupChatInput;

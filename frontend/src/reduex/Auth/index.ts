@@ -6,7 +6,7 @@ interface AuthSliceState {
 const AuthSlice = createSlice({
   name: "auth",
   initialState: {
-    idtoken: "" || localStorage.getItem("idtoken"),
+    idtoken: localStorage.getItem("idtoken") || "",
   } as AuthSliceState,
   reducers: {
     addthetoken: (state, action) => {

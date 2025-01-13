@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { RootState } from "../../reduex";
-import { useSocket } from "../../Socket/SocketProvider";
+import { RootState } from "@/reduex";
+import { useSocket } from "@/Socket/SocketProvider";
 import axios from "axios";
 
 const ImagesandVideossend: React.FC = () => {

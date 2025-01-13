@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import usermodel from "../../models/user";
 import { createJWTtokens } from "../../middlewares";
 import bcrypt from "bcrypt";
+import { Op } from "sequelize"
 export const CreateTheUser = async (req: Request, res: Response) => {
   try {
     let { name, password, email } = req.body;
@@ -104,7 +105,14 @@ export const loginTheuser = async (req: Request, res: Response) => {
 
 export const GetalltheUsers = async (req: Request, res: Response) => {
   try {
-    let users = await usermodel.findAll({});
+    console.log(req.user, "Current User")
+    const CurrenUserId = req.user.id
+    const users = await usermodel.findAll({
+      attributes: { exclude: ["email", "password"] },
+      where: {
+        id: { [Op.ne]: CurrenUserId }
+      }
+    });
     return res.status(StatusCodes.OK).json({
       sucesss: true,
       data: users,
@@ -119,6 +127,7 @@ export const GetalltheUsers = async (req: Request, res: Response) => {
 
 export const GetTheCurrentUser = async (req: Request, res: Response) => {
   try {
+
     let user = await usermodel.findOne({
       where: {
         email: req.user.email,
