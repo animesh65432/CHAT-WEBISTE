@@ -15,8 +15,8 @@ const GroupChat: React.FC = () => {
   }
 
   return (
-    <div className=" h-dvh flex flex-col gap-0  ">
-      <div>
+    <div className=" h-full flex flex-col  ">
+      <div className="h-[590px] ">
         <GroupGroupChatMessage />
       </div>
       <div >

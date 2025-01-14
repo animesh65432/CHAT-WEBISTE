@@ -63,7 +63,7 @@ const GroupGroupChatMessage: React.FC = () => {
 
 
   if (!selectedGroups) {
-    return <div className="text-center mt-4 h-[590px] flex items-center justify-center">
+    return <div className="text-center mt-4 flex items-center justify-center">
       <div>did not select anything</div>
     </div>;
   }
@@ -83,9 +83,9 @@ const GroupGroupChatMessage: React.FC = () => {
         </button>
         {showUsers && <User />}
       </div>
-      <div className="overflow-y-scroll h-[590px]">
+      <div className="overflow-auto  p-4 h-[550px]">
         {messages.map((messageObj, index) => (
-          <div key={index} className="message bg-gray-200 rounded p-2 mb-2 overflow-auto">
+          <div key={index} className={`message bg-gray-200 rounded p-2  ${messages.length - 1 !== index ? "mb-1" : "mb-0"}`}>
             {messageObj.message}
             {messageObj.imgandvideourl && (
               <img
@@ -96,8 +96,9 @@ const GroupGroupChatMessage: React.FC = () => {
             )}
           </div>
         ))}
-
       </div>
+
+
     </div>
   );
 };

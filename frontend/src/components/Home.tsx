@@ -10,7 +10,7 @@ interface ChildProps {
 
 
 const Home: React.FC = () => {
-  const [options, setOptions] = useState<OptionsState | null>()
+  const [options, setOptions] = useState<OptionsState>()
   const handleData = async (data: OptionsState) => {
     setOptions(data)
     if (options?.messages) {
@@ -19,15 +19,15 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="grid  sm:grid-cols-12 grid-cols-1 ">
+    <div className="grid  sm:grid-cols-12  ">
       <div className="col-span-1">
         <Navbar onSendData={handleData} />
       </div>
-      <div className="col-span-3 ">
+      <div className={options?.ai ? "hidden" : "col-span-3"}>
         {options?.group && <Groups />}
         {options?.messages && <ShowusersNavbar />}
       </div>
-      <div className="col-span-8">
+      <div className={options?.ai ? `col-span-11` : "col-span-8"}>
         <GroupChat />
       </div>
     </div>

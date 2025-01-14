@@ -31,8 +31,11 @@ const io = new socket_io_1.Server(server, {
 app.use("/users", router_1.userrouter);
 app.use("/message", router_1.messageRouter);
 app.use("/Groups", router_1.groupsrouter);
+app.use("/Aimessage", router_1.AimessageRouter);
 models_1.Users.hasMany(models_1.Message);
 models_1.Message.belongsTo(models_1.Users);
+models_1.Users.hasMany(models_1.Aimessages);
+models_1.Aimessages.belongsTo(models_1.Users, { foreignKey: "userid" });
 models_1.Groups.hasMany(models_1.Message);
 models_1.Message.belongsTo(models_1.Groups);
 models_1.Users.belongsToMany(models_1.Groups, { through: models_1.UserGroup });
@@ -45,7 +48,7 @@ io.on("connection", (socket) => {
     });
 });
 database_1.default
-    .sync()
+    .sync({ force: true })
     .then(() => {
     server.listen(process.env.PORT, () => {
         console.log(`server at the ${process.env.PORT}`);

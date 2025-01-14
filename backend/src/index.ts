@@ -5,8 +5,8 @@ import { Server } from "socket.io";
 import cors from "cors";
 import database from "./database";
 import cookieparser from "cookie-parser";
-import { userrouter, messageRouter, groupsrouter } from "./router";
-import { Groups, Message, UserGroup, Users } from "./models";
+import { userrouter, messageRouter, groupsrouter, AimessageRouter } from "./router";
+import { Groups, Message, UserGroup, Users, Aimessages } from "./models";
 import { Messagehandler } from "./controllers/messages";
 import job from "./jobs";
 const app = express();
@@ -29,10 +29,13 @@ const io = new Server(server, {
 app.use("/users", userrouter);
 app.use("/message", messageRouter);
 app.use("/Groups", groupsrouter);
+app.use("/Aimessage", AimessageRouter)
 
 
 Users.hasMany(Message);
 Message.belongsTo(Users);
+Users.hasMany(Aimessages)
+Aimessages.belongsTo(Users, { foreignKey: "userid" })
 Groups.hasMany(Message);
 Message.belongsTo(Groups);
 Users.belongsToMany(Groups, { through: UserGroup });
@@ -46,7 +49,7 @@ io.on("connection", (socket) => {
   });
 });
 database
-  .sync()
+  .sync({ force: true })
   .then(() => {
     server.listen(process.env.PORT, () => {
       console.log(`server at the ${process.env.PORT}`);
