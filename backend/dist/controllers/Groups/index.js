@@ -21,7 +21,7 @@ const CreateTheGroup = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const t = yield database_1.default.transaction();
     try {
         let { nameofthegroup, isstrictGroup } = req.body;
-        let id = req.user.id;
+        let id = Number(req.user.id);
         if (!nameofthegroup) {
             yield t.rollback();
             return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({

@@ -28,7 +28,7 @@ const sendthefiles = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         let filename = `${Date.now()}.${ContentType}`;
         let puturl = yield (0, services_1.putthefile)(ContentType, filename);
         let messages = yield msg_1.default.create({
-            userId: req.user.id,
+            userId: Number(req.user.id),
             GroupId: GroupId,
             filename: filename,
         });

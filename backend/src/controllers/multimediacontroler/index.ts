@@ -18,7 +18,7 @@ export const sendthefiles = async (req: Request, res: Response) => {
     let puturl = await putthefile(ContentType, filename);
 
     let messages = await Message.create({
-      userId: req.user.id,
+      userId: Number(req.user.id),
       GroupId: GroupId,
       filename: filename,
     });

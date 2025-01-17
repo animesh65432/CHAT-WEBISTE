@@ -7,7 +7,7 @@ export const CreateTheGroup = async (req: Request, res: Response) => {
   const t = await database.transaction();
   try {
     let { nameofthegroup, isstrictGroup } = req.body;
-    let id = req.user.id;
+    let id = Number(req.user.id);
 
     if (!nameofthegroup) {
       await t.rollback();

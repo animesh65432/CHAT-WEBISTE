@@ -7,6 +7,7 @@ interface MessageArray {
   message?: string;
   imgandvideourl?: string;
   id: number;
+  username: string
 }
 const GroupGroupChatMessage: React.FC = () => {
   const selectedGroups = useSelector(
@@ -85,17 +86,23 @@ const GroupGroupChatMessage: React.FC = () => {
       </div>
       <div className="overflow-auto  p-4 h-[550px]">
         {messages.map((messageObj, index) => (
-          <div key={index} className={`message bg-gray-200 rounded p-2  ${messages.length - 1 !== index ? "mb-1" : "mb-0"}`}>
-            {messageObj.message}
-            {messageObj.imgandvideourl && (
-              <img
-                src={messageObj.imgandvideourl}
-                className="w-full h-auto rounded-lg"
-                alt="Message content"
-              />
-            )}
+          <div key={index} className={`message bg-gray-200 rounded p-2  ${messages.length - 1 !== index ? "mb-1" : "mb-0"} flex justify-between`}>
+            <div>
+              {messageObj.message}
+              {messageObj.imgandvideourl && (
+                <img
+                  src={messageObj.imgandvideourl}
+                  className="w-full h-auto rounded-lg"
+                  alt="Message content"
+                />
+              )}
+            </div>
+            <div>
+              <span className="text-blue-700">{messageObj.username}</span>
+            </div>
           </div>
         ))}
+
       </div>
 
 

@@ -18,6 +18,10 @@ const Message = database_1.default.define("message", {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
     },
+    username: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true
+    }
 });
 exports.default = Message;
 //# sourceMappingURL=index.js.map

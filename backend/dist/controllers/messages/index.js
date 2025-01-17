@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Messagehandler = void 0;
 const msg_1 = __importDefault(require("../../models/msg"));
-const services_1 = require("../../services");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const models_1 = require("../../models");
+const Cloudinary_1 = __importDefault(require("../../services/Cloudinary"));
 const Messagehandler = (socket) => {
     const GetMessages = (_a) => __awaiter(void 0, [_a], void 0, function* ({ GroupId }) {
         try {
@@ -27,11 +27,6 @@ const Messagehandler = (socket) => {
                 socket.emit("messages", []);
             }
             else {
-                for (let i = 0; i < messages.length; i++) {
-                    if (messages[i].filename) {
-                        messages[i].imgandvideourl = yield (0, services_1.gethefile)(messages[i].filename);
-                    }
-                }
                 socket.emit("messages", messages);
             }
         }
@@ -51,6 +46,7 @@ const Messagehandler = (socket) => {
                 message: message,
                 GroupId: GroupId,
                 userId: user.id,
+                username: user.name
             });
             socket.emit("NewMessages", newMessage);
         }
@@ -58,7 +54,7 @@ const Messagehandler = (socket) => {
             console.log(error);
         }
     });
-    const UploadWithMessages = (_a) => __awaiter(void 0, [_a], void 0, function* ({ GroupId, token, ContentType, }) {
+    const UploadWithMessages = (_a) => __awaiter(void 0, [_a], void 0, function* ({ GroupId, token, ContentType, imageurl }) {
         try {
             const jwtwebtokenverify = jsonwebtoken_1.default.verify(token, process.env.JSONWEBSECRECT);
             const { email } = jwtwebtokenverify;
@@ -66,15 +62,19 @@ const Messagehandler = (socket) => {
                 where: { email },
             });
             let filename = `${Date.now()}.${ContentType}`;
-            let puturl = yield (0, services_1.putthefile)(ContentType, filename);
+            const image = yield Cloudinary_1.default.uploader.upload(imageurl, {
+                folder: `/cloudinary/${filename}`
+            });
+            console.log(image.url);
             let newfile = yield msg_1.default.create({
                 userId: user.id,
                 GroupId: GroupId,
                 filename: filename,
+                username: user.name,
+                imgandvideourl: image.url
             });
-            socket.emit("UploadUrl", { url: puturl });
-            let url = yield (0, services_1.gethefile)(newfile.filename);
-            let NewFileWithMessages = Object.assign(Object.assign({}, newfile.dataValues), { imgandvideourl: url });
+            console.log(newfile, "upload the image");
+            let NewFileWithMessages = Object.assign(Object.assign({}, newfile.dataValues), { imgandvideourl: image.url });
             socket.emit("UploadNewFileWithMessages", { NewFileWithMessages });
         }
         catch (error) {

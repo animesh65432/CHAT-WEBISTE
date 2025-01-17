@@ -6,7 +6,7 @@ import { useSocket } from "@/Socket/SocketProvider";
 import axios from "axios";
 
 const ImagesandVideossend: React.FC = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<string>("");
   const group = useSelector((state: RootState) => state.group.selectedGroups);
   const token = useSelector((state: RootState) => state.auth.idtoken);
   const { connecttosocket, socket } = useSocket();
@@ -14,11 +14,14 @@ const ImagesandVideossend: React.FC = () => {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
-        setSelectedFile(file);
-      } else {
-        toast.error("Please select a valid image or video file.");
-      }
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        if (typeof reader.result === "string") {
+          setSelectedFile(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -34,21 +37,9 @@ const ImagesandVideossend: React.FC = () => {
       socket.emit("UploadWithMessage", {
         GroupId: group.id,
         token,
-        ContentType: selectedFile.type,
+        imageurl: selectedFile
       });
 
-      socket.on("UploadUrl", async ({ url }: { url: string }) => {
-        try {
-          await axios.put(url, selectedFile, {
-            headers: {
-              "Content-Type": selectedFile.type,
-            },
-          });
-          toast.success("Sucessfully upload the photo");
-        } catch (error) {
-          toast.error("Failed to upload file. Please try again.");
-        }
-      });
     } catch (error) {
       console.error("Error:", error);
       toast.error("Failed to send file. Please try again.");

@@ -1,8 +1,10 @@
 import Message from "../../models/msg";
-import { gethefile, putthefile } from "../../services";
+import { gethefile } from "../../services";
 import { Socket } from "socket.io";
 import jsonwebtoken from "jsonwebtoken";
 import { Users } from "../../models";
+import cloudinary from "../../services/Cloudinary";
+
 
 type jsonPayload = {
   email: string;
@@ -18,14 +20,6 @@ export const Messagehandler = (socket: Socket) => {
       if (messages.length === 0) {
         socket.emit("messages", []);
       } else {
-        for (let i = 0; i < messages.length; i++) {
-          if (messages[i].filename) {
-            messages[i].imgandvideourl = await gethefile(
-              messages[i].filename as string
-            );
-          }
-        }
-
         socket.emit("messages", messages);
       }
     } catch (error) {
@@ -59,6 +53,7 @@ export const Messagehandler = (socket: Socket) => {
         message: message,
         GroupId: GroupId,
         userId: user.id,
+        username: user.name
       });
 
       socket.emit("NewMessages", newMessage);
@@ -71,11 +66,14 @@ export const Messagehandler = (socket: Socket) => {
     GroupId,
     token,
     ContentType,
+    imageurl
   }: {
     GroupId: number;
     token: string;
     ContentType: string;
+    imageurl: string
   }) => {
+
     try {
       const jwtwebtokenverify = jsonwebtoken.verify(
         token,
@@ -89,18 +87,23 @@ export const Messagehandler = (socket: Socket) => {
       });
       let filename = `${Date.now()}.${ContentType}`;
 
-      let puturl = await putthefile(ContentType, filename);
+      const image = await cloudinary.uploader.upload(imageurl, {
+        folder: `/cloudinary/${filename}`
+      })
+
+      console.log(image.url)
 
       let newfile = await Message.create({
         userId: user.id,
         GroupId: GroupId,
         filename: filename,
+        username: user.name,
+        imgandvideourl: image.url
       });
-      socket.emit("UploadUrl", { url: puturl });
 
-      let url = await gethefile(newfile.filename as string);
+      console.log(newfile, "upload the image")
 
-      let NewFileWithMessages = { ...newfile.dataValues, imgandvideourl: url };
+      let NewFileWithMessages = { ...newfile.dataValues, imgandvideourl: image.url };
 
       socket.emit("UploadNewFileWithMessages", { NewFileWithMessages });
     } catch (error) {

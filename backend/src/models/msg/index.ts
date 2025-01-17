@@ -9,11 +9,12 @@ interface MessageModelTypes {
   userId?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  username: string
 }
 
 interface Messageinterface
   extends Model<MessageModelTypes>,
-    MessageModelTypes {}
+  MessageModelTypes { }
 
 const Message = database.define<Messageinterface>("message", {
   message: {
@@ -28,6 +29,10 @@ const Message = database.define<Messageinterface>("message", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: true
+  }
 });
 
 export default Message;
