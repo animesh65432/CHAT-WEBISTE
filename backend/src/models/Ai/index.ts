@@ -1,10 +1,11 @@
 import database from "../../database";
-import { DataTypes, Model, STRING } from "sequelize";
+import { DataTypes, Model } from "sequelize";
+import { Users } from "../index"
 interface AiMessageAttributes {
     id?: number;
     message: string;
-    userid: number;
-    Yourmessage: string
+    Yourmessage: string;
+    userId: Number
 }
 
 
@@ -24,20 +25,25 @@ const Aimessages = database.define<AiMessageInstance>(
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        userid: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
         Yourmessage: {
             type: DataTypes.TEXT,
             allowNull: false
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: Users,
+                key: "id"
+            }
         }
 
     },
     {
         tableName: "Aimessages",
         timestamps: true,
-    }
+    },
+
 );
 
 export default Aimessages;

@@ -21,15 +21,16 @@ const sendmessages = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { message } = req.body;
         const result = yield GemiAI_1.default.generateContent(message);
         const textresposne = result.response.text();
-        const userid = Number(req.user.id);
+        const userId = Number(req.user.id);
+        console.log(userId, "user number id");
         console.log(textresposne, "from ai response");
-        yield models_1.Aimessages.create({
+        const Aimessage = yield models_1.Aimessages.create({
             Yourmessage: message,
-            userid,
+            userId,
             message: textresposne
         });
         return res.status(http_status_codes_1.StatusCodes.ACCEPTED).json({
-            text: textresposne
+            message: Aimessage
         });
     }
     catch (error) {
@@ -42,13 +43,10 @@ const sendmessages = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.sendmessages = sendmessages;
 const getmessages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userid = Number(req.user.id);
+        const userId = Number(req.user.id);
         const messages = yield models_1.Aimessages.findAll({
             where: {
-                userid
-            },
-            attributes: {
-                exclude: ["userid"]
+                userId
             }
         });
         return res.status(http_status_codes_1.StatusCodes.ACCEPTED).json({

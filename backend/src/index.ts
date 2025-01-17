@@ -35,7 +35,7 @@ app.use("/Aimessage", AimessageRouter)
 Users.hasMany(Message);
 Message.belongsTo(Users);
 Users.hasMany(Aimessages)
-Aimessages.belongsTo(Users, { foreignKey: "userid" })
+Aimessages.belongsTo(Users)
 Groups.hasMany(Message);
 Message.belongsTo(Groups);
 Users.belongsToMany(Groups, { through: UserGroup });
@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
   });
 });
 database
-  .sync({ force: true })
+  .sync()
   .then(() => {
     server.listen(process.env.PORT, () => {
       console.log(`server at the ${process.env.PORT}`);

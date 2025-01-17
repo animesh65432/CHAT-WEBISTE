@@ -130,7 +130,7 @@ export const GetTheCurrentUser = async (req: Request, res: Response) => {
 
     let user = await usermodel.findOne({
       where: {
-        email: req.user.email,
+        id: req.user.id,
       },
     });
 

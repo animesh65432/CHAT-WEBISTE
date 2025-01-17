@@ -7,19 +7,20 @@ const sendmessages = async (req: Request, res: Response) => {
         const { message } = req.body
         const result = await AI.generateContent(message)
         const textresposne = result.response.text()
-        const userid = Number(req.user.id)
+        const userId = Number(req.user.id)
+        console.log(userId, "user number id")
 
         console.log(textresposne, "from ai response")
 
-        await Aimessages.create({
+        const Aimessage = await Aimessages.create({
             Yourmessage: message,
-            userid,
+            userId,
             message: textresposne
         })
 
 
         return res.status(StatusCodes.ACCEPTED).json({
-            text: textresposne
+            message: Aimessage
         })
 
     } catch (error) {
@@ -34,13 +35,10 @@ const sendmessages = async (req: Request, res: Response) => {
 const getmessages = async (req: Request, res: Response) => {
     try {
 
-        const userid = Number(req.user.id)
+        const userId = Number(req.user.id)
         const messages = await Aimessages.findAll({
             where: {
-                userid
-            },
-            attributes: {
-                exclude: ["userid"]
+                userId
             }
         })
 

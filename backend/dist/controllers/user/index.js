@@ -136,7 +136,7 @@ const GetTheCurrentUser = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         let user = yield user_1.default.findOne({
             where: {
-                email: req.user.email,
+                id: req.user.id,
             },
         });
         return res.status(http_status_codes_1.StatusCodes.OK).json({
