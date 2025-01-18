@@ -1,4 +1,4 @@
-import Message from "../../models/msg";
+import Message from "../../models/msg/Group";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { putthefile } from "../../services";

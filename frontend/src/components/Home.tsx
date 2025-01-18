@@ -3,11 +3,7 @@ import { Groups, GroupChat, Navbar } from "."
 import React, { useState } from "react";
 import { OptionsState } from "./Navbar"
 import { ShowusersNavbar } from "@/components"
-import { Aichat } from "@/components/chat"
-
-interface ChildProps {
-  onSendData: (data: OptionsState) => void;
-}
+import { Aichat, Userchat } from "@/components/chat"
 
 
 const Home: React.FC = () => {
@@ -31,6 +27,7 @@ const Home: React.FC = () => {
       <div className={options?.ai ? `col-span-11` : "col-span-8"}>
         {options?.group && <GroupChat />}
         {options?.ai && <Aichat />}
+        {options?.messages && <Userchat />}
       </div>
     </div>
   );

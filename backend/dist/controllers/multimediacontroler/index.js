@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendthefiles = void 0;
-const msg_1 = __importDefault(require("../../models/msg"));
+const Group_1 = __importDefault(require("../../models/msg/Group"));
 const http_status_codes_1 = require("http-status-codes");
 const services_1 = require("../../services");
 const sendthefiles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,7 +27,7 @@ const sendthefiles = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         let filename = `${Date.now()}.${ContentType}`;
         let puturl = yield (0, services_1.putthefile)(ContentType, filename);
-        let messages = yield msg_1.default.create({
+        let messages = yield Group_1.default.create({
             userId: Number(req.user.id),
             GroupId: GroupId,
             filename: filename,

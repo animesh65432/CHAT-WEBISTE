@@ -1,14 +1,7 @@
-import Message from "../../models/msg";
-import { gethefile } from "../../services";
+import Message from "../../../models/msg/Group";
 import { Socket } from "socket.io";
-import jsonwebtoken from "jsonwebtoken";
-import { Users } from "../../models";
-import cloudinary from "../../services/Cloudinary";
-
-
-type jsonPayload = {
-  email: string;
-};
+import cloudinary from "../../../services/Cloudinary";
+import { getUserFromToken } from "../../../utils"
 
 export const Messagehandler = (socket: Socket) => {
   const GetMessages = async ({ GroupId }: { GroupId: number }) => {
@@ -38,16 +31,8 @@ export const Messagehandler = (socket: Socket) => {
     token: string;
   }) => {
     try {
-      const jwtwebtokenverify = jsonwebtoken.verify(
-        token,
-        process.env.JSONWEBSECRECT as string
-      ) as jsonPayload;
 
-      const { email } = jwtwebtokenverify;
-
-      let user = await Users.findOne({
-        where: { email },
-      });
+      let user = await getUserFromToken(token)
 
       let newMessage = await Message.create({
         message: message,
@@ -56,6 +41,9 @@ export const Messagehandler = (socket: Socket) => {
         username: user.name
       });
 
+
+      socket.join(GroupId.toString());
+      socket.broadcast.to(GroupId.toString()).emit("NewMessages", newMessage);
       socket.emit("NewMessages", newMessage);
     } catch (error) {
       console.log(error);
@@ -73,25 +61,16 @@ export const Messagehandler = (socket: Socket) => {
     ContentType: string;
     imageurl: string
   }) => {
-
     try {
-      const jwtwebtokenverify = jsonwebtoken.verify(
-        token,
-        process.env.JSONWEBSECRECT as string
-      ) as jsonPayload;
 
-      const { email } = jwtwebtokenverify;
-
-      let user = await Users.findOne({
-        where: { email },
-      });
+      let user = await getUserFromToken(token)
       let filename = `${Date.now()}.${ContentType}`;
 
       const image = await cloudinary.uploader.upload(imageurl, {
         folder: `/cloudinary/${filename}`
-      })
+      });
 
-      console.log(image.url)
+      console.log(image.url);
 
       let newfile = await Message.create({
         userId: user.id,
@@ -101,15 +80,20 @@ export const Messagehandler = (socket: Socket) => {
         imgandvideourl: image.url
       });
 
-      console.log(newfile, "upload the image")
+      console.log(newfile, "upload the image");
 
       let NewFileWithMessages = { ...newfile.dataValues, imgandvideourl: image.url };
 
+
+      socket.join(GroupId.toString());
+      socket.broadcast.to(GroupId.toString()).emit("UploadNewFileWithMessages", { NewFileWithMessages });
       socket.emit("UploadNewFileWithMessages", { NewFileWithMessages });
     } catch (error) {
       console.log(error);
     }
   };
+
+
 
   socket.on("getMessages", GetMessages);
   socket.on("SentMessages", SentMessage);

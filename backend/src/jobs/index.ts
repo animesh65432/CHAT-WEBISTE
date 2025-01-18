@@ -1,6 +1,6 @@
 import { CronJob } from "cron";
 import Sequelize from "sequelize";
-import Messages from "../models/msg";
+import Messages from "../models/msg/Group";
 import ArchivedChat from "../models/ArchivedChat";
 
 const job = new CronJob("0 0 * * *", async () => {
@@ -14,7 +14,7 @@ const job = new CronJob("0 0 * * *", async () => {
       },
     });
 
-    const archivedChats = chats.map((chat) => ({
+    const archivedChats = chats.map((chat: any) => ({
       message: chat.message || "",
       filename: chat.filename || "",
       imgandvideourl: chat.imgandvideourl || "",

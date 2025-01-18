@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cron_1 = require("cron");
 const sequelize_1 = __importDefault(require("sequelize"));
-const msg_1 = __importDefault(require("../models/msg"));
+const Group_1 = __importDefault(require("../models/msg/Group"));
 const ArchivedChat_1 = __importDefault(require("../models/ArchivedChat"));
 const job = new cron_1.CronJob("0 0 * * *", () => __awaiter(void 0, void 0, void 0, function* () {
     const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
     try {
-        const chats = yield msg_1.default.findAll({
+        const chats = yield Group_1.default.findAll({
             where: {
                 createdAt: {
                     [sequelize_1.default.Op.lt]: yesterday,
@@ -34,7 +34,7 @@ const job = new cron_1.CronJob("0 0 * * *", () => __awaiter(void 0, void 0, void
             updatedAt: chat.updatedAt,
         }));
         yield ArchivedChat_1.default.bulkCreate(archivedChats);
-        yield msg_1.default.destroy({
+        yield Group_1.default.destroy({
             where: {
                 createdAt: {
                     [sequelize_1.default.Op.lt]: yesterday,

@@ -12,7 +12,7 @@ const database_1 = __importDefault(require("./database"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const router_1 = require("./router");
 const models_1 = require("./models");
-const messages_1 = require("./controllers/messages");
+const Group_1 = require("./controllers/messages/Group");
 const jobs_1 = __importDefault(require("./jobs"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({ origin: "http://localhost:5173" }));
@@ -40,9 +40,13 @@ models_1.Groups.hasMany(models_1.Message);
 models_1.Message.belongsTo(models_1.Groups);
 models_1.Users.belongsToMany(models_1.Groups, { through: models_1.UserGroup });
 models_1.Groups.belongsToMany(models_1.Users, { through: models_1.UserGroup });
+models_1.Users.hasMany(models_1.UserMessages, { foreignKey: "senderId" });
+models_1.Users.hasMany(models_1.UserMessages, { foreignKey: "receiverId" });
+models_1.UserMessages.belongsTo(models_1.Users, { foreignKey: "senderId" });
+models_1.UserMessages.belongsTo(models_1.Users, { foreignKey: "receiverId" });
 jobs_1.default.start();
 io.on("connection", (socket) => {
-    (0, messages_1.Messagehandler)(socket);
+    (0, Group_1.Messagehandler)(socket);
     socket.off("disconnect", () => {
         console.log("user disconnected");
     });

@@ -6,8 +6,8 @@ import cors from "cors";
 import database from "./database";
 import cookieparser from "cookie-parser";
 import { userrouter, messageRouter, groupsrouter, AimessageRouter } from "./router";
-import { Groups, Message, UserGroup, Users, Aimessages } from "./models";
-import { Messagehandler } from "./controllers/messages";
+import { Groups, Message, UserGroup, Users, Aimessages, UserMessages } from "./models";
+import { Messagehandler } from "./controllers/messages/Group";
 import job from "./jobs";
 const app = express();
 app.use(cors({ origin: "http://localhost:5173" }));
@@ -40,6 +40,10 @@ Groups.hasMany(Message);
 Message.belongsTo(Groups);
 Users.belongsToMany(Groups, { through: UserGroup });
 Groups.belongsToMany(Users, { through: UserGroup });
+Users.hasMany(UserMessages, { foreignKey: "senderId" })
+Users.hasMany(UserMessages, { foreignKey: "receiverId" })
+UserMessages.belongsTo(Users, { foreignKey: "senderId" })
+UserMessages.belongsTo(Users, { foreignKey: "receiverId" })
 job.start();
 
 io.on("connection", (socket) => {

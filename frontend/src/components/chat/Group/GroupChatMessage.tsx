@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { User } from "../../index";
 import { RootState } from "@/reduex";
 import { useSocket } from "@/Socket/SocketProvider";
+import notificationsound from "../../../../public/notification-2-269292.mp3"
 interface MessageArray {
   message?: string;
   imgandvideourl?: string;
@@ -16,6 +17,7 @@ const GroupGroupChatMessage: React.FC = () => {
   const [showUsers, setShowUsers] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageArray[]>([]);
   const { socket, connecttosocket } = useSocket();
+  const notificationref = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if (!selectedGroups) return;
@@ -32,6 +34,7 @@ const GroupGroupChatMessage: React.FC = () => {
       socket.on("NewMessages", (newMessage: MessageArray) => {
         console.log("Received new message:", newMessage);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
+        notificationref?.current?.play()
 
       });
 
@@ -104,7 +107,7 @@ const GroupGroupChatMessage: React.FC = () => {
         ))}
 
       </div>
-
+      <audio src={notificationsound} ref={notificationref}></audio>
 
     </div>
   );
