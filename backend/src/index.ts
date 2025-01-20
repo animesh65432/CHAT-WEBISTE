@@ -8,12 +8,13 @@ import cookieparser from "cookie-parser";
 import { userrouter, messageRouter, groupsrouter, AimessageRouter } from "./router";
 import { Groups, Message, UserGroup, Users, Aimessages, UserMessages } from "./models";
 import { Messagehandler } from "./controllers/messages/Group";
+import { chatHandler } from "./controllers/messages/usermessage"
 import job from "./jobs";
 const app = express();
 app.use(cors({ origin: "http://localhost:5173" }));
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(cookieparser());
 
 const server = http.createServer(app);
@@ -48,6 +49,7 @@ job.start();
 
 io.on("connection", (socket) => {
   Messagehandler(socket);
+  chatHandler(socket)
   socket.off("disconnect", () => {
     console.log("user disconnected");
   });

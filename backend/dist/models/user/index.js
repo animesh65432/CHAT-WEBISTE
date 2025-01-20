@@ -24,6 +24,10 @@ const users = database_1.default.define("users", {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
+    image: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+    }
 });
 exports.default = users;
 //# sourceMappingURL=index.js.map

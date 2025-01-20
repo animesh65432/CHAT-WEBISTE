@@ -7,5 +7,7 @@ import Navbar from "./Navbar";
 import { GroupChat } from "./chat"
 import { Groups } from "../Groups/index"
 import ShowusersNavbar from "./users/ShowusersNavbar";
+import Uselogout from "./Uselogout";
+import UpdateCurrentUser from "./users/UpdateCurrentUser";
 
-export { User, Headers, Home, LoginPage, SigninPage, Navbar, GroupChat, Groups, ShowusersNavbar };
+export { User, Headers, Home, LoginPage, SigninPage, Navbar, GroupChat, Groups, ShowusersNavbar, Uselogout, UpdateCurrentUser };

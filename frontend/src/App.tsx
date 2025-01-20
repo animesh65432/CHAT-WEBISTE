@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { SigninPage, LoginPage, Headers, Home } from "@/components";
+import { SigninPage, LoginPage, Headers, Home, UpdateCurrentUser } from "@/components";
 
 const App: React.FC = () => {
   const token = useSelector((state: any) => state.auth.idtoken);
@@ -23,6 +23,7 @@ const App: React.FC = () => {
           <Headers />
           <Routes>
             <Route path="/" element={<Home />}></Route>
+            <Route path="/update_profile" element={<UpdateCurrentUser />}></Route>
           </Routes>
         </>
       )}

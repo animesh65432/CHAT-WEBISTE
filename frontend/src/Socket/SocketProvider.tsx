@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, createContext, useContext } from "react";
+import React, { ReactNode, useState, useEffect, createContext, useContext } from "react";
 import { io, Socket } from "socket.io-client";
 import { baseurl } from "../utils";
 
@@ -20,8 +20,18 @@ export const SocketProvider: React.FC<Props> = ({ children }) => {
     if (!socket) {
       const socketInstance = io(baseurl, { withCredentials: true });
       setSocket(socketInstance);
+
+
+      return () => {
+        socketInstance.disconnect();
+      };
     }
   };
+
+  useEffect(() => {
+
+    connecttosocket();
+  }, []);
 
   return (
     <SocketContext.Provider value={{ socket, connecttosocket }}>

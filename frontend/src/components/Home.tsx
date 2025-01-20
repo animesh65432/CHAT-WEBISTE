@@ -1,4 +1,3 @@
-
 import { Groups, GroupChat, Navbar } from "."
 import React, { useState } from "react";
 import { OptionsState } from "./Navbar"
@@ -10,9 +9,7 @@ const Home: React.FC = () => {
   const [options, setOptions] = useState<OptionsState>()
   const handleData = async (data: OptionsState) => {
     setOptions(data)
-    if (options?.messages) {
 
-    }
   };
 
   return (

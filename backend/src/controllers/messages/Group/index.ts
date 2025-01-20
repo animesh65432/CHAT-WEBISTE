@@ -5,6 +5,10 @@ import { getUserFromToken } from "../../../utils"
 
 export const Messagehandler = (socket: Socket) => {
   const GetMessages = async ({ GroupId }: { GroupId: number }) => {
+    if (!GroupId) {
+      throw new Error('GroupId is required for this operation Getmessages');
+    }
+
     try {
       let messages = await Message.findAll({
         where: { GroupId },
@@ -31,6 +35,9 @@ export const Messagehandler = (socket: Socket) => {
     token: string;
   }) => {
     try {
+      if (!GroupId || !message || !token) {
+        throw new Error('GroupId is required for this operation Sentmessages');
+      }
 
       let user = await getUserFromToken(token)
 
@@ -62,6 +69,10 @@ export const Messagehandler = (socket: Socket) => {
     imageurl: string
   }) => {
     try {
+
+      if (!GroupId || !token) {
+        throw new Error('GroupId is required for this operation upLOADEMESSAGES');
+      }
 
       let user = await getUserFromToken(token)
       let filename = `${Date.now()}.${ContentType}`;

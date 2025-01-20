@@ -12,6 +12,7 @@ import useRemoveUser from "./groups/useReomveuser";
 import useGetalltheusers from "./useGetalltheusers";
 import useGetallaimessages from "./useGetallaimessages";
 import useSentmessageai from "./useSentmessageai";
+import useUpdateprofile from "./useUpdateprofile";
 export {
   useCheckisAdmin,
   useCreateGroup,
@@ -26,5 +27,6 @@ export {
   useRemoveUser,
   useGetalltheusers,
   useGetallaimessages,
-  useSentmessageai
+  useSentmessageai,
+  useUpdateprofile
 };

@@ -6,6 +6,7 @@ export interface UserTypes {
   name: string;
   email: string;
   password: string;
+  image?: string | null
 }
 
 interface UserInstance extends Model<UserTypes>, UserTypes { }
@@ -29,6 +30,10 @@ const users = database.define<UserInstance>("users", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  }
 });
 
 export default users;

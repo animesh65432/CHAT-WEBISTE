@@ -100,7 +100,7 @@ const GroupGroupChatMessage: React.FC = () => {
                 />
               )}
             </div>
-            <div>
+            <div className="gap-2">
               <span className="text-blue-700">{messageObj.username}</span>
             </div>
           </div>

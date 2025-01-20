@@ -14,11 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Messagehandler = void 0;
 const Group_1 = __importDefault(require("../../../models/msg/Group"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const models_1 = require("../../../models");
 const Cloudinary_1 = __importDefault(require("../../../services/Cloudinary"));
+const utils_1 = require("../../../utils");
 const Messagehandler = (socket) => {
     const GetMessages = (_a) => __awaiter(void 0, [_a], void 0, function* ({ GroupId }) {
+        if (!GroupId) {
+            throw new Error('GroupId is required for this operation Getmessages');
+        }
         try {
             let messages = yield Group_1.default.findAll({
                 where: { GroupId },
@@ -37,11 +39,10 @@ const Messagehandler = (socket) => {
     });
     const SentMessage = (_a) => __awaiter(void 0, [_a], void 0, function* ({ GroupId, message, token, }) {
         try {
-            const jwtwebtokenverify = jsonwebtoken_1.default.verify(token, process.env.JSONWEBSECRECT);
-            const { email } = jwtwebtokenverify;
-            let user = yield models_1.Users.findOne({
-                where: { email },
-            });
+            if (!GroupId || !message || !token) {
+                throw new Error('GroupId is required for this operation Sentmessages');
+            }
+            let user = yield (0, utils_1.getUserFromToken)(token);
             let newMessage = yield Group_1.default.create({
                 message: message,
                 GroupId: GroupId,
@@ -58,11 +59,10 @@ const Messagehandler = (socket) => {
     });
     const UploadWithMessages = (_a) => __awaiter(void 0, [_a], void 0, function* ({ GroupId, token, ContentType, imageurl }) {
         try {
-            const jwtwebtokenverify = jsonwebtoken_1.default.verify(token, process.env.JSONWEBSECRECT);
-            const { email } = jwtwebtokenverify;
-            let user = yield models_1.Users.findOne({
-                where: { email },
-            });
+            if (!GroupId || !token) {
+                throw new Error('GroupId is required for this operation upLOADEMESSAGES');
+            }
+            let user = yield (0, utils_1.getUserFromToken)(token);
             let filename = `${Date.now()}.${ContentType}`;
             const image = yield Cloudinary_1.default.uploader.upload(imageurl, {
                 folder: `/cloudinary/${filename}`

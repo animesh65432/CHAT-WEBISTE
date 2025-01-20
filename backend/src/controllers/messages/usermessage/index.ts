@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { Users, UserMessages } from "../../../models";
-import { Op } from "sequelize"
-import { getUserFromToken } from "../../../utils"
+import { Op } from "sequelize";
+import { getUserFromToken } from "../../../utils";
 
 interface MessagePayload {
     message: string;
@@ -10,7 +10,27 @@ interface MessagePayload {
 }
 
 export const chatHandler = (socket: Socket) => {
+    // Store user ID to socket mapping
+    let currentUserId: number | null = null;
 
+    // Handle initial connection
+    socket.on("authenticate", async ({ token }: { token: string }) => {
+        try {
+
+            console.log(token, "Get token from frontend")
+            const user = await getUserFromToken(token);
+            currentUserId = user.id;
+
+            // Join user's personal room
+
+            console.log(`CuurentUserId ${user.id}`)
+            socket.join(`user_${user.id}`);
+
+            console.log(`User ${user.id} authenticated and joined their room`);
+        } catch (error) {
+            socket.emit("error", { message: "Authentication failed" });
+        }
+    });
 
     // Handle sending messages
     const handleSendMessage = async ({ message, receiverId, token }: MessagePayload) => {
@@ -34,26 +54,27 @@ export const chatHandler = (socket: Socket) => {
                 message,
             });
 
-
-            socket.to(receiverId.toString()).emit("newMessage", {
-                message: newMessage
+            // Emit to both sender and receiver rooms
+            socket.emit("messageSent", { message: newMessage });
+            socket.to(`user_${receiverId}`).emit("messageReceived", {
+                message: newMessage,
+                sender: {
+                    id: sender.id,
+                    // Add other sender details you want to include
+                }
             });
 
-
-            socket.emit("messageSent", { message: newMessage });
-
+            console.log(`Message sent from ${sender.id} to ${receiverId}`);
         } catch (error) {
             console.error("Error sending message:", error);
             socket.emit("error", { message: "Failed to send message" });
         }
     };
 
-    // Handle fetching message history
     const handleGetMessages = async ({ receiverId, token }: Omit<MessagePayload, 'message'>) => {
         try {
             const user = await getUserFromToken(token);
 
-            // Get messages between these two users (both sent and received)
             const messages = await UserMessages.findAll({
                 where: {
                     [Op.or]: [
@@ -61,25 +82,23 @@ export const chatHandler = (socket: Socket) => {
                         { senderId: receiverId, receiverId: user.id }
                     ]
                 },
-                order: [['createdAt', 'ASC']],
-                include: [{
-                    model: Users,
-                    as: 'sender',
-                    attributes: ['id', 'email']
-                }]
+                order: [['createdAt', 'ASC']] // Order messages by time
             });
 
             socket.emit("messageHistory", { messages });
-
         } catch (error) {
             console.error("Error fetching messages:", error);
             socket.emit("error", { message: "Failed to fetch messages" });
         }
     };
 
+    // Handle disconnection
+    socket.on("disconnect", () => {
+        if (currentUserId) {
+            console.log(`User ${currentUserId} disconnected`);
+        }
+    });
 
     socket.on("sendMessage", handleSendMessage);
-    socket.on("getMessages", handleGetMessages);
-
-
+    socket.on("getMessagesForUser", handleGetMessages);
 };

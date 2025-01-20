@@ -13,11 +13,12 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const router_1 = require("./router");
 const models_1 = require("./models");
 const Group_1 = require("./controllers/messages/Group");
+const usermessage_1 = require("./controllers/messages/usermessage");
 const jobs_1 = __importDefault(require("./jobs"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({ origin: "http://localhost:5173" }));
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use(express_1.default.json());
+app.use(express_1.default.json({ limit: '50mb' }));
 app.use((0, cookie_parser_1.default)());
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
@@ -47,6 +48,7 @@ models_1.UserMessages.belongsTo(models_1.Users, { foreignKey: "receiverId" });
 jobs_1.default.start();
 io.on("connection", (socket) => {
     (0, Group_1.Messagehandler)(socket);
+    (0, usermessage_1.chatHandler)(socket);
     socket.off("disconnect", () => {
         console.log("user disconnected");
     });

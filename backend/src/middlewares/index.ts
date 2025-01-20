@@ -1,12 +1,6 @@
-import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import UserModel from "../models/user";
 import { StatusCodes } from "http-status-codes";
-
-export const createJWTtokens = (obj: object): string => {
-  const token = jwt.sign(obj, process.env.JSONWEBSECRECT as string);
-  return token;
-};
+import { getUserFromToken } from "../utils"
 
 export const Authentication = async (
   req: Request,
@@ -23,16 +17,8 @@ export const Authentication = async (
       });
     }
 
-    const { email } = jwt.verify(
-      token,
-      process.env.JSONWEBSECRECT as string
-    ) as { email: string };
+    const user = await getUserFromToken(token)
 
-    const user = await UserModel.findOne({
-      where: {
-        email: email,
-      },
-    });
     if (!user) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         success: false,

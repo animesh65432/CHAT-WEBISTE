@@ -8,19 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Authentication = exports.createJWTtokens = void 0;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const user_1 = __importDefault(require("../models/user"));
+exports.Authentication = void 0;
 const http_status_codes_1 = require("http-status-codes");
-const createJWTtokens = (obj) => {
-    const token = jsonwebtoken_1.default.sign(obj, process.env.JSONWEBSECRECT);
-    return token;
-};
-exports.createJWTtokens = createJWTtokens;
+const utils_1 = require("../utils");
 const Authentication = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = req.headers.token;
@@ -30,12 +21,7 @@ const Authentication = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                 message: "No token provided",
             });
         }
-        const { email } = jsonwebtoken_1.default.verify(token, process.env.JSONWEBSECRECT);
-        const user = yield user_1.default.findOne({
-            where: {
-                email: email,
-            },
-        });
+        const user = yield (0, utils_1.getUserFromToken)(token);
         if (!user) {
             return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({
                 success: false,
