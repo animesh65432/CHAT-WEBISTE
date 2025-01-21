@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { User } from "../../index";
 import { RootState } from "@/reduex";
 import { useSocket } from "@/Socket/SocketProvider";
-import notificationsound from "/notification-2-269292.mp3"
+import notificationsound from "../../../assets/notification-2-269292.mp3"
 interface MessageArray {
   message?: string;
   imgandvideourl?: string;
