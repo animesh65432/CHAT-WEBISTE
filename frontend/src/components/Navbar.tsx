@@ -54,7 +54,7 @@ const Navbar: React.FC<Props> = ({ onSendData }) => {
 
     console.log(options.ai, options.group, options.messages, "from navbar components")
     return (
-        <div className="flex md:flex-col flex-row items-center md:h-dvh md:gap-10 gap-80 bg-slate-200  h-[10vh]  md:w-3/4">
+        <div className="flex md:flex-col flex-row items-center md:h-dvh md:gap-10  md:justify-normal justify-evenly bg-slate-200  h-[10vh]  md:w-3/4">
             <div
                 className="mt-4 cursor-pointer"
                 onClick={() => handleToggle("messages")}
