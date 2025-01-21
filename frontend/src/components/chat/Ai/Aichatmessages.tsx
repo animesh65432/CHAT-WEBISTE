@@ -13,6 +13,7 @@ type Props = {
 const Aichatmessages: React.FC<Props> = ({ inputloading }) => {
     const [loading, getAiMessages] = useGetallaimessages();
     const Aimessags = useSelector((state: RootState) => state.Ai.messages)
+    console.log(Aimessags, "Aimessages")
 
     const fetchAllPrevAiMessages = async () => {
         try {
@@ -43,7 +44,7 @@ const Aichatmessages: React.FC<Props> = ({ inputloading }) => {
     return (
         <div>
             {
-                Aimessags.length > 0 ? <div>
+                Aimessags && Aimessags.length > 0 ? <div>
                     {
                         Aimessags.map((message) => <Message key={message.id} message={message} inputloading={inputloading} />)
                     }

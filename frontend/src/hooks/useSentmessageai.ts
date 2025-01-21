@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "@/reduex"
 import { AImessagesTypes } from "@/types/type"
 import { Addonemessage } from "@/reduex/Aimessages"
+import { baseurl } from "@/utils"
 
 type useSentmessageaireturntypes = [
     loading: boolean,
@@ -19,15 +20,17 @@ const useSentmessageai = (): useSentmessageaireturntypes => {
     const senthemesagestoai = async ({ message }: { message: string }) => {
         setloading(true)
         try {
-            const response = await axios.post<{ message: AImessagesTypes }>(`http://localhost:3000/Aimessage/send`, {
+            const response = await axios.post<{ message: AImessagesTypes }>(`${baseurl}/Aimessage/send`, {
                 message
             }, {
                 headers: {
                     token
                 }
             })
+            console.log(response)
 
             const messagefromai = response?.data?.message
+            console.log(messagefromai)
             dispatch(Addonemessage(messagefromai))
 
         } catch (error) {

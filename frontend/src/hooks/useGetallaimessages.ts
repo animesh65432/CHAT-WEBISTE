@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "@/reduex"
 import { Getallmessages } from "@/reduex/Aimessages"
 import { AImessagesTypes } from "@/types/type"
+import { baseurl } from "@/utils"
 
 type useGetallaimessagesreturntypes = [
     loading: boolean,
@@ -18,7 +19,7 @@ const useGetallaimessages = (): useGetallaimessagesreturntypes => {
     const getaimessages = async () => {
         setloading(true)
         try {
-            let response = await axios.get<{ messages: AImessagesTypes[] }>(`http://localhost:3000/Aimessage/Get`, {
+            let response = await axios.get<{ messages: AImessagesTypes[] }>(`${baseurl}/Aimessage/Get`, {
                 headers: {
                     token
                 }
