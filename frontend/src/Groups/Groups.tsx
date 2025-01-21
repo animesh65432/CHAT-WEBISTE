@@ -45,12 +45,12 @@ const Groups: React.FC = () => {
   }
 
   return (
-    <div className="h-full mx-auto  bg-white shadow-md rounded-lg p-6">
+    <div className="md:h-full mx-auto  bg-white shadow-md rounded-lg p-6">
       <div className="flex flex-row justify-between">
         <h2 className="text-2xl font-bold mb-4">Groups</h2>
         <GroupBottomFrom />
       </div>
-      <div className="flex flex-col h-dvh overflow-y-scroll">
+      <div className="flex md:flex-col md:h-dvh md:overflow-y-scroll overflow-x-scroll">
         {groups.map((group: any, index: any) => (
           <Groupitems key={index} obj={group} />
         ))}

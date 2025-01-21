@@ -3,8 +3,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "@/reduex";
 import { useSocket } from "@/Socket/SocketProvider";
-import axios from "axios";
-
 const ImagesandVideossend: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<string>("");
   const group = useSelector((state: RootState) => state.group.selectedGroups);

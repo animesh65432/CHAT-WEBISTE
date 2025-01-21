@@ -11,7 +11,7 @@ import { Messagehandler } from "./controllers/messages/Group";
 import { chatHandler } from "./controllers/messages/usermessage"
 import job from "./jobs";
 const app = express();
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://localhost:3000" }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '50mb' }));
@@ -20,10 +20,10 @@ app.use(cookieparser());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
-    credentials: true,
+    credentials: true
   },
 });
 
@@ -31,6 +31,22 @@ app.use("/users", userrouter);
 app.use("/message", messageRouter);
 app.use("/Groups", groupsrouter);
 app.use("/Aimessage", AimessageRouter)
+
+app.get("/", async (req, res) => {
+  try {
+    const users = await Users.findAll({})
+    res.status(200).json({
+      message: "start the server",
+      users
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message: "internal server errors"
+    })
+  }
+
+})
 
 
 Users.hasMany(Message);

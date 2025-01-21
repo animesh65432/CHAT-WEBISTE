@@ -10,6 +10,8 @@ console.log(
   process.env.BUCKET_NAME
 );
 
+import cloudinary from "./Cloudinary";
+
 const s3client = new S3Client({
   credentials: {
     secretAccessKey: process.env.Secret_access_key as string,

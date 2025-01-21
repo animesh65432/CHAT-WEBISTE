@@ -1,13 +1,7 @@
 import database from "../../database";
 import { Model, DataTypes } from "sequelize"
 import { Users } from "../../models"
-
-export interface UserMessagesTypes {
-    id: number;
-    senderId: number;
-    message: string;
-    receiverId: number;
-}
+import { UserMessagesTypes } from "../../types"
 interface UserMessageInstance extends Model<UserMessagesTypes>, UserMessagesTypes { }
 
 const UserMessages = database.define<UserMessageInstance>("UserMessages", {

@@ -20,7 +20,8 @@ const useCreateUser = (): UseCreateUserHook => {
 
       return true;
     } catch (error: any) {
-        setErrors(error.response.data.message);
+      console.log(error)
+      setErrors(error.response.data.message);
       return false;
     }
   };

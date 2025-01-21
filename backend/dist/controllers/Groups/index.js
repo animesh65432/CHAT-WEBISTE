@@ -89,7 +89,7 @@ const removeuser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 message: "you are not admin",
             });
         }
-        let user = yield userGroup_1.default.destroy({
+        yield userGroup_1.default.destroy({
             where: {
                 userId: UserId,
                 GroupId: GroupId,
@@ -138,7 +138,6 @@ const jointhroughadmin = (req, res) => __awaiter(void 0, void 0, void 0, functio
         }, {
             transaction: t,
         });
-        console.log(newUserGroup);
         yield t.commit();
         return res.status(http_status_codes_1.StatusCodes.CREATED).json({
             success: true,

@@ -1,13 +1,7 @@
 import database from "../../database";
 import { DataTypes, Model } from "sequelize";
 import { Users } from "../index"
-interface AiMessageAttributes {
-    id?: number;
-    message: string;
-    Yourmessage: string;
-    userId: Number
-}
-
+import { AiMessageAttributes } from "../../types"
 
 
 interface AiMessageInstance

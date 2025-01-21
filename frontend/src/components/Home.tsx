@@ -13,7 +13,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="grid  sm:grid-cols-12  ">
+    <div className="md:grid  md:grid-cols-12 flex flex-col  ">
       <div className="col-span-1">
         <Navbar onSendData={handleData} />
       </div>

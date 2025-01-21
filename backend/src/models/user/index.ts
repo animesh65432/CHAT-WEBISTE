@@ -1,13 +1,6 @@
 import database from "../../database";
 import { DataTypes, Model } from "sequelize";
-
-export interface UserTypes {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  image?: string | null
-}
+import { UserTypes } from "../../types/index"
 
 interface UserInstance extends Model<UserTypes>, UserTypes { }
 

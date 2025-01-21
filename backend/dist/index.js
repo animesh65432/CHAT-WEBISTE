@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -16,23 +25,38 @@ const Group_1 = require("./controllers/messages/Group");
 const usermessage_1 = require("./controllers/messages/usermessage");
 const jobs_1 = __importDefault(require("./jobs"));
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)({ origin: "http://localhost:5173" }));
+app.use((0, cors_1.default)({ origin: "http://localhost:3000" }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json({ limit: '50mb' }));
 app.use((0, cookie_parser_1.default)());
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
-        credentials: true,
+        credentials: true
     },
 });
 app.use("/users", router_1.userrouter);
 app.use("/message", router_1.messageRouter);
 app.use("/Groups", router_1.groupsrouter);
 app.use("/Aimessage", router_1.AimessageRouter);
+app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const users = yield models_1.Users.findAll({});
+        res.status(200).json({
+            message: "start the server",
+            users
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "internal server errors"
+        });
+    }
+}));
 models_1.Users.hasMany(models_1.Message);
 models_1.Message.belongsTo(models_1.Users);
 models_1.Users.hasMany(models_1.Aimessages);

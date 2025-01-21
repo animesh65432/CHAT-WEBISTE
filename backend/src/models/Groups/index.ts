@@ -1,11 +1,8 @@
 import database from "../../database";
 import { DataTypes, Model } from "sequelize";
-interface GroupTypes {
-  id?: number;
-  nameofthegroup: string;
-}
+import { GroupTypes } from "../../types"
 
-interface GroupIntances extends Model<GroupTypes>, GroupTypes {}
+interface GroupIntances extends Model<GroupTypes>, GroupTypes { }
 const Groups = database.define<GroupIntances>("Group", {
   id: {
     type: DataTypes.INTEGER,

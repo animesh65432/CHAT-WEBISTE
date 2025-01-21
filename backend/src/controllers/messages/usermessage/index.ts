@@ -35,6 +35,7 @@ export const chatHandler = (socket: Socket) => {
     // Handle sending messages
     const handleSendMessage = async ({ message, receiverId, token }: MessagePayload) => {
         try {
+
             const sender = await getUserFromToken(token);
 
             // Validate receiver exists

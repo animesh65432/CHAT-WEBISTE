@@ -1,10 +1,8 @@
 import { Users } from "../models"
 import jwt from "jsonwebtoken"
 import cloudinary from "../services/Cloudinary";
-import { UserTypes } from "../models/user"
-interface JWTPayload {
-    email: string;
-}
+import { UserTypes } from "../types"
+import { JWTPayload } from "../types/index"
 
 const getUserFromToken = async (token: string): Promise<UserTypes> => {
     try {

@@ -91,7 +91,7 @@ export const removeuser = async (req: Request, res: Response) => {
       });
     }
 
-    let user = await userGroup.destroy({
+    await userGroup.destroy({
       where: {
         userId: UserId,
         GroupId: GroupId,
@@ -145,7 +145,7 @@ export const jointhroughadmin = async (req: Request, res: Response) => {
         transaction: t,
       }
     );
-    console.log(newUserGroup);
+
 
     await t.commit();
     return res.status(StatusCodes.CREATED).json({

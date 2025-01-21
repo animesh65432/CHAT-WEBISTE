@@ -1,16 +1,6 @@
 import database from "../../database";
 import { DataTypes, Model } from "sequelize";
-
-interface MessageModelTypes {
-  message?: String;
-  filename?: String;
-  imgandvideourl?: String;
-  GroupId?: number;
-  userId?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  username: string
-}
+import { MessageModelTypes } from "../../types"
 
 interface Messageinterface
   extends Model<MessageModelTypes>,

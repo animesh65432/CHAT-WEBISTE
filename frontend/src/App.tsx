@@ -5,8 +5,6 @@ import { SigninPage, LoginPage, Headers, Home, UpdateCurrentUser } from "@/compo
 
 const App: React.FC = () => {
   const token = useSelector((state: any) => state.auth.idtoken);
-  const users = useSelector((state: any) => state.user?.value)
-  console.log(users, "in the main app")
   const islogin = !!token;
 
   return (

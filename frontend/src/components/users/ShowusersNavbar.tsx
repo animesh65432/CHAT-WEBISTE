@@ -16,7 +16,7 @@ const ShowusersNavbar: React.FC = () => {
                         You don't have any friends
                     </div>
                 ) : (
-                    <div className='font-mono bg-blue-200 flex flex-col flex-grow overflow-auto'>
+                    <div className='font-mono bg-blue-200 flex md:flex-col md:flex-grow md:overflow-y-scroll overflow-x-scroll'>
                         {Users.map((user) => <User user={user} key={user.id} />)}
                     </div>
                 )
