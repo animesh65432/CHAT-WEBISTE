@@ -1,5 +1,6 @@
 {
  "scripts": {
+  "build":"npx tsc",
   "start": "nodemon dist/index.js"
  },
  "dependencies": {
