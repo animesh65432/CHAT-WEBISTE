@@ -1,18 +1,17 @@
 import { Sequelize } from "sequelize";
 
 const database = new Sequelize(
-  "chatbackend",
-  "postgres",
-  "new_password",
+  process.env.DATABASENAME,
+  process.env.DATAUSERNAME,
+  process.env.DATAPASSWORD,
   {
-    host: "database",
+    host: process.env.DATABASEHOST,
     dialect: "postgres",
     port: 5432,
 
   }
 );
 
-// Add connection testing
 const testConnection = async () => {
   try {
     await database.authenticate();

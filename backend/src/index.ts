@@ -32,22 +32,6 @@ app.use("/message", messageRouter);
 app.use("/Groups", groupsrouter);
 app.use("/Aimessage", AimessageRouter)
 
-app.get("/", async (req, res) => {
-  try {
-    const users = await Users.findAll({})
-    res.status(200).json({
-      message: "start the server",
-      users
-    })
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      message: "internal server errors"
-    })
-  }
-
-})
-
 
 Users.hasMany(Message);
 Message.belongsTo(Users);
