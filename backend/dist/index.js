@@ -25,14 +25,14 @@ const Group_1 = require("./controllers/messages/Group");
 const usermessage_1 = require("./controllers/messages/usermessage");
 const jobs_1 = __importDefault(require("./jobs"));
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)({ origin: "http://localhost:3000" }));
+app.use((0, cors_1.default)({ origin: "https://chat-webiste-v5pz.vercel.app" }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json({ limit: '50mb' }));
 app.use((0, cookie_parser_1.default)());
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://chat-webiste-v5pz.vercel.app",
         methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
         credentials: true
@@ -45,15 +45,15 @@ app.use("/Aimessage", router_1.AimessageRouter);
 app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield models_1.Users.findAll({});
-        res.status(200).json({
-            message: "start the server",
-            users
+        return res.status(200).json({
+            users,
+            message: "start the backend server"
         });
     }
     catch (error) {
         console.log(error);
         return res.status(500).json({
-            message: "internal server errors"
+            message: `internal server errors ${error}`
         });
     }
 }));

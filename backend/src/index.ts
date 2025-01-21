@@ -11,7 +11,7 @@ import { Messagehandler } from "./controllers/messages/Group";
 import { chatHandler } from "./controllers/messages/usermessage"
 import job from "./jobs";
 const app = express();
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "https://chat-webiste-v5pz.vercel.app" }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '50mb' }));
@@ -20,7 +20,7 @@ app.use(cookieparser());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://chat-webiste-v5pz.vercel.app",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
@@ -31,6 +31,22 @@ app.use("/users", userrouter);
 app.use("/message", messageRouter);
 app.use("/Groups", groupsrouter);
 app.use("/Aimessage", AimessageRouter)
+
+
+app.get("/", async (req, res) => {
+  try {
+    const users = await Users.findAll({})
+    return res.status(200).json({
+      users,
+      message: "start the backend server"
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message: `internal server errors ${error}`
+    })
+  }
+})
 
 
 Users.hasMany(Message);

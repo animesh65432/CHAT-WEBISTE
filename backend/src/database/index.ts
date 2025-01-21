@@ -1,16 +1,21 @@
 import { Sequelize } from "sequelize";
 
 const database = new Sequelize(
-  process.env.DATABASENAME,
-  process.env.DATAUSERNAME,
-  process.env.DATAPASSWORD,
+  process.env.DIRECT_URL,
   {
-    host: process.env.DATABASEHOST,
     dialect: "postgres",
-    port: 5432,
-
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+    logging: false,
   }
 );
+
+
+
 
 const testConnection = async () => {
   try {

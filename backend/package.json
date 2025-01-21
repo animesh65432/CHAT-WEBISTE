@@ -1,43 +1,45 @@
 {
-  "scripts": {
-    "build": " npx tsc",
-    "start": "node dist/index.js"
-  },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.575.0",
-    "@aws-sdk/s3-request-presigner": "^3.575.0",
-    "@google/generative-ai": "^0.21.0",
-    "@types/bcrypt": "^5.0.2",
-    "@types/cookie-parser": "^1.4.7",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20.16.2",
-    "aws-sdk": "^2.1616.0",
-    "bcrypt": "^5.1.1",
-    "cloudinary": "^2.5.1",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "cron": "^3.1.7",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.2",
-    "http-status-codes": "^2.3.0",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.9.7",
-    "pg": "^8.12.0",
-    "pre-commit": "^1.2.2",
-    "rimraf": "^6.0.1",
-    "sequelize": "^6.37.3",
-    "socket.io": "^4.7.5"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.4",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
-  },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ]
+ "scripts": {
+  "start": "nodemon src/index.ts",
+  "build": "rimraf dist && tsc",
+  "ts.check": "tsc --project tsconfig.json",
+  "add-build": "git add dist",
+  "test": "echo \"Error: no test specified\" && exit 1"
+ },
+ "dependencies": {
+  "@aws-sdk/client-s3": "^3.575.0",
+  "@aws-sdk/s3-request-presigner": "^3.575.0",
+  "@google/generative-ai": "^0.21.0",
+  "@types/bcrypt": "^5.0.2",
+  "@types/cookie-parser": "^1.4.7",
+  "@types/cors": "^2.8.17",
+  "@types/express": "^4.17.21",
+  "@types/jsonwebtoken": "^9.0.6",
+  "@types/node": "^20.16.2",
+  "aws-sdk": "^2.1616.0",
+  "bcrypt": "^5.1.1",
+  "cloudinary": "^2.5.1",
+  "cookie-parser": "^1.4.6",
+  "cors": "^2.8.5",
+  "cron": "^3.1.7",
+  "dotenv": "^16.4.5",
+  "express": "^4.21.2",
+  "http-status-codes": "^2.3.0",
+  "jsonwebtoken": "^9.0.2",
+  "pg": "^8.12.0",
+  "pre-commit": "^1.2.2",
+  "rimraf": "^6.0.1",
+  "sequelize": "^6.37.3",
+  "socket.io": "^4.7.5"
+ },
+ "devDependencies": {
+  "nodemon": "^3.1.9",
+  "ts-node": "^10.9.2",
+  "typescript": "^5.5.4"
+ },
+ "pre-commit": [
+  "ts.check",
+  "build",
+  "add-build"
+ ]
 }
