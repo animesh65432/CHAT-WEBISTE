@@ -1,4 +1,4 @@
-export const baseurl = "http://localhost:4000";
+export const baseurl = "https://chat-backend-application-ux1g.onrender.com";
 
 export const fixthestring = (str: string) => {
     if (str.length === 0) {
