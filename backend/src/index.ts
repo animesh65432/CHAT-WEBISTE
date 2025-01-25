@@ -10,8 +10,10 @@ import { Groups, Message, UserGroup, Users, Aimessages, UserMessages } from "./m
 import { Messagehandler } from "./controllers/messages/Group";
 import { chatHandler } from "./controllers/messages/usermessage"
 import job from "./jobs";
+import { createdummyuser } from "./utils"
 const app = express();
-app.use(cors({ origin: "https://chat-webiste-v5pz.vercel.app" }));
+//https://chat-webiste-v5pz.vercel.app
+app.use(cors({ origin: "http://localhost:3000" }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '50mb' }));
@@ -20,7 +22,7 @@ app.use(cookieparser());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://chat-webiste-v5pz.vercel.app",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
@@ -71,10 +73,22 @@ io.on("connection", (socket) => {
   });
 });
 database
-  .sync()
+  .sync({ force: true })
   .then(() => {
-    server.listen(process.env.PORT, () => {
-      console.log(`server at the ${process.env.PORT}`);
+
+    server.listen(process.env.PORT, async () => {
+      try {
+        createdummyuser({
+          email: "test@gmail.com",
+          name: "testname",
+          password: "testpassword"
+        })
+        console.log(`server at the ${process.env.PORT}`);
+      } catch (error) {
+        console.log(error)
+        process.exit(1)
+      }
+
     });
   })
   .catch((errors) => {

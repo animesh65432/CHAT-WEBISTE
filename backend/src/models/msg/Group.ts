@@ -18,10 +18,6 @@ const Message = database.define<Messageinterface>("message", {
   imgandvideourl: {
     type: DataTypes.STRING,
     allowNull: true,
-  },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: true
   }
 });
 

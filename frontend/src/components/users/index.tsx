@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import GroupActivities from "../GroupActivites/Groupactivites";
 import { useGetalltheusers } from "../../hooks";
+import { Button } from "@/components/ui/button"
 interface User {
   id: number;
   name: string;
@@ -70,12 +71,7 @@ const User: React.FC = () => {
               className="bg-white shadow rounded-lg p-4 cursor-pointer hover:bg-gray-50 overflow-auto"
             >
               <p className="text-gray-800 font-medium">{user.name}</p>
-              <button
-                onClick={() => setShowGroupActivities((prev) => !prev)}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-              >
-                Edit
-              </button>
+              <Button onClick={() => setShowGroupActivities((prev) => !prev)}>Edit</Button>
               {showGroupActivities && <GroupActivities user={user} />}
             </div>
           ))

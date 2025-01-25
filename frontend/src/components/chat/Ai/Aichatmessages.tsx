@@ -42,13 +42,13 @@ const Aichatmessages: React.FC<Props> = ({ inputloading }) => {
     }
 
     return (
-        <div>
+        <div >
             {
                 Aimessags && Aimessags.length > 0 ? <div>
                     {
                         Aimessags.map((message) => <Message key={message.id} message={message} inputloading={inputloading} />)
                     }
-                </div> : <div className="bg-green-100 text-green-900 rounded-lg p-3 shadow">
+                </div> : <div className=" rounded-lg p-3 shadow">
                     <strong>AI:</strong>How can i Help you
                 </div>
             }

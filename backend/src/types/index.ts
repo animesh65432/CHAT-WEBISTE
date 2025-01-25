@@ -30,7 +30,6 @@ export interface MessageModelTypes {
     userId?: number;
     createdAt?: Date;
     updatedAt?: Date;
-    username: string
 }
 export interface UserMessagesTypes {
     id: number;
@@ -51,4 +50,10 @@ export interface UserGroupsTypes {
     isstrictGroup?: boolean;
     userId?: number;
     GroupId?: number;
+}
+
+export type Dummyuser = {
+    email: string,
+    password: string,
+    name: string
 }

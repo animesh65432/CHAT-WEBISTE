@@ -3,6 +3,7 @@ import { useCreateUser } from "../hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button"
 
 interface UserInput {
   name: string;
@@ -11,7 +12,7 @@ interface UserInput {
   phonenumber: string;
 }
 
-const SigninPage: React.FC = () => {
+const SignupPage: React.FC = () => {
   const [userInput, setUserInput] = useState<UserInput>({
     name: "",
     email: "",
@@ -27,7 +28,6 @@ const SigninPage: React.FC = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    console.log(id, value);
     setUserInput((prevUserInput) => ({
       ...prevUserInput,
       [id]: value,
@@ -46,7 +46,7 @@ const SigninPage: React.FC = () => {
       userInput.phonenumber === "" ||
       userInput.name === ""
     ) {
-      toast.error("please fill up each and everything");
+      toast.error("Please fill in all fields.");
     } else {
       const res = await createthesuer(userInput);
 
@@ -57,7 +57,7 @@ const SigninPage: React.FC = () => {
         email: "",
       });
       if (res) {
-        toast.success("Successfully created the user");
+        toast.success("User created successfully.");
       } else {
         toast.error(errors);
       }
@@ -65,20 +65,21 @@ const SigninPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="max-w-md w-full px-6 py-8 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <div className="min-h-screen flex  items-center justify-center bg-gray-100">
+      <div className="w-full md:w-1/2 max-w-lg p-8 bg-white shadow-md rounded-lg">
         <form onSubmit={handleSubmit}>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Signup</h2>
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-600"
             >
-              Name:
+              Name
             </label>
             <input
               id="name"
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500"
-              placeholder="Please put your name here"
+              className="mt-2 block w-full p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your name"
               value={userInput.name}
               onChange={handleInputChange}
             />
@@ -86,15 +87,15 @@ const SigninPage: React.FC = () => {
           <div className="mt-4">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-600"
             >
-              Email:
+              Email
             </label>
             <input
               id="email"
               type="email"
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500"
-              placeholder="Please put your email here"
+              className="mt-2 block w-full p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your email"
               value={userInput.email}
               onChange={handleInputChange}
             />
@@ -102,15 +103,15 @@ const SigninPage: React.FC = () => {
           <div className="mt-4">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-600"
             >
-              Password:
+              Password
             </label>
             <input
               id="password"
               type="password"
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500"
-              placeholder="Please put your password here"
+              className="mt-2 block w-full p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your password"
               value={userInput.password}
               onChange={handleInputChange}
             />
@@ -118,37 +119,31 @@ const SigninPage: React.FC = () => {
           <div className="mt-4">
             <label
               htmlFor="phonenumber"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-600"
             >
-              Phone Number:
+              Phone Number
             </label>
             <input
               id="phonenumber"
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500"
-              placeholder="Please put your phone number here"
+              className="mt-2 block w-full p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your phone number"
               value={userInput.phonenumber}
               onChange={handleInputChange}
             />
           </div>
-          <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Signin
-            </button>
+          <div className="mt-6 flex justify-center">
+            <Button>Singup</Button>
           </div>
         </form>
-        <button
-          className="mt-4 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          onClick={Navigateloginto}
-        >
-          login
-        </button>
+        <div className="mt-3 flex justify-center">
+          <p >
+            if you have an account ? <span className="font-bold hover:underline" onClick={Navigateloginto}>Login</span>
+          </p>
+        </div>
       </div>
       <ToastContainer />
     </div>
   );
 };
 
-export default SigninPage;
+export default SignupPage;

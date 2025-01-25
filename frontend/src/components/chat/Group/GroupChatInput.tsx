@@ -5,6 +5,7 @@ import { MdOutlineAttachFile } from "react-icons/md";
 import { ImagesandVideossend } from "../index";
 import { RootState } from "@/reduex";
 import { useSocket } from "@/Socket/SocketProvider"
+import { Button } from "@/components/ui/button"
 const GroupGroupChatInput: React.FC = () => {
   const [inputText, setInputText] = useState<string>("");
   const Group = useSelector((state: RootState) => state.group.selectedGroups);
@@ -51,12 +52,11 @@ const GroupGroupChatInput: React.FC = () => {
           value={inputText}
           onChange={handleInputChange}
         />
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-r-lg ml-2"
+        <Button
           onClick={handleSendMessage}
         >
           Send
-        </button>
+        </Button>
         <button onClick={() => setthefile((prev) => !prev)}>
           <MdOutlineAttachFile />
         </button>

@@ -24,15 +24,17 @@ const models_1 = require("./models");
 const Group_1 = require("./controllers/messages/Group");
 const usermessage_1 = require("./controllers/messages/usermessage");
 const jobs_1 = __importDefault(require("./jobs"));
+const utils_1 = require("./utils");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)({ origin: "https://chat-webiste-v5pz.vercel.app" }));
+//https://chat-webiste-v5pz.vercel.app
+app.use((0, cors_1.default)({ origin: "http://localhost:3000" }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json({ limit: '50mb' }));
 app.use((0, cookie_parser_1.default)());
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "https://chat-webiste-v5pz.vercel.app",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
         credentials: true
@@ -78,11 +80,22 @@ io.on("connection", (socket) => {
     });
 });
 database_1.default
-    .sync()
+    .sync({ force: true })
     .then(() => {
-    server.listen(process.env.PORT, () => {
-        console.log(`server at the ${process.env.PORT}`);
-    });
+    server.listen(process.env.PORT, () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            (0, utils_1.createdummyuser)({
+                email: "test@gmail.com",
+                name: "testname",
+                password: "testpassword"
+            });
+            console.log(`server at the ${process.env.PORT}`);
+        }
+        catch (error) {
+            console.log(error);
+            process.exit(1);
+        }
+    }));
 })
     .catch((errors) => {
     console.log(errors);

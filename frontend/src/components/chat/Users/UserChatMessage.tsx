@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useSelector } from "react-redux"
 import { RootState } from "@/reduex/index"
 import { useSocket } from "@/Socket/SocketProvider"
+import notificationsound from "../../../assets/notification-2-269292.mp3"
 
 interface Message {
     id: number;
@@ -17,6 +18,7 @@ const UserChatMessage: React.FC = () => {
     const user = useSelector((state: RootState) => state.userMessages.SelectedUser);
     const token = useSelector((state: RootState) => state.auth.idtoken);
     const { socket, connecttosocket } = useSocket();
+    const audioPlayer = useRef<HTMLAudioElement | null>(null);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -48,6 +50,9 @@ const UserChatMessage: React.FC = () => {
             socket.on("messageReceived", (data) => {
                 setMessages(prev => [...prev, data.message]);
                 scrollToBottom();
+                if (audioPlayer) {
+                    audioPlayer.current?.play()
+                }
             });
 
             socket.on("error", (error) => {
@@ -72,8 +77,8 @@ const UserChatMessage: React.FC = () => {
     }
 
     return (
-        <div className='h-[85vh] flex flex-col'>
-            <div className='h-[5vh] flex justify-center items-center font-mono bg-blue-300 gap-2'>
+        <div className='h-[75vh] flex flex-col overflow-y-scroll'>
+            <div className='h-[5vh] flex justify-center items-center font-mono  gap-2 bg-slate-300'>
                 <div>
                     <img src={user.image} className='w-12' />
                 </div>
@@ -86,7 +91,7 @@ const UserChatMessage: React.FC = () => {
                     <div
                         key={msg.id || index}
                         className={`p-3 rounded-lg max-w-[63%] ${msg.senderId === user.id
-                            ? 'ml-auto bg-blue-500 text-white'
+                            ? 'ml-auto bg-black text-white'
                             : 'bg-gray-100'
                             }`}
                     >
@@ -95,6 +100,7 @@ const UserChatMessage: React.FC = () => {
                 ))}
                 <div ref={messagesEndRef} />
             </div>
+            <audio ref={audioPlayer} src={notificationsound} />
         </div>
     );
 };

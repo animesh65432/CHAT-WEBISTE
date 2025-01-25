@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useloginhook } from "../hooks";
+import { Button } from "@/components/ui/button"
 
 interface UserInput {
   email: string;
@@ -11,17 +12,15 @@ interface UserInput {
 
 const LoginPage: React.FC = () => {
   const [userinput, setuserinput] = useState<UserInput>({
-    email: "",
-    password: "",
+    email: "test@gmail.com",
+    password: "testpassword",
   });
 
   const [loginuser, errors] = useloginhook();
-
   const navigate = useNavigate();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    console.log(id, value);
     setuserinput((prevUserInput) => ({
       ...prevUserInput,
       [id]: value,
@@ -48,56 +47,64 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="max-w-md w-full px-6 py-8 bg-white shadow-md overflow-hidden sm:rounded-lg">
+      <div className="max-w-md w-full bg-white px-8 py-10 shadow-lg rounded-3xl">
         <form onSubmit={handleSubmit}>
-          <div className="mt-4">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+            Welcome Back!
+          </h2>
+          <p className="text-sm text-center text-gray-600 mb-6">
+            Enter your email and password to log in.
+          </p>
+          <div className="mb-5">
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              Email:
+              Email Address:
             </label>
             <input
               id="email"
               type="email"
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500"
-              placeholder="Please put your email here"
+              className="mt-2 p-3 block w-full border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2"
+              placeholder="Enter your email"
               value={userinput.email}
               onChange={handleInputChange}
             />
           </div>
-          <div className="mt-4">
+          <div className="mb-6">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Password
+              Password:
             </label>
             <input
               id="password"
               type="password"
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500"
-              placeholder="Please put your password here"
+              className="mt-2 p-3 block w-full border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 "
+              placeholder="Enter your password"
               value={userinput.password}
               onChange={handleInputChange}
             />
-          </div>
 
-          <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Button type="submit" className="font-mono">
               Login
-            </button>
+            </Button>
           </div>
         </form>
-        <button
-          onClick={Navigatetosignin}
-          className="mt-4 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-        >
-          Create New User
-        </button>
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{" "}
+            <button
+              onClick={Navigatetosignin}
+              className="text-slate-950 font-medium hover:underline"
+            >
+              Sign Up
+            </button>
+          </p>
+        </div>
       </div>
       <ToastContainer />
     </div>

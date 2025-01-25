@@ -10,15 +10,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
-const database = new sequelize_1.Sequelize(process.env.DIRECT_URL, {
-    dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        },
-    },
-    logging: false,
+// const database = new Sequelize(
+//   process.env.DIRECT_URL,
+//   {
+//     dialect: "postgres",
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false,
+//       },
+//     },
+//     logging: false,
+//   }
+// );
+const database = new sequelize_1.Sequelize(process.env.DATABASENAME, process.env.DATAUSERNAME, process.env.DATAPASSWORD, {
+    host: "localhost",
+    dialect: "postgres"
 });
 const testConnection = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

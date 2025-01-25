@@ -2,6 +2,7 @@ import Message from "../../../models/msg/Group";
 import { Socket } from "socket.io";
 import cloudinary from "../../../services/Cloudinary";
 import { getUserFromToken } from "../../../utils"
+import { Users } from "../../../models";
 
 export const Messagehandler = (socket: Socket) => {
   const GetMessages = async ({ GroupId }: { GroupId: number }) => {
@@ -12,6 +13,10 @@ export const Messagehandler = (socket: Socket) => {
     try {
       let messages = await Message.findAll({
         where: { GroupId },
+        include: {
+          model: Users,
+          attributes: ["image", "name"]
+        }
       });
 
       if (messages.length === 0) {
@@ -45,13 +50,22 @@ export const Messagehandler = (socket: Socket) => {
         message: message,
         GroupId: GroupId,
         userId: user.id,
-        username: user.name
       });
 
 
       socket.join(GroupId.toString());
-      socket.broadcast.to(GroupId.toString()).emit("NewMessages", newMessage);
-      socket.emit("NewMessages", newMessage);
+      const data = {
+        message,
+        GroupId,
+        userId: user.id,
+        user: {
+          name: user.name,
+          image: user.image
+        }
+      }
+      console.log("user data", data)
+      socket.broadcast.to(GroupId.toString()).emit("NewMessages", data);
+      socket.emit("NewMessages", data);
     } catch (error) {
       console.log(error);
     }
@@ -81,21 +95,17 @@ export const Messagehandler = (socket: Socket) => {
         folder: `/cloudinary/${filename}`
       });
 
-      console.log(image.url);
-
       let newfile = await Message.create({
         userId: user.id,
         GroupId: GroupId,
         filename: filename,
-        username: user.name,
         imgandvideourl: image.url
       });
 
       console.log(newfile, "upload the image");
 
-      let NewFileWithMessages = { ...newfile.dataValues, imgandvideourl: image.url };
-
-
+      let NewFileWithMessages = { ...newfile, imgandvideourl: image.url, user: { name: user.name, image: user.image } };
+      console.log(NewFileWithMessages)
       socket.join(GroupId.toString());
       socket.broadcast.to(GroupId.toString()).emit("UploadNewFileWithMessages", { NewFileWithMessages });
       socket.emit("UploadNewFileWithMessages", { NewFileWithMessages });

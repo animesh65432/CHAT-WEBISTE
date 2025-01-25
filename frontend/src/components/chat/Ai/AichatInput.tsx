@@ -33,10 +33,10 @@ const AichatInput: React.FC<Props> = ({ GetTheinputloading }) => {
         <>
             <div className='flex flex-row gap-2'>
                 <div>
-                    <Input onChange={(e) => setmessage(e.target.value)} className='border-2 border-blue-400 rounded-none w-[85vw]' value={message} />
+                    <Input onChange={(e) => setmessage(e.target.value)} className='w-[85vw]' value={message} />
                 </div>
                 <div>
-                    <Button onClick={submitthetext} className='rounded-none bg-blue-600'>
+                    <Button onClick={submitthetext} >
                         {loading ? "loading" : "send"}
                     </Button>
                 </div>

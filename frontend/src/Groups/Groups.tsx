@@ -35,8 +35,8 @@ const Groups: React.FC = () => {
 
   if (groups.length == 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <p className="text-gray-600 text-lg mb-4">
+      <div className="flex  flex-col items-center ">
+        <p className="text-gray-600 md:text-lg text-[15px] mb-4">
           We don't have any groups right now.
         </p>
         <GroupBottomFrom />
@@ -50,7 +50,7 @@ const Groups: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4">Groups</h2>
         <GroupBottomFrom />
       </div>
-      <div className="flex md:flex-col md:h-dvh md:overflow-y-scroll overflow-x-scroll">
+      <div className="flex md:flex-col md:h-dvh overflow-y-scroll ">
         {groups.map((group: any, index: any) => (
           <Groupitems key={index} obj={group} />
         ))}

@@ -119,6 +119,7 @@ const GetalltheUsers = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 id: { [sequelize_1.Op.ne]: CurrenUserId }
             }
         });
+        console.log(users);
         return res.status(http_status_codes_1.StatusCodes.OK).json({
             sucesss: true,
             data: users,
@@ -161,7 +162,7 @@ const updateuser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const updateValues = {};
         if (image) {
             const imageUrl = yield (0, utils_1.UploadwithCloudinary)(image);
-            console.log(imageUrl);
+            console.log(imageUrl, "IMAGEURL");
             updateValues.image = imageUrl;
         }
         if (name) {
@@ -188,7 +189,7 @@ const updateuser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (error) {
         console.error(`Error updating user: ${error}`);
         return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: `Error updating user.`,
+            message: `Error updating user.,${error}`,
         });
     }
 });

@@ -10,7 +10,7 @@ const Aichat: React.FC = () => {
 
     return (
         <div className='flex flex-col'>
-            <div className='h-[650px] overflow-auto'>
+            <div className=' overflow-auto h-[80vh]'>
                 <Aichatmessages inputloading={inputloading} />
             </div>
             <div>

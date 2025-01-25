@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "@/reduex";
 import { useSocket } from "@/Socket/SocketProvider";
+import { Button } from "@/components/ui/button"
 const ImagesandVideossend: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<string>("");
   const group = useSelector((state: RootState) => state.group.selectedGroups);
@@ -56,16 +57,15 @@ const ImagesandVideossend: React.FC = () => {
         />
         <label
           htmlFor="fileInput"
-          className="bg-blue-500 text-white px-4 py-2 rounded-l-lg cursor-pointer hover:bg-blue-600"
+          className="bg-black text-white px-4 py-2 rounded-l-lg cursor-pointer hover:bg-slate-400"
         >
           Choose File
         </label>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-r-lg ml-2"
+        <Button
           onClick={handleSendFile}
         >
           Send
-        </button>
+        </Button>
       </div>
       <ToastContainer />
     </div>

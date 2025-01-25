@@ -7,7 +7,6 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { Button } from "@/components/ui/button"
 import { ToastContainer, toast } from "react-toastify"
 import { useUpdateprofile } from "@/hooks"
-
 const UpdateCurrentUser: React.FC = () => {
     const User = useSelector((state: RootState) => state.user.currentuser)
     const [name, setname] = useState<string>(User?.name || "")
@@ -42,28 +41,31 @@ const UpdateCurrentUser: React.FC = () => {
     }
 
     return (
-        <div className='flex h-dvh items-center justify-center'>
-            <Card className=' w-[40vw] h-[40vh] p-4 bg-blue-200 flex flex-col gap-2'>
-
-                <div className='flex  justify-center'>
+        <div className='flex items-center justify-center h-[80vh]'>
+            <Card className=' lg:w-[40vw] lg:h-[45vh] w-[50vw] h-[44vh] p-4 bg-white flex flex-col gap-2 '>
+                <div className='flex  justify-center '>
                     <div>
-                        {User?.image ? <img src={image} /> : <FaRegUserCircle className='h-[10vh] w-[10vw]' />}
+                        {User?.image ? <div className='relative md:w-[15vw] md:h-[15vh] w-[10vw] h-[10vh]'  >
+                            <img src={image} className='absolute' />
+                        </div> : <FaRegUserCircle className='h-[10vh] w-[10vw]' />}
                     </div>
                     <div>
                         <Input type='file' onChange={handlechangeimages} />
-                        <img src={image} className='w-[4vw] h-[4vh]' />
+                        <div className='relative w-[2vh] h-[2vw]' >
+                            <img src={image} className=' absolute' />
+                        </div>
                     </div>
                 </div>
-                <div>
+                <div className='mt-3' >
                     <label htmlFor='name'>Name</label>
-                    <Input value={name} onChange={(e) => setname(e.target.value)} className='border-blue-800' />
+                    <Input value={name} onChange={(e) => setname(e.target.value)} />
                 </div>
                 <div>
                     <label htmlFor='email'>Email</label>
-                    <Input value={email} onChange={(e) => setemail(e.target.value)} className='border-blue-800'></Input>
+                    <Input value={email} onChange={(e) => setemail(e.target.value)} ></Input>
                 </div>
                 <div className='flex justify-center' >
-                    <Button className='bg-blue-600 hover:bg-blue-700' onClick={handlesubmit}>
+                    <Button onClick={handlesubmit}>
                         {loading ? "loading" : "update"}
                     </Button>
                 </div>

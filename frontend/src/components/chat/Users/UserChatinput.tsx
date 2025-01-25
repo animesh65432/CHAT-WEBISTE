@@ -55,7 +55,6 @@ const UserChatInput: React.FC = () => {
                 disabled={isSending}
             />
             <Button
-                className='bg-blue-600 hover:bg-blue-800 px-6'
                 onClick={handleSendMessage}
                 disabled={isSending}
             >

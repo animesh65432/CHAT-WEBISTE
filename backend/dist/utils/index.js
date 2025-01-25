@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createJWTtokens = exports.UploadwithCloudinary = exports.getUserFromToken = void 0;
+exports.createdummyuser = exports.createJWTtokens = exports.UploadwithCloudinary = exports.getUserFromToken = void 0;
 const models_1 = require("../models");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Cloudinary_1 = __importDefault(require("../services/Cloudinary"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const getUserFromToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = jsonwebtoken_1.default.verify(token, process.env.JSONWEBSECRECT);
@@ -35,10 +36,11 @@ const getUserFromToken = (token) => __awaiter(void 0, void 0, void 0, function* 
 exports.getUserFromToken = getUserFromToken;
 const UploadwithCloudinary = (image) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(image, "Get The images");
         let upload = yield Cloudinary_1.default.uploader.upload(image, {
-            folder: "/profilepicture"
+            folder: "/Chatproject"
         });
-        console.log(upload);
+        console.log(upload, "upload");
         return upload.url;
     }
     catch (error) {
@@ -51,4 +53,15 @@ const createJWTtokens = (obj) => {
     return token;
 };
 exports.createJWTtokens = createJWTtokens;
+const createdummyuser = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let hashpassword = yield bcrypt_1.default.hash(data.password, 10);
+        const usercreation = Object.assign(Object.assign({}, data), { password: hashpassword });
+        yield models_1.Users.create(usercreation);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.createdummyuser = createdummyuser;
 //# sourceMappingURL=index.js.map

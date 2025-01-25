@@ -12,6 +12,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.575.0",
     "@aws-sdk/s3-request-presigner": "^3.575.0",
+    "@radix-ui/react-dialog": "^1.1.5",
     "@radix-ui/react-popover": "^1.1.4",
     "@radix-ui/react-slot": "^1.1.1",
     "@reduxjs/toolkit": "^2.2.3",

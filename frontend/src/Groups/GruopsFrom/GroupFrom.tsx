@@ -2,6 +2,7 @@ import React, { useState, FormEvent, ChangeEvent } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCreateGroup } from "../../hooks";
+import { Button } from "@/components/ui/button"
 
 const GroupForm: React.FC = () => {
   const [groupName, setGroupName] = useState<string>("");
@@ -67,12 +68,7 @@ const GroupForm: React.FC = () => {
             <option value="true">true</option>
             <option value="false">false</option>
           </select>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
-          >
-            Submit
-          </button>
+          <Button>Create</Button>
         </form>
       </div>
       <ToastContainer />

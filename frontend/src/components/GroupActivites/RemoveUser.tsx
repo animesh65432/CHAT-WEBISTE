@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useRemoveUser } from "../../hooks";
 import { RootState } from "../../reduex";
 import React from "react";
+import { Button } from "@/components/ui/button"
 interface Props {
   user: { id: number; email: string };
 }
@@ -29,12 +30,10 @@ const RemoveUser: React.FC<Props> = ({ user }: any) => {
   };
   return (
     <div className="max-w-md mx-auto bg-white shadow-md rounded-md p-6">
-      <button
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-        onClick={OnRemoveuser}
-      >
+
+      <Button onClick={OnRemoveuser}>
         Remove
-      </button>
+      </Button>
       <ToastContainer />
     </div>
   );

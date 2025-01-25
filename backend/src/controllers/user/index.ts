@@ -113,6 +113,8 @@ const GetalltheUsers = async (req: Request, res: Response) => {
         id: { [Op.ne]: CurrenUserId }
       }
     });
+
+    console.log(users)
     return res.status(StatusCodes.OK).json({
       sucesss: true,
       data: users,
@@ -160,7 +162,7 @@ const updateuser = async (req: Request, res: Response) => {
 
     if (image) {
       const imageUrl = await UploadwithCloudinary(image);
-      console.log(imageUrl)
+      console.log(imageUrl, "IMAGEURL")
       updateValues.image = imageUrl
     }
 
@@ -196,7 +198,7 @@ const updateuser = async (req: Request, res: Response) => {
     console.error(`Error updating user: ${error}`);
 
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: `Error updating user.`,
+      message: `Error updating user.,${error}`,
     });
   }
 };

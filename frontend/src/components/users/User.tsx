@@ -11,13 +11,14 @@ type Props = {
 }
 
 const User: React.FC<Props> = ({ user }) => {
+    console.log(user, "user")
     const dispacth = useDispatch()
     const selecteduser = useSelector((state: RootState) => state.userMessages.SelectedUser)
     const handletheuser = () => {
         dispacth(changeuser(user))
     }
     return (
-        <div className={` flex gap-4 justify-center h-[6vh] items-center ${user.id === selecteduser?.id ? "bg-blue-400" : ""}`} onClick={handletheuser}>
+        <div className={` flex gap-4 justify-center  items-center ${user.id === selecteduser?.id ? "bg-slate-400" : ""} `} onClick={handletheuser}>
             <div>
                 {user.image ? <img src={user.image} className='w-12' /> : <CiUser className='w-12' />}
             </div>

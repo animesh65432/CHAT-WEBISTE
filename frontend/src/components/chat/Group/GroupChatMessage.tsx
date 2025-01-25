@@ -4,11 +4,17 @@ import { User } from "../../index";
 import { RootState } from "@/reduex";
 import { useSocket } from "@/Socket/SocketProvider";
 import notificationsound from "../../../assets/notification-2-269292.mp3"
+import { Button } from "@/components/ui/button"
+import { CiUser } from "react-icons/ci";
 interface MessageArray {
   message?: string;
   imgandvideourl?: string;
   id: number;
   username: string
+  user: {
+    name: string;
+    image: string
+  }
 }
 const GroupGroupChatMessage: React.FC = () => {
   const selectedGroups = useSelector(
@@ -79,12 +85,11 @@ const GroupGroupChatMessage: React.FC = () => {
         <h3 className="text-xl font-bold">
           {selectedGroups.nameofthegroup.toUpperCase()}
         </h3>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        <Button
           onClick={() => setShowUsers((prev) => !prev)}
         >
           {showUsers ? "Hide Users" : "Show Users"}
-        </button>
+        </Button>
         {showUsers && <User />}
       </div>
       <div className="overflow-auto  p-4 h-[550px]">
@@ -101,7 +106,10 @@ const GroupGroupChatMessage: React.FC = () => {
               )}
             </div>
             <div className="gap-2">
-              <span className="text-blue-700">{messageObj.username}</span>
+              <div className="flex justify-center">
+                <div><span className="text-black font-bold">{messageObj.user.name}</span></div>
+                <div>{messageObj.user.image ? <img src={messageObj.user.image} className="h-10 w-10 rounded-md"></img> : <CiUser />}</div>
+              </div>
             </div>
           </div>
         ))}

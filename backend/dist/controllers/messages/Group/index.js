@@ -16,6 +16,7 @@ exports.Messagehandler = void 0;
 const Group_1 = __importDefault(require("../../../models/msg/Group"));
 const Cloudinary_1 = __importDefault(require("../../../services/Cloudinary"));
 const utils_1 = require("../../../utils");
+const models_1 = require("../../../models");
 const Messagehandler = (socket) => {
     const GetMessages = (_a) => __awaiter(void 0, [_a], void 0, function* ({ GroupId }) {
         if (!GroupId) {
@@ -24,6 +25,10 @@ const Messagehandler = (socket) => {
         try {
             let messages = yield Group_1.default.findAll({
                 where: { GroupId },
+                include: {
+                    model: models_1.Users,
+                    attributes: ["image", "name"]
+                }
             });
             if (messages.length === 0) {
                 socket.emit("messages", []);
@@ -47,11 +52,20 @@ const Messagehandler = (socket) => {
                 message: message,
                 GroupId: GroupId,
                 userId: user.id,
-                username: user.name
             });
             socket.join(GroupId.toString());
-            socket.broadcast.to(GroupId.toString()).emit("NewMessages", newMessage);
-            socket.emit("NewMessages", newMessage);
+            const data = {
+                message,
+                GroupId,
+                userId: user.id,
+                user: {
+                    name: user.name,
+                    image: user.image
+                }
+            };
+            console.log("user data", data);
+            socket.broadcast.to(GroupId.toString()).emit("NewMessages", data);
+            socket.emit("NewMessages", data);
         }
         catch (error) {
             console.log(error);
@@ -67,16 +81,15 @@ const Messagehandler = (socket) => {
             const image = yield Cloudinary_1.default.uploader.upload(imageurl, {
                 folder: `/cloudinary/${filename}`
             });
-            console.log(image.url);
             let newfile = yield Group_1.default.create({
                 userId: user.id,
                 GroupId: GroupId,
                 filename: filename,
-                username: user.name,
                 imgandvideourl: image.url
             });
             console.log(newfile, "upload the image");
-            let NewFileWithMessages = Object.assign(Object.assign({}, newfile.dataValues), { imgandvideourl: image.url });
+            let NewFileWithMessages = Object.assign(Object.assign({}, newfile), { imgandvideourl: image.url, user: { name: user.name, image: user.image } });
+            console.log(NewFileWithMessages);
             socket.join(GroupId.toString());
             socket.broadcast.to(GroupId.toString()).emit("UploadNewFileWithMessages", { NewFileWithMessages });
             socket.emit("UploadNewFileWithMessages", { NewFileWithMessages });

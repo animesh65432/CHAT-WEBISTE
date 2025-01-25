@@ -4,6 +4,7 @@ import Groups from "./Groups";
 import users from "./users";
 import AimessageReducer from "./Aimessages"
 import UserMessageReducer from "./usermessages"
+import OptionReducer from "./options"
 
 const stroe = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const stroe = configureStore({
     group: Groups,
     user: users,
     Ai: AimessageReducer,
-    userMessages: UserMessageReducer
+    userMessages: UserMessageReducer,
+    option: OptionReducer
   },
 });
 

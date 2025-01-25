@@ -13,6 +13,7 @@ import { deleteidtoken } from "@/reduex/Auth"
 import { useNavigate } from "react-router-dom"
 
 
+
 const Uselogout: React.FC = () => {
     const currenuser = useSelector((state: RootState) => state.user.currentuser)
     const dispatch = useDispatch()
@@ -30,14 +31,32 @@ const Uselogout: React.FC = () => {
         <>
             <Popover>
                 <PopoverTrigger>
-                    <Button  >
-                        {currenuser?.image ? <img src={currenuser.image} /> : <FaRegUserCircle className="!h-[5vh] !w-[5vw]" />}
+                    <Button variant="ghost">
+                        {currenuser?.image ? (
+                            <div className="w-10 h-10 rounded-full overflow-hidden">
+                                <img
+                                    src={currenuser.image}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        ) : (
+                            <div className="w-10 h-10 rounded-full overflow-hidden">
+                                <img
+                                    src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
+                                    alt="Default Profile"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        )}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent>
                     <Card className='flex flex-col font-mono gap-2 p-2'>
                         <div>
-                            {currenuser?.image ? <img /> : <FaRegUserCircle className="h-[5vh] w-[5vw]" />}
+                            {currenuser?.image ? <div className='relative'>
+                                <img src={currenuser.image} />
+                            </div> : <FaRegUserCircle className="h-[5vh] w-[5vw]" />}
                         </div>
                         <div>
                             {currenuser?.name}
@@ -46,8 +65,8 @@ const Uselogout: React.FC = () => {
                             Email:<span>{currenuser?.email}</span>
                         </div>
                         <div className='flex justify-between gap-2'>
-                            <Button className='bg-blue-500 hover:bg-blue-600' onClick={handle_logout}>Log out</Button>
-                            <Button className='bg-blue-500 hover:bg-blue-600' onClick={navigate_to_updateprofile}>Update Profile</Button>
+                            <Button onClick={handle_logout}>Log out</Button>
+                            <Button onClick={navigate_to_updateprofile}>Update Profile</Button>
                         </div>
 
                     </Card>

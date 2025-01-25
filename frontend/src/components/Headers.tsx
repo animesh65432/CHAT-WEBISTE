@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useGetTheCurrentUser } from "@/hooks"
 import { Uselogout } from "@/components/index"
 import { Link } from "react-router-dom"
+import { Mobilenavbar } from "@/components"
 const Headers: React.FC = () => {
   const [GetCurrentUser] = useGetTheCurrentUser()
 
@@ -14,7 +15,10 @@ const Headers: React.FC = () => {
     fecththeuserdata()
   }, [])
   return (
-    <div className="bg-gray-900 py-4 flex items-center justify-between px-4 w-full sticky top-0">
+    <div className="bg-black py-4 flex items-center justify-between px-4  md:h-[10vh]  w-auto ">
+      <div className="md:hidden">
+        <Mobilenavbar />
+      </div>
       <div className="flex items-center">
         <Link to="/">
           <p className="text-white text-lg sm:text-[20px] text-[15px]">

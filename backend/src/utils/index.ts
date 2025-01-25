@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken"
 import cloudinary from "../services/Cloudinary";
 import { UserTypes } from "../types"
 import { JWTPayload } from "../types/index"
+import { Dummyuser } from "../types"
+import bcryt from "bcrypt"
 
 const getUserFromToken = async (token: string): Promise<UserTypes> => {
     try {
@@ -28,10 +30,12 @@ const getUserFromToken = async (token: string): Promise<UserTypes> => {
 
 const UploadwithCloudinary = async (image: any) => {
     try {
+
+        console.log(image, "Get The images")
         let upload = await cloudinary.uploader.upload(image, {
-            folder: "/profilepicture"
+            folder: "/Chatproject"
         })
-        console.log(upload)
+        console.log(upload, "upload")
         return upload.url
     } catch (error) {
         throw new Error(`errors is uploading images ${error}`)
@@ -43,4 +47,14 @@ const createJWTtokens = (obj: object): string => {
     return token;
 };
 
-export { getUserFromToken, UploadwithCloudinary, createJWTtokens }
+const createdummyuser = async (data: Dummyuser) => {
+    try {
+        let hashpassword = await bcryt.hash(data.password, 10)
+        const usercreation = { ...data, password: hashpassword }
+        await Users.create(usercreation)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export { getUserFromToken, UploadwithCloudinary, createJWTtokens, createdummyuser }
