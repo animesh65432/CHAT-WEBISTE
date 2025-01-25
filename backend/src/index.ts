@@ -12,8 +12,7 @@ import { chatHandler } from "./controllers/messages/usermessage"
 import job from "./jobs";
 import { createdummyuser } from "./utils"
 const app = express();
-//https://chat-webiste-v5pz.vercel.app
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '50mb' }));
@@ -22,7 +21,7 @@ app.use(cookieparser());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
