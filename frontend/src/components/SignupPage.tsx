@@ -20,9 +20,10 @@ const SignupPage: React.FC = () => {
     phonenumber: "",
   });
 
-  const [createthesuer, errors]: [
+  const [createthesuer, errors, loading]: [
     (input: UserInput) => Promise<boolean>,
-    string
+    string,
+    boolean
   ] = useCreateUser();
   const navigate = useNavigate();
 
@@ -132,7 +133,9 @@ const SignupPage: React.FC = () => {
             />
           </div>
           <div className="mt-6 flex justify-center">
-            <Button>Singup</Button>
+            <Button>
+              {loading ? "singup" : "loading"}
+            </Button>
           </div>
         </form>
         <div className="mt-3 flex justify-center">

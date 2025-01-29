@@ -10,14 +10,16 @@ interface LoginInput {
   password: string;
 }
 
-type UseLoginHook = [(obj: LoginInput) => Promise<boolean>, string];
+type UseLoginHook = [(obj: LoginInput) => Promise<boolean>, string, loading: boolean];
 
 const useloginhook = (): UseLoginHook => {
   const [errors, seterrors] = useState<string>("");
+  const [loading, setloading] = useState<boolean>(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const loginuser = async (obj: LoginInput): Promise<boolean> => {
+    setloading(true)
     try {
       const res = await axios.post(`${baseurl}/users/login`, obj);
       const token = res?.data?.token;
@@ -37,9 +39,12 @@ const useloginhook = (): UseLoginHook => {
       }
       return false;
     }
+    finally {
+      setloading(false)
+    }
   };
 
-  return [loginuser, errors];
+  return [loginuser, errors, loading];
 };
 
 export default useloginhook;

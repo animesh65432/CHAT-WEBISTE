@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
     password: "testpassword",
   });
 
-  const [loginuser, errors] = useloginhook();
+  const [loginuser, errors, loading] = useloginhook();
   const navigate = useNavigate();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +90,7 @@ const LoginPage: React.FC = () => {
           </div>
           <div className="mt-8 flex justify-center">
             <Button type="submit" className="font-mono">
-              Login
+              {loading ? "loading" : "login"}
             </Button>
           </div>
         </form>
