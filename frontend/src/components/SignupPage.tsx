@@ -134,7 +134,7 @@ const SignupPage: React.FC = () => {
           </div>
           <div className="mt-6 flex justify-center">
             <Button>
-              {loading ? "singup" : "loading"}
+              {loading ? "loading" : "Signup"}
             </Button>
           </div>
         </form>
